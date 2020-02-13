@@ -1,9 +1,6 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
@@ -28,7 +25,6 @@ private DatabaseReference reffUserManager;
     private User user;
 
     private ArrayList<User> userArrayList;
-    private ArrayList<Food> foodList;
 
     public DBHelper() {
 
@@ -39,7 +35,7 @@ private DatabaseReference reffUserManager;
     }
 
 
-    public void insertUser(final String username, final User u) {
+    public void insertUser(final String username, final User u) { //Work fine
 
 
 
@@ -398,22 +394,21 @@ public void deleteFood(final String username, final String foodname){
 }
 
 
-    public void getSpecificArrayList(String username, final ListView listView, final Context context) {
+    private void getSpecificArrayList(String username) {
 
         //need to impliment it
 //check by city, first two characters of the postal code and those online, who have point lat and lon != 0 if the userr has food.
 //check if the user exist
 //instead of returning the arraylist we will put the adapter and the list here..
-      //  userArrayList = new ArrayList<User>();
-        foodList = new ArrayList<Food>();
+        userArrayList = new ArrayList<User>();
+
         reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
                 if(dataSnapshot.exists()) {
-                    String city_postal = dataSnapshot.child("city_postalcode").getValue().toString();
-                    Log.d("===", city_postal);
+                    String city_postal = dataSnapshot.child("city_postalcode").toString();
                     final double lonMainUser = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
                     double latMainUser = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
 
@@ -450,9 +445,7 @@ public void deleteFood(final String username, final String foodname){
                                                            String category = fooddata.child("category").getValue().toString();
                                                            String expi = fooddata.child("expiry_date").getValue().toString();
                                                            String ingredients = fooddata.child("ingredients").getValue().toString();
-                                                           Food f = new Food(fooddata.getKey().toString(),category, expi, ingredients,user.getEmail());
-                                                         //  Log.d("keys", fooddata.getKey().toString());
-                                                          foodList.add(f);
+                                                           Food f = new Food(fooddata.getKey().toString(),category, expi, ingredients);
                                                            user.addFood(f);
                                                            count++;
                                                        }
@@ -463,22 +456,21 @@ public void deleteFood(final String username, final String foodname){
 
 
                                             if (lat != 0 && lon != 0 && user.getFoodArrayList() != null) {
-                                               // Log.d("userfood", user.getFoodArrayList().toString());
-                                               // userArrayList.add(user);
-
+                                                userArrayList.add(user);
                                             }
 
                                         }
 
                                       //if it is working we will sort
-
-                                    MyArrayAdapter  myArrayAdapter = new MyArrayAdapter(context,R.layout.food_item_design,foodList);
-                                        listView.setAdapter(myArrayAdapter);
-                                        myArrayAdapter.notifyDataSetChanged();
                                         Log.d("===", String.valueOf(lonMainUser));
-                                        //do item event listener here and intent then call get user to set their the text
 
                                     }
+
+
+
+
+
+
 
 
                                 }
@@ -506,51 +498,16 @@ public void deleteFood(final String username, final String foodname){
 
 
 
-public void getDonorFoodList(String username, final ListView lView, final Context context){
-final ArrayList<Food> foodArrayList = new ArrayList<>();
-        reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-if(dataSnapshot.exists()){
-
-    for(DataSnapshot fooddata: dataSnapshot.child("FoodList").getChildren()) {
-        Log.d("===",fooddata.child("category").getValue().toString());
-
-            String category = fooddata.child("category").getValue().toString();
-            String expi = fooddata.child("expiry_date").getValue().toString();
-            String ingredients = fooddata.child("ingredients").getValue().toString();
-            Food f = new Food(fooddata.getKey().toString(),category, expi, ingredients);
-
-            foodArrayList.add(f);
-
-    }
-
-    MyArrayAdapter arrayAdapter = new MyArrayAdapter(context,R.layout.food_item_design,foodArrayList);
-    lView.setAdapter(arrayAdapter);
-    arrayAdapter.notifyDataSetChanged();
-
-}
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-
-
+public ArrayList<Food> getDonorFoodList(){
+ArrayList<Food> foodArrayList = new ArrayList<>();
+        return foodArrayList;
 }
 
 
 
 
 
-//displayFoodDetails() take text and set, displayProfileUser() basically setter for text
-// and chat function remaining
+//and chat function
 
 
 

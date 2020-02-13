@@ -3,19 +3,13 @@ package ca.georgebrown.comp3074.pocketmealapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.database.DataSetObserver;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -33,25 +27,21 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 private TextView txtV;
 DBHelper dbHelper;
-private ListView lview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
       dbHelper = new DBHelper();
 
-      User u = new User(3,"Rodrigo@gmail.com","Junior","Nazario","password","donor","torontom5");
+      User u = new User(1,"Orelljunior@gmail.com","Junior","Nazario","password","donor","torontom5");
       Food f = new Food("test2","12-09-2020","oignon,mushroom,tomatoes");
        //dbHelper.addFood("Rodrigo","F1",f);
        // dbHelper.addFood("Rodrigo","F2",f);
-        //dbHelper.insertUser("Rodrigo",u);
-      //  dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
+     //   dbHelper.insertUser("Rodrigo",u);
+        dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
 
-lview = findViewById(R.id.listView1);
-//dbHelper.getDonorFoodList("CoryKenshin",lview,this);
-
-
-        }
+    }
 
     public static String filterEmailKey(String email){
        // String str_final = "";
