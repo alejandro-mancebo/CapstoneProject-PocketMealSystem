@@ -31,27 +31,29 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
-private TextView txtV;
-DBHelper dbHelper;
-private ListView lview;
+
+    private TextView txtV;
+    DBHelper dbHelper;
+    private ListView lview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      dbHelper = new DBHelper();
+        dbHelper = new DBHelper();
 
-      User u = new User(3,"Rodrigo@gmail.com","Junior","Nazario","password","donor","torontom5");
-      Food f = new Food("test2","12-09-2020","oignon,mushroom,tomatoes");
-       //dbHelper.addFood("Rodrigo","F1",f);
-       // dbHelper.addFood("Rodrigo","F2",f);
+        User u = new User(3,"Rodrigo@gmail.com","Junior","Nazario","password","donor","torontom5");
+        Food f = new Food("test2","12-09-2020","oignon,mushroom,tomatoes");
+        //dbHelper.addFood("Rodrigo","F1",f);
+        // dbHelper.addFood("Rodrigo","F2",f);
         //dbHelper.insertUser("Rodrigo",u);
-      //  dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
+        //  dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
 
-lview = findViewById(R.id.listView1);
-//dbHelper.getDonorFoodList("CoryKenshin",lview,this);
+        lview = findViewById(R.id.listView1);
+        //dbHelper.getDonorFoodList("CoryKenshin",lview,this);
 
 
-        }
+    }
 
     public static String filterEmailKey(String email){
        // String str_final = "";
