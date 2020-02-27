@@ -1,14 +1,14 @@
-package ca.georgebrown.comp3074.pocketmealapp.ui.home;
+package ca.georgebrown.comp3074.pocketmealapp.ui.food;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class FoodViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public FoodViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

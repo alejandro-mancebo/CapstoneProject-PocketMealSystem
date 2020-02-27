@@ -1,4 +1,4 @@
-package ca.georgebrown.comp3074.pocketmealapp.ui.home;
+package ca.georgebrown.comp3074.pocketmealapp.ui.food;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import ca.georgebrown.comp3074.pocketmealapp.R;
 
-public class HomeFragment extends Fragment {
+public class FoodFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private FoodViewModel foodViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        foodViewModel =
+                ViewModelProviders.of(this).get(FoodViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_food, container, false);
+        final TextView textView = root.findViewById(R.id.text_food);
+        foodViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
