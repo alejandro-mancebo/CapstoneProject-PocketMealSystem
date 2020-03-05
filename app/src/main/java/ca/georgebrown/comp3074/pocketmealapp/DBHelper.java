@@ -1,11 +1,14 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -95,7 +98,7 @@ public class DBHelper {
                                 String type = dataSnapshot.child("type").getValue().toString();
 
                                 user = new User(
-                                        id, email, first_name, last_name, pass, type, city_PostalCode);
+                                        email, first_name, last_name, pass, city_PostalCode);
 
                                 double lon = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
                                 double lat = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
@@ -208,22 +211,52 @@ public class DBHelper {
 
     }
 
-/*
-    public void checkUserExist(String username) {
+
+
+    public void loginCheck(final String username, final String password, final Context context) {
 //not working properly
 
         reffUserManager.orderByKey().equalTo(username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
 
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
 
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         Log.d("===", String.valueOf(dataSnapshot.exists()));
                         if (dataSnapshot.exists()) {
+                            String dbPassword = dataSnapshot.child("password").getValue().toString();
 
 
+                            if(password.equals(dbPassword)){
+
+                                SecurePasswordStorage passManager = new SecurePasswordStorage();
+
+                                boolean status = false;
+                                try {
+                                    status = passManager.authenticateUser(username, password);
+                                    if (status) {
+                                        Log.d("Login", " > Logged in!");
+
+                                        // Need to open the food list page with the drawer menu on top now.
+                                        Intent logIntent = new Intent(context, drawer_activity.class);
+                                        context.startActivity(logIntent);
+
+                                    } else {
+
+                                        Log.d("Login", " > Not logged in, wrong username/password ");
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
                         } else {
+
+                            Log.d("Login", " > Not logged in, wrong username/password ");
+
                         }
 
 
@@ -242,7 +275,7 @@ public class DBHelper {
 
     }
 
-*/
+
 
 
     public void addFood(final String username, final String foodname, final Food f1) {
@@ -399,7 +432,7 @@ public class DBHelper {
                                             String type = "";
 
                                             user = new User(
-                                                    id, email, first_name, last_name, pass, type, city_PostalCode);
+                                                    email, first_name, last_name, pass, city_PostalCode);
 
                                             double lon = Double.parseDouble(dataUser.child("userPoint/longitude").getValue().toString());
                                             double lat = Double.parseDouble(dataUser.child("userPoint/latitude").getValue().toString());

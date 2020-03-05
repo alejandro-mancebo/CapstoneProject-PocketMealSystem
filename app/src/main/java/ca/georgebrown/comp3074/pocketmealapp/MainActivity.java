@@ -1,6 +1,7 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +36,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtV;
-    DBHelper dbHelper;
+   public static DBHelper dbHelper;
     private ListView lview;
 
     // Hristo UI Navigation Code Variables
@@ -50,15 +52,7 @@ public class MainActivity extends AppCompatActivity {
         // STEEVEN TEST CODE
         dbHelper = new DBHelper();
 
-        User u = new User(3, "Rodrigo@gmail.com", "Junior", "Nazario", "password", "donor", "torontom5");
-        Food f = new Food("test2", "12-09-2020", "oignon,mushroom,tomatoes");
-        //dbHelper.addFood("Rodrigo","F1",f);
-        // dbHelper.addFood("Rodrigo","F2",f);
-        //dbHelper.insertUser("Rodrigo",u);
-        //  dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
 
-        lview = findViewById(R.id.listView1);
-        //dbHelper.getDonorFoodList("CoryKenshin",lview,this);
 
         // Hristo UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
@@ -69,11 +63,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Pressing Login Code
         logIn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
 
                 // Should check provided credentials
+                String inputUser = emailField.getText().toString();
+                String inputPass = passField.getText().toString();
 
+                dbHelper.loginCheck(inputUser,inputPass,MainActivity.this);
+                /*
                 SecurePasswordStorage passManager = new SecurePasswordStorage();
 
                 // TODO - read user and password from database
@@ -88,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                String inputUser = emailField.getText().toString();
-                String inputPass = passField.getText().toString();
+
+
 
                 boolean status = false;
                 try {
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+*/
             }
         });
 
