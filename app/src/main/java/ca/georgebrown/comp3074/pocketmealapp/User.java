@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class User {
 
-        private int id;
+        //private int id;
         private String first_name;
-
+/*
     public int getId() {
         return id;
     }
@@ -16,6 +16,8 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+
+ */
 
     public String getFirst_name() {
         return first_name;
@@ -49,13 +51,6 @@ public class User {
         this.email = email;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 
     public String getCity_postalcode() {
         return city_postalcode;
@@ -68,7 +63,7 @@ public class User {
     private String last_name;
         private String password;
         private String email;
-        private String type;
+
         private String city_postalcode; // combination of city and 2 first characters of postal code
                                     // example torontom5
 
@@ -76,17 +71,17 @@ public class User {
         private Point userPoint;
 
 //if guest user click on register all those params should be fill ""
-        public User(  int id,String email,
+        public User( String email,
                           String first_name,
                           String last_name,
                           String password,
-                    String type,String city_PostalCode) {
+                    String city_PostalCode) {
             this.email = email;
             this.first_name = first_name;
             this.last_name = last_name;
             this.password = password;
-            this.type = type;
-            this.id = id;
+
+
             this.city_postalcode = city_PostalCode;
 
             // can check type of user before initiating the food list
