@@ -41,7 +41,7 @@ public class RegistActivity extends AppCompatActivity {
                 String passwordConfirm = passConfirmField.getText().toString();
 
                 // Sanitized
-                if (passField.length() > 7 || password.equals(passwordConfirm) ) {
+                if (passField.length() > 7 && password.equals(passwordConfirm) ) {
 
                     SecurePasswordStorage passManager = new SecurePasswordStorage();
 
