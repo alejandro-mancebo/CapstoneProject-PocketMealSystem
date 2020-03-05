@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtV;
@@ -51,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         // STEEVEN TEST CODE
         dbHelper = new DBHelper();
 
-        User u = new User(3,"Rodrigo@gmail.com","Junior","Nazario","password","donor","torontom5");
-        Food f = new Food("test2","12-09-2020","oignon,mushroom,tomatoes");
+        User u = new User(3, "Rodrigo@gmail.com", "Junior", "Nazario", "password", "donor", "torontom5");
+        Food f = new Food("test2", "12-09-2020", "oignon,mushroom,tomatoes");
         //dbHelper.addFood("Rodrigo","F1",f);
         // dbHelper.addFood("Rodrigo","F2",f);
         //dbHelper.insertUser("Rodrigo",u);
@@ -69,21 +68,55 @@ public class MainActivity extends AppCompatActivity {
         passField = findViewById(R.id.loginPasswordText);
 
         // Pressing Login Code
-        logIn.setOnClickListener(new View.OnClickListener(){
+        logIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+
                 // Should check provided credentials
 
-                // Need to open the food list page with the drawer menu on top now.
-                Intent logIntent = new Intent(MainActivity.this, drawer_activity.class);
-                MainActivity.this.startActivity(logIntent);
+                SecurePasswordStorage passManager = new SecurePasswordStorage();
+
+                // TODO - read user and password from database
+                String userName = "admin";
+                String password = "password";
+
+
+                // TODO - this try is just for tasting without database data
+                try {
+                    passManager.signUp(userName, password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                String inputUser = emailField.getText().toString();
+                String inputPass = passField.getText().toString();
+
+                boolean status = false;
+                try {
+                    status = passManager.authenticateUser(inputUser, inputPass);
+                    if (status) {
+                        Log.d("Login", " > Logged in!");
+
+                        // Need to open the food list page with the drawer menu on top now.
+                        Intent logIntent = new Intent(MainActivity.this, drawer_activity.class);
+                        MainActivity.this.startActivity(logIntent);
+
+                    } else {
+                        
+                        Log.d("Login", " > Not logged in, wrong username/password ");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
         // Pressing Register Code
-        reg.setOnClickListener(new View.OnClickListener(){
+        reg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent regIntent = new Intent(MainActivity.this, RegistActivity.class);
                 MainActivity.this.startActivity(regIntent); // Need to create Register Activity
             }
@@ -91,18 +124,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static String filterEmailKey(String email){
-       // String str_final = "";
-        String[] str =  email.split("@",2);
-       String str_final = str[0];
+    public static String filterEmailKey(String email) {
+        // String str_final = "";
+        String[] str = email.split("@", 2);
+        String str_final = str[0];
 
-        if(str[0].contains(".")) {
+        if (str[0].contains(".")) {
             String[] str_2 = str[0].split("\\.", 2);
             str_final = str_2[0] + str_2[1];
 
         }
 
-        return  str_final;
+        return str_final;
     }
 
 

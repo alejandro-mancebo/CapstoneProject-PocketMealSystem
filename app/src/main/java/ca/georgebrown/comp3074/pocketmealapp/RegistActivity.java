@@ -3,6 +3,8 @@ package ca.georgebrown.comp3074.pocketmealapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -29,7 +31,36 @@ public class RegistActivity extends AppCompatActivity {
         postalField = findViewById(R.id.postalEdit);
 
         // User inputs must be:
-        // Sanitized
+
+        reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String userName = emailField.getText().toString();
+                String password = passField.getText().toString();
+                String passwordConfirm = passConfirmField.getText().toString();
+
+                // Sanitized
+                if (passField.length() > 7 || password.equals(passwordConfirm) ) {
+
+                    SecurePasswordStorage passManager = new SecurePasswordStorage();
+
+                    try {
+                        passManager.signUp(userName, password);
+                        Log.d("Registration", " > user registered ");
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Log.d("Registration", " > user not registered ");
+                }
+            }
+        });
+
+
+
         // Made into a object
         // Placed into firebase
 
