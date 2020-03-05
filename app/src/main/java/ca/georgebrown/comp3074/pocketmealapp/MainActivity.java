@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.location.Location;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,42 +31,111 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class MainActivity extends AppCompatActivity {
-private TextView txtV;
-DBHelper dbHelper;
-private ListView lview;
+
+    private TextView txtV;
+    DBHelper dbHelper;
+    private ListView lview;
+
+    // Hristo UI Navigation Code Variables
+    private EditText emailField, passField;
+    private Button logIn, reg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      dbHelper = new DBHelper();
+        // This is the creation of the LOGIN PAGE
 
-      User u = new User(3,"Rodrigo@gmail.com","Junior","Nazario","password","donor","torontom5");
-      Food f = new Food("test2","12-09-2020","oignon,mushroom,tomatoes");
-       //dbHelper.addFood("Rodrigo","F1",f);
-       // dbHelper.addFood("Rodrigo","F2",f);
+        // STEEVEN TEST CODE
+        dbHelper = new DBHelper();
+
+        User u = new User(3, "Rodrigo@gmail.com", "Junior", "Nazario", "password", "donor", "torontom5");
+        Food f = new Food("test2", "12-09-2020", "oignon,mushroom,tomatoes");
+        //dbHelper.addFood("Rodrigo","F1",f);
+        // dbHelper.addFood("Rodrigo","F2",f);
         //dbHelper.insertUser("Rodrigo",u);
-      //  dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
+        //  dbHelper.updateUserInfo("Rodrigo","CoryKenshin@gmail.com","email");
 
-lview = findViewById(R.id.listView1);
-//dbHelper.getDonorFoodList("CoryKenshin",lview,this);
+        lview = findViewById(R.id.listView1);
+        //dbHelper.getDonorFoodList("CoryKenshin",lview,this);
+
+        // Hristo UI Navigation Code
+        logIn = findViewById(R.id.loginBTN);
+        reg = findViewById(R.id.registerBTN);
+        // LOGIN page credential fields needed to extract what user has entered
+        emailField = findViewById(R.id.loginEmailText);
+        passField = findViewById(R.id.loginPasswordText);
+
+        // Pressing Login Code
+        logIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Should check provided credentials
+
+                SecurePasswordStorage passManager = new SecurePasswordStorage();
+
+                // TODO - read user and password from database
+                String userName = "admin";
+                String password = "password";
 
 
-        }
+                // TODO - this try is just for tasting without database data
+                try {
+                    passManager.signUp(userName, password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-    public static String filterEmailKey(String email){
-       // String str_final = "";
-        String[] str =  email.split("@",2);
-       String str_final = str[0];
+                String inputUser = emailField.getText().toString();
+                String inputPass = passField.getText().toString();
 
-        if(str[0].contains(".")) {
+                boolean status = false;
+                try {
+                    status = passManager.authenticateUser(inputUser, inputPass);
+                    if (status) {
+                        Log.d("Login", " > Logged in!");
+
+                        // Need to open the food list page with the drawer menu on top now.
+                        Intent logIntent = new Intent(MainActivity.this, drawer_activity.class);
+                        MainActivity.this.startActivity(logIntent);
+
+                    } else {
+
+                        Log.d("Login", " > Not logged in, wrong username/password ");
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        // Pressing Register Code
+        reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent regIntent = new Intent(MainActivity.this, RegistActivity.class);
+                MainActivity.this.startActivity(regIntent); // Need to create Register Activity
+            }
+        });
+
+    }
+
+    public static String filterEmailKey(String email) {
+        // String str_final = "";
+        String[] str = email.split("@", 2);
+        String str_final = str[0];
+
+        if (str[0].contains(".")) {
             String[] str_2 = str[0].split("\\.", 2);
             str_final = str_2[0] + str_2[1];
 
         }
 
-        return  str_final;
+        return str_final;
     }
 
 
