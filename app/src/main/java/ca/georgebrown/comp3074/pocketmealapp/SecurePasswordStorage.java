@@ -47,7 +47,7 @@ public class SecurePasswordStorage {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void signUp(String userName, String password) throws Exception {
+    public String  signUp(String userName, String password) throws Exception {
         String salt = getNewSalt();
         String encryptedPassword = getEncryptedPassword(password, salt);
         UserInfo user = new UserInfo();
@@ -55,6 +55,8 @@ public class SecurePasswordStorage {
         user.userName = userName;
         user.userSalt = salt;
         saveUser(user);
+
+        return encryptedPassword;
     }
 
     // Get a encrypted password using PBKDF2 hash algorithm
