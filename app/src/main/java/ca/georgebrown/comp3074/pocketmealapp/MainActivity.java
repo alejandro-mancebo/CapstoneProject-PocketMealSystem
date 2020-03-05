@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                         MainActivity.this.startActivity(logIntent);
 
                     } else {
-                        
+
                         Log.d("Login", " > Not logged in, wrong username/password ");
                     }
 
