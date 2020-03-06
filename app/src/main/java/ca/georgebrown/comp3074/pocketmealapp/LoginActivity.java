@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     public FirebaseAuth auth;
     public FirebaseUser user;
 
-    // Hristo UI Navigation Code Variables
+    // UI Navigation Code Variables
     private EditText emailField, passField;
     private Button logIn, reg, guest;
 
@@ -41,16 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
-        /*
-        // If user is logged in and verified he is takes to the food screen instantly.
-        if(user != null && user.isEmailVerified()){
-            startActivity(new Intent(LoginActivity.this,  drawer_activity.class));
-        }
-        */
-
-        // This is the creation of the LOGIN PAGE
-
-        // Hristo UI Navigation Code
+        // UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
         reg = findViewById(R.id.registerBTN);
         guest = findViewById(R.id.guestLoginBTN);
@@ -123,14 +114,14 @@ public class LoginActivity extends AppCompatActivity {
         return str_final;
     }
 
-    //Change UI according to user data.
-    public void  updateUI(FirebaseUser user){
+    // Change UI according to user data.
+    public void updateUI(FirebaseUser user){
         // If user is logged in and verified he is takes to the food screen instantly.
         if(user != null && user.isEmailVerified()){
             startActivity(new Intent(LoginActivity.this, drawer_activity.class));
         }
         else {
-            Toast.makeText(this,"Something Went Wrong - LoginActivity", Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"There was an error updating the UI due to user not being found.", Toast.LENGTH_LONG).show();
         }
     }
 

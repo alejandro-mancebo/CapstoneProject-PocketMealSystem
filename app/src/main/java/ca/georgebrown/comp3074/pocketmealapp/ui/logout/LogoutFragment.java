@@ -32,6 +32,8 @@ public class LogoutFragment extends Fragment {
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null && user.isEmailVerified()){
+            /*user = null;
+            auth.signOut();*/
             if(getActivity() != null)
             getActivity().finish();
         }
