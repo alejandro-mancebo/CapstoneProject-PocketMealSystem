@@ -82,14 +82,14 @@ public class DBHelper {
 
                                 int id = Integer.parseInt(dataSnapshot.child("id").getValue().toString());
                                 String email = newData;
-                                String city_PostalCode = dataSnapshot.child("city_postalcode").getValue().toString();
+                                String cityPostalCode = dataSnapshot.child("city_postalcode").getValue().toString();
                                 String first_name = dataSnapshot.child("first_name").getValue().toString();
                                 String last_name = dataSnapshot.child("last_name").getValue().toString();
                                 /*String pass = dataSnapshot.child("password").getValue().toString();*/
                                 String type = dataSnapshot.child("type").getValue().toString();
 
-                                user = new User(
-                                        email, first_name, last_name, /*pass,*/ city_PostalCode);
+                                user = new User(email, first_name, last_name, "", "");
+                                user.setCity_postalcode(cityPostalCode);
 
                                 double lon = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
                                 double lat = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
@@ -346,14 +346,14 @@ public class DBHelper {
                                             //calculate by distance after having the array...
                                             int id = -1;
                                             String email = dataUser.child("email").getValue().toString();
-                                            String city_PostalCode = dataUser.child("city_postalcode").getValue().toString();
+                                            String cityPostalCode = dataUser.child("city_postalcode").getValue().toString();
                                             String first_name = dataUser.child("first_name").getValue().toString();
                                             String last_name = dataUser.child("last_name").getValue().toString();
                                             String pass = "";
                                             String type = "";
 
-                                            user = new User(
-                                                    email, first_name, last_name, /*pass,*/ city_PostalCode);
+                                            user = new User(email, first_name, last_name, "", "");
+                                            user.setCity_postalcode(cityPostalCode);
 
                                             double lon = Double.parseDouble(dataUser.child("userPoint/longitude").getValue().toString());
                                             double lat = Double.parseDouble(dataUser.child("userPoint/latitude").getValue().toString());

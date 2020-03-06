@@ -41,12 +41,12 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
-/*
+        /*
         // If user is logged in and verified he is takes to the food screen instantly.
         if(user != null && user.isEmailVerified()){
             startActivity(new Intent(LoginActivity.this,  drawer_activity.class));
         }
-*/
+        */
 
         // This is the creation of the LOGIN PAGE
 
@@ -74,12 +74,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Should check provided credentials
+                // Firebase authentication
                 final String inputUser = emailField.getText().toString();
                 final String inputPass = passField.getText().toString();
-
-                final SecurePasswordStorage passManager = new SecurePasswordStorage();
-
                 final FirebaseAuth auth = FirebaseAuth.getInstance();
                 final FirebaseUser user = auth.getCurrentUser();
 

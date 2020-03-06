@@ -1,4 +1,4 @@
-package ca.georgebrown.comp3074.pocketmealapp.ui.send;
+package ca.georgebrown.comp3074.pocketmealapp.ui.logout;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import ca.georgebrown.comp3074.pocketmealapp.R;
 
-public class SendFragment extends Fragment {
+public class LogoutFragment extends Fragment {
 
-    private SendViewModel sendViewModel;
+    private LogoutViewModel logoutViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        sendViewModel =
-                ViewModelProviders.of(this).get(SendViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_send, container, false);
+        logoutViewModel =
+                ViewModelProviders.of(this).get(LogoutViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_logout, container, false);
         final TextView textView = root.findViewById(R.id.text_send);
-        sendViewModel.getText().observe(this, new Observer<String>() {
+        logoutViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
