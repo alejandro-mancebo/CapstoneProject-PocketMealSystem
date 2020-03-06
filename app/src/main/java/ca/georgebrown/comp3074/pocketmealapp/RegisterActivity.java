@@ -101,12 +101,5 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-        // Made into a object
-        // Placed into firebase
-
-        // Lastly Open The Confirm Page
     }
 }
