@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Hristo UI Navigation Code Variables
     private EditText emailField, passField;
-    private Button logIn, reg;
+    private Button logIn, reg, guest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +52,23 @@ public class MainActivity extends AppCompatActivity {
         // STEEVEN TEST CODE
         dbHelper = new DBHelper();
 
-
-
         // Hristo UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
         reg = findViewById(R.id.registerBTN);
+        guest = findViewById(R.id.guestLoginBTN);
+
         // LOGIN page credential fields needed to extract what user has entered
         emailField = findViewById(R.id.loginEmailText);
         passField = findViewById(R.id.loginPasswordText);
+
+        // Guest Login
+        guest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent logIntent = new Intent(MainActivity.this, drawer_activity.class);
+                MainActivity.this.startActivity(logIntent);
+            }
+        });
 
         // Pressing Login Code
         logIn.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +80,17 @@ public class MainActivity extends AppCompatActivity {
                 String inputUser = emailField.getText().toString();
                 String inputPass = passField.getText().toString();
 
-                dbHelper.loginCheck(inputUser,inputPass,MainActivity.this);
+                SecurePasswordStorage passManager = new SecurePasswordStorage();
+
+                try {
+
+                    String hashPassword = passManager.signUp(inputUser, inputPass);
+                    dbHelper.loginCheck(inputUser,hashPassword,MainActivity.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 /*
                 SecurePasswordStorage passManager = new SecurePasswordStorage();
 
@@ -117,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent regIntent = new Intent(MainActivity.this, RegistActivity.class);
-                MainActivity.this.startActivity(regIntent); // Need to create Register Activity
+                MainActivity.this.startActivity(regIntent);
             }
         });
 

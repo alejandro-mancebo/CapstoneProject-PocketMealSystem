@@ -43,18 +43,17 @@ public class RegistActivity extends AppCompatActivity {
                 String password = passField.getText().toString();
                 String passwordConfirm = passConfirmField.getText().toString();
 
-
                 // Sanitized
                 if (passField.length() > 7 && password.equals(passwordConfirm) ) {
 
                     SecurePasswordStorage passManager = new SecurePasswordStorage();
 
                     try {
-                      // String hashPassword = passManager.signUp(userName, password); hashPassword problem
+                      String hashPassword = passManager.signUp(userName, password);
                        User u = new User(userName,
                                fnameField.getText().toString(),
                                lnameField.getText().toString(),
-                               passwordConfirm,postalField.getText().toString().toLowerCase());
+                               hashPassword,postalField.getText().toString().toLowerCase());
                         MainActivity.dbHelper.insertUser(MainActivity.filterEmailKey(userName),u); //testing purpose
                         Log.d("Registration", " > user registered ");
 

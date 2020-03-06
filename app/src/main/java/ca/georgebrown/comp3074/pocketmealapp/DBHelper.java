@@ -214,7 +214,7 @@ public class DBHelper {
 
 
     public void loginCheck(final String username, final String password, final Context context) {
-//not working properly
+        // Not working properly because the login name should be checked with the email not username or DB key.
 
         reffUserManager.orderByKey().equalTo(username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -226,9 +226,11 @@ public class DBHelper {
 
                         Log.d("===", String.valueOf(dataSnapshot.exists()));
                         if (dataSnapshot.exists()) {
-                            String dbPassword = dataSnapshot.child("password").getValue().toString();
+                            String dbPassword = dataSnapshot.child("password").getValue(String.class); // getValue().toString()
 
-
+                            Log.d("===PASS1", String.valueOf(password));
+                            Log.d("===PASS2", String.valueOf(dbPassword));
+                            Log.d("===PASS", String.valueOf(password.equals(dbPassword)));
                             if(password.equals(dbPassword)){
 
                                 SecurePasswordStorage passManager = new SecurePasswordStorage();
