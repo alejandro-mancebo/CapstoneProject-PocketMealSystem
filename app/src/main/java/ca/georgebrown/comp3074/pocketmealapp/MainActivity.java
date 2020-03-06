@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         // STEEVEN TEST CODE
         dbHelper = new DBHelper();
 
-
-
         // Hristo UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
         reg = findViewById(R.id.registerBTN);
@@ -82,7 +80,17 @@ public class MainActivity extends AppCompatActivity {
                 String inputUser = emailField.getText().toString();
                 String inputPass = passField.getText().toString();
 
-                dbHelper.loginCheck(inputUser,inputPass,MainActivity.this);
+                SecurePasswordStorage passManager = new SecurePasswordStorage();
+
+                try {
+
+                    String hashPassword = passManager.signUp(inputUser, inputPass);
+                    dbHelper.loginCheck(inputUser,hashPassword,MainActivity.this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 /*
                 SecurePasswordStorage passManager = new SecurePasswordStorage();
 
