@@ -123,7 +123,7 @@ public class DBHelper {
 
                             }
                         }
-//make sure city_postalcode is in lowercase extremely important
+                        //make sure city_postalcode is in lowercase extremely important
 
                         else {
                             Log.d("Data:", "Data doesn't exist");
@@ -138,8 +138,7 @@ public class DBHelper {
                 });
 
 
-//update email,  not lat and lon and id
-
+    //update email,  not lat and lon and id
     }
 
     public void updateUserPoint(final String username, final double lon, final double lat) {
@@ -169,9 +168,7 @@ public class DBHelper {
 
                     }
                 });
-
     }
-
 
     public void deleteUser(final String username) {
 
@@ -201,77 +198,6 @@ public class DBHelper {
                 });
 
     }
-
-
-/*
-
-    public void loginCheck(final String username, final String password, final Context context) {
-        // Not working properly because the login name should be checked with the email not username or DB key.
-
-        reffUserManager.orderByKey().equalTo(username)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        Log.d("===", String.valueOf(dataSnapshot.exists()));
-                        if (dataSnapshot.exists()) {
-                            String dbPassword = dataSnapshot.child("password").getValue(String.class); // getValue().toString()
-
-                            Log.d("===PASS1", String.valueOf(password));
-                            Log.d("===PASS2", String.valueOf(dbPassword));
-                            Log.d("===PASS", String.valueOf(password.equals(dbPassword)));
-                            if(password.equals(dbPassword)){
-
-                                SecurePasswordStorage passManager = new SecurePasswordStorage();
-
-                                boolean status = false;
-                                try {
-                                    status = passManager.authenticateUser(username, password);
-                                    if (status) {
-                                        Log.d("Login", " > Logged in!");
-
-                                        // Need to open the food list page with the drawer menu on top now.
-                                        Intent logIntent = new Intent(context, drawer_activity.class);
-                                        context.startActivity(logIntent);
-
-                                    } else {
-
-                                        Log.d("Login", " > Not logged in, wrong username/password ");
-                                    }
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        } else {
-
-                            Log.d("Login", " > Not logged in, wrong username/password ");
-
-                        }
-
-
-                        // Log.d("===", String.valueOf(b));
-                        // user = childSnapshot.getValue(User.class);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-        // Log.d("===", String.valueOf(exist));
-
-
-    }
-*/
-
-
-
 
     public void addFood(final String username, final String foodname, final Food f1) {
 

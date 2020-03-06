@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,10 +41,12 @@ public class LoginActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
+/*
         // If user is logged in and verified he is takes to the food screen instantly.
         if(user != null && user.isEmailVerified()){
             startActivity(new Intent(LoginActivity.this,  drawer_activity.class));
         }
+*/
 
         // This is the creation of the LOGIN PAGE
 
@@ -88,16 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             if(user.isEmailVerified()){
-                                Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
-                                LoginActivity.this.startActivity(logIntent);
-
-                                /*String hashPassword = null;
-                                try {
-                                    hashPassword = passManager.signUp(inputUser, inputPass);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                // LoginActivity.dbHelper.loginCheck(inputUser,hashPassword,LoginActivity.this);*/
+                                updateUI(user);
                             }
                             else {
                                 Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
@@ -108,41 +99,6 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-                /*
-                SecurePasswordStorage passManager = new SecurePasswordStorage();
-
-                // TODO - read user and password from database
-                String userName = "admin";
-                String password = "password";
-
-
-                // TODO - this try is just for tasting without database data
-                try {
-                    passManager.signUp(userName, password);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                boolean status = false;
-                try {
-                    status = passManager.authenticateUser(inputUser, inputPass);
-                    if (status) {
-                        Log.d("Login", " > Logged in!");
-
-                        // Need to open the food list page with the drawer menu on top now.
-                        Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
-                        LoginActivity.this.startActivity(logIntent);
-
-                    } else {
-
-                        Log.d("Login", " > Not logged in, wrong username/password ");
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                */
             }
         });
 
@@ -150,12 +106,11 @@ public class LoginActivity extends AppCompatActivity {
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent regIntent = new Intent(LoginActivity.this, RegistActivity.class);
+                Intent regIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(regIntent);
             }
         });
     }
-
 
     public static String filterEmailKey(String email) {
         // String str_final = "";
@@ -169,6 +124,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return str_final;
+    }
+
+    //Change UI according to user data.
+    public void  updateUI(FirebaseUser user){
+        // If user is logged in and verified he is takes to the food screen instantly.
+        if(user != null && user.isEmailVerified()){
+            startActivity(new Intent(LoginActivity.this, drawer_activity.class));
+        }
+        else {
+            Toast.makeText(this,"Something Went Wrong - LoginActivity", Toast.LENGTH_LONG).show();
+        }
     }
 
 

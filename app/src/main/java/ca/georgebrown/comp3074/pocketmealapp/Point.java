@@ -22,10 +22,8 @@ public class Point {
 
    public Point(double lon, double lat){
 
-
        longitude = lon;
        latitude = lat;
-
 
    }
 }
