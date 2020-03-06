@@ -35,13 +35,13 @@ public class User {
         this.last_name = last_name;
     }
 
-    public String getPassword() {
+    /*public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
+    }*/
 
     public String getEmail() {
         return email;
@@ -61,7 +61,7 @@ public class User {
     }
 
     private String last_name;
-        private String password;
+        /*private String password;*/
         private String email;
 
         private String city_postalcode; // combination of city and 2 first characters of postal code
@@ -74,12 +74,12 @@ public class User {
         public User( String email,
                           String first_name,
                           String last_name,
-                          String password,
+                          /*String password,*/
                     String city_PostalCode) {
             this.email = email;
             this.first_name = first_name;
             this.last_name = last_name;
-            this.password = password;
+            /*this.password = password;*/
 
 
             this.city_postalcode = city_PostalCode;

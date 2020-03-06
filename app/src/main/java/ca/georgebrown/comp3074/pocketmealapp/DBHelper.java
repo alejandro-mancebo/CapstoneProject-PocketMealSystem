@@ -1,18 +1,11 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,8 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DBHelper {
 
@@ -94,16 +85,16 @@ public class DBHelper {
                                 String city_PostalCode = dataSnapshot.child("city_postalcode").getValue().toString();
                                 String first_name = dataSnapshot.child("first_name").getValue().toString();
                                 String last_name = dataSnapshot.child("last_name").getValue().toString();
-                                String pass = dataSnapshot.child("password").getValue().toString();
+                                /*String pass = dataSnapshot.child("password").getValue().toString();*/
                                 String type = dataSnapshot.child("type").getValue().toString();
 
                                 user = new User(
-                                        email, first_name, last_name, pass, city_PostalCode);
+                                        email, first_name, last_name, /*pass,*/ city_PostalCode);
 
                                 double lon = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
                                 double lat = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
                                 user.setUserPoint(lat, lon);
-                                reffUserManager.child(MainActivity.filterEmailKey(newData)).setValue(user);
+                                reffUserManager.child(LoginActivity.filterEmailKey(newData)).setValue(user);
 
 
                                 Log.d("===", String.valueOf(dataSnapshot.child("FoodList").exists()));
@@ -115,7 +106,7 @@ public class DBHelper {
                                         String ingredients = fooddata.child("ingredients").getValue().toString();
                                         Food f = new Food(category, expi, ingredients);
 
-                                        reff.getReference("UserManager/" + MainActivity.filterEmailKey(newData) + "/FoodList")
+                                        reff.getReference("UserManager/" + LoginActivity.filterEmailKey(newData) + "/FoodList")
                                                 .child(fooddata.getKey().toString()).setValue(f);
                                     }
                                 }
@@ -212,6 +203,7 @@ public class DBHelper {
     }
 
 
+/*
 
     public void loginCheck(final String username, final String password, final Context context) {
         // Not working properly because the login name should be checked with the email not username or DB key.
@@ -276,6 +268,7 @@ public class DBHelper {
 
 
     }
+*/
 
 
 
@@ -434,7 +427,7 @@ public class DBHelper {
                                             String type = "";
 
                                             user = new User(
-                                                    email, first_name, last_name, pass, city_PostalCode);
+                                                    email, first_name, last_name, /*pass,*/ city_PostalCode);
 
                                             double lon = Double.parseDouble(dataUser.child("userPoint/longitude").getValue().toString());
                                             double lat = Double.parseDouble(dataUser.child("userPoint/latitude").getValue().toString());

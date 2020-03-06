@@ -1,5 +1,6 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,12 +10,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegistActivity extends AppCompatActivity {
 
     // Hristo UI Navigation Code Variables
     private EditText emailField, fnameField, lnameField, postalField, passField, passConfirmField;
     private Button reg;
+
+    // Firebase Varriables
+    private FirebaseAuth auth;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +61,42 @@ public class RegistActivity extends AppCompatActivity {
                     SecurePasswordStorage passManager = new SecurePasswordStorage();
 
                     try {
-                      String hashPassword = passManager.signUp(userName, password);
-                       User u = new User(userName,
-                               fnameField.getText().toString(),
-                               lnameField.getText().toString(),
-                               hashPassword,postalField.getText().toString().toLowerCase());
-                        MainActivity.dbHelper.insertUser(MainActivity.filterEmailKey(userName),u); //testing purpose
+                        // String hashPassword = passManager.signUp(userName, password);
+                        User u = new User(
+                            userName,
+                            fnameField.getText().toString(),
+                            lnameField.getText().toString(),
+                            postalField.getText().toString().toLowerCase());
+                            /*hashPassword,*/
+
+                        auth = FirebaseAuth.getInstance();
+
+                        // This code is used for email send with firebase.
+                        auth.createUserWithEmailAndPassword(userName, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    user = auth.getCurrentUser();
+                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Toast.makeText(RegistActivity.this, "Registration was successful. Please check your email for verification.", Toast.LENGTH_LONG).show();
+                                                }
+                                                else {
+                                                    Toast.makeText(RegistActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                    });
+                                }
+                                else {
+                                    Toast.makeText(RegistActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+                        // For testing purposes
+                        LoginActivity.dbHelper.insertUser(LoginActivity.filterEmailKey(userName),u);
                         Log.d("Registration", " > user registered ");
 
                     } catch (Exception e) {
