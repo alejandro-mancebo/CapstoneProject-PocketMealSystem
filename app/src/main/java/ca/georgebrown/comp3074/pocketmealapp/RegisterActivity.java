@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class RegisterActivity extends AppCompatActivity {
 
     // Hristo UI Navigation Code Variables
-    private EditText emailField, fnameField, lnameField, postalField, passField, passConfirmField;
+    private EditText emailField, fnameField, lnameField, cityField, postalField, passField, passConfirmField;
     private Button reg;
 
     // Firebase Varriables
@@ -42,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         passConfirmField = findViewById(R.id.passEdit2);
         fnameField = findViewById(R.id.fNameEdit);
         lnameField = findViewById(R.id.lNameEdit);
+        cityField = findViewById(R.id.cityEdit);
         postalField = findViewById(R.id.postalEdit);
 
         // User inputs must be:
@@ -58,52 +59,44 @@ public class RegisterActivity extends AppCompatActivity {
                 // Sanitized
                 if (passField.length() > 7 && password.equals(passwordConfirm) ) {
 
-                    SecurePasswordStorage passManager = new SecurePasswordStorage();
+                    User u = new User(
+                        userName,
+                        fnameField.getText().toString(),
+                        lnameField.getText().toString(),
+                        cityField.getText().toString(),
+                        postalField.getText().toString().toLowerCase());
 
-                    try {
-                        // String hashPassword = passManager.signUp(userName, password);
-                        User u = new User(
-                            userName,
-                            fnameField.getText().toString(),
-                            lnameField.getText().toString(),
-                            postalField.getText().toString().toLowerCase());
-                            /*hashPassword,*/
+                    // This code is used for email send with firebase.
+                    auth = FirebaseAuth.getInstance();
 
-                        auth = FirebaseAuth.getInstance();
-
-                        // This code is used for email send with firebase.
-                        auth.createUserWithEmailAndPassword(userName, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    user = auth.getCurrentUser();
-                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Toast.makeText(RegisterActivity.this, "Registration was successful. Please check your email for verification.", Toast.LENGTH_LONG).show();
-                                                }
-                                                else {
-                                                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                                }
+                    auth.createUserWithEmailAndPassword(userName, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                user = auth.getCurrentUser();
+                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(RegisterActivity.this, "Registration was successful. Please check your email for verification.", Toast.LENGTH_LONG).show();
                                             }
-                                    });
-                                }
-                                else {
-                                    Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                }
+                                            else {
+                                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                });
                             }
-                        });
+                            else {
+                                Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
-                        // For testing purposes
-                        LoginActivity.dbHelper.insertUser(LoginActivity.filterEmailKey(userName),u);
-                        Log.d("Registration", " > user registered ");
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
+                    // For testing purposes
+                    LoginActivity.dbHelper.insertUser(LoginActivity.filterEmailKey(userName),u);
+                    Log.d("Registration", " > user registered ");
+                }
+                else {
                     Log.d("Registration", " > user not registered ");
                 }
             }

@@ -64,6 +64,20 @@
                 android:inputType="textPersonName" />
 
             <TextView
+                android:id="@+id/cityText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="City (Not filling this out might cause the app to not function as intended)"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/cityEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
                 android:id="@+id/postalText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,26 +90,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/checkBoxDonor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Donor" />
-
-                <CheckBox
-                    android:id="@+id/checkBoxNotDonor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="NotDonor" />
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/passText"
