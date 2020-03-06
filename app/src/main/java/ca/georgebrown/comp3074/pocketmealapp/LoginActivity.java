@@ -65,16 +65,21 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Firebase authentication
-                final String inputUser = emailField.getText().toString();
-                final String inputPass = passField.getText().toString();
+                // Firebase Authentication
+                String inputUser = emailField.getText().toString();
+                String inputPass = passField.getText().toString();
                 final FirebaseAuth auth = FirebaseAuth.getInstance();
-                final FirebaseUser user = auth.getCurrentUser();
+
+                // Clear Password
+                passField.setText("");
 
                 auth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+
+                            FirebaseUser user = auth.getCurrentUser();
+
                             if(user.isEmailVerified()){
                                 updateUI(user);
                             }
@@ -87,6 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+                inputPass = null;
             }
         });
 

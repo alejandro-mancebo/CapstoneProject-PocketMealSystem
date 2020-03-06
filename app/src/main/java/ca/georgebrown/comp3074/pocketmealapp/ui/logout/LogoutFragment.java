@@ -34,8 +34,11 @@ public class LogoutFragment extends Fragment {
         if(user != null && user.isEmailVerified()){
             /*user = null;
             auth.signOut();*/
-            if(getActivity() != null)
-            getActivity().finish();
+
+            if(getActivity() != null){
+                getActivity().finish();
+            }
+
         }
         else {
             Toast.makeText(getActivity(),"Something Went Wrong - LogoutFragment", Toast.LENGTH_LONG).show();
