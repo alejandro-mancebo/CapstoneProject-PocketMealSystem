@@ -1,18 +1,11 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,8 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DBHelper {
 
@@ -91,19 +82,19 @@ public class DBHelper {
 
                                 int id = Integer.parseInt(dataSnapshot.child("id").getValue().toString());
                                 String email = newData;
-                                String city_PostalCode = dataSnapshot.child("city_postalcode").getValue().toString();
+                                String cityPostalCode = dataSnapshot.child("city_postalcode").getValue().toString();
                                 String first_name = dataSnapshot.child("first_name").getValue().toString();
                                 String last_name = dataSnapshot.child("last_name").getValue().toString();
-                                String pass = dataSnapshot.child("password").getValue().toString();
+                                /*String pass = dataSnapshot.child("password").getValue().toString();*/
                                 String type = dataSnapshot.child("type").getValue().toString();
 
-                                user = new User(
-                                        email, first_name, last_name, pass, city_PostalCode);
+                                user = new User(email, first_name, last_name, "", "");
+                                user.setCity_postalcode(cityPostalCode);
 
                                 double lon = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
                                 double lat = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
                                 user.setUserPoint(lat, lon);
-                                reffUserManager.child(MainActivity.filterEmailKey(newData)).setValue(user);
+                                reffUserManager.child(LoginActivity.filterEmailKey(newData)).setValue(user);
 
 
                                 Log.d("===", String.valueOf(dataSnapshot.child("FoodList").exists()));
@@ -115,7 +106,7 @@ public class DBHelper {
                                         String ingredients = fooddata.child("ingredients").getValue().toString();
                                         Food f = new Food(category, expi, ingredients);
 
-                                        reff.getReference("UserManager/" + MainActivity.filterEmailKey(newData) + "/FoodList")
+                                        reff.getReference("UserManager/" + LoginActivity.filterEmailKey(newData) + "/FoodList")
                                                 .child(fooddata.getKey().toString()).setValue(f);
                                     }
                                 }
@@ -132,7 +123,7 @@ public class DBHelper {
 
                             }
                         }
-//make sure city_postalcode is in lowercase extremely important
+                        //make sure city_postalcode is in lowercase extremely important
 
                         else {
                             Log.d("Data:", "Data doesn't exist");
@@ -147,8 +138,7 @@ public class DBHelper {
                 });
 
 
-//update email,  not lat and lon and id
-
+    //update email,  not lat and lon and id
     }
 
     public void updateUserPoint(final String username, final double lon, final double lat) {
@@ -178,9 +168,7 @@ public class DBHelper {
 
                     }
                 });
-
     }
-
 
     public void deleteUser(final String username) {
 
@@ -210,75 +198,6 @@ public class DBHelper {
                 });
 
     }
-
-
-
-    public void loginCheck(final String username, final String password, final Context context) {
-        // Not working properly because the login name should be checked with the email not username or DB key.
-
-        reffUserManager.orderByKey().equalTo(username)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        Log.d("===", String.valueOf(dataSnapshot.exists()));
-                        if (dataSnapshot.exists()) {
-                            String dbPassword = dataSnapshot.child("password").getValue(String.class); // getValue().toString()
-
-                            Log.d("===PASS1", String.valueOf(password));
-                            Log.d("===PASS2", String.valueOf(dbPassword));
-                            Log.d("===PASS", String.valueOf(password.equals(dbPassword)));
-                            if(password.equals(dbPassword)){
-
-                                SecurePasswordStorage passManager = new SecurePasswordStorage();
-
-                                boolean status = false;
-                                try {
-                                    status = passManager.authenticateUser(username, password);
-                                    if (status) {
-                                        Log.d("Login", " > Logged in!");
-
-                                        // Need to open the food list page with the drawer menu on top now.
-                                        Intent logIntent = new Intent(context, drawer_activity.class);
-                                        context.startActivity(logIntent);
-
-                                    } else {
-
-                                        Log.d("Login", " > Not logged in, wrong username/password ");
-                                    }
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        } else {
-
-                            Log.d("Login", " > Not logged in, wrong username/password ");
-
-                        }
-
-
-                        // Log.d("===", String.valueOf(b));
-                        // user = childSnapshot.getValue(User.class);
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-        // Log.d("===", String.valueOf(exist));
-
-
-    }
-
-
-
 
     public void addFood(final String username, final String foodname, final Food f1) {
 
@@ -427,14 +346,14 @@ public class DBHelper {
                                             //calculate by distance after having the array...
                                             int id = -1;
                                             String email = dataUser.child("email").getValue().toString();
-                                            String city_PostalCode = dataUser.child("city_postalcode").getValue().toString();
+                                            String cityPostalCode = dataUser.child("city_postalcode").getValue().toString();
                                             String first_name = dataUser.child("first_name").getValue().toString();
                                             String last_name = dataUser.child("last_name").getValue().toString();
                                             String pass = "";
                                             String type = "";
 
-                                            user = new User(
-                                                    email, first_name, last_name, pass, city_PostalCode);
+                                            user = new User(email, first_name, last_name, "", "");
+                                            user.setCity_postalcode(cityPostalCode);
 
                                             double lon = Double.parseDouble(dataUser.child("userPoint/longitude").getValue().toString());
                                             double lat = Double.parseDouble(dataUser.child("userPoint/latitude").getValue().toString());

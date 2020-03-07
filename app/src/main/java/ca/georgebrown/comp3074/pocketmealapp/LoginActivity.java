@@ -3,56 +3,45 @@ package ca.georgebrown.comp3074.pocketmealapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.content.Intent;
-import android.database.DataSetObserver;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private TextView txtV;
-   public static DBHelper dbHelper;
-    private ListView lview;
+    // Firebase Variables
+    public static DBHelper dbHelper;
+    public FirebaseAuth auth;
+    public FirebaseUser user;
 
-    // Hristo UI Navigation Code Variables
+    // UI Navigation Code Variables
     private EditText emailField, passField;
     private Button logIn, reg, guest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         // This is the creation of the LOGIN PAGE
 
-        // STEEVEN TEST CODE
+        // Initialize Firebase Variables
         dbHelper = new DBHelper();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
-        // Hristo UI Navigation Code
+        // UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
         reg = findViewById(R.id.registerBTN);
         guest = findViewById(R.id.guestLoginBTN);
@@ -65,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
         guest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent logIntent = new Intent(MainActivity.this, drawer_activity.class);
-                MainActivity.this.startActivity(logIntent);
+                Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
+                LoginActivity.this.startActivity(logIntent);
             }
         });
 
@@ -76,58 +65,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Should check provided credentials
+                // Firebase Authentication
                 String inputUser = emailField.getText().toString();
                 String inputPass = passField.getText().toString();
+                final FirebaseAuth auth = FirebaseAuth.getInstance();
 
-                SecurePasswordStorage passManager = new SecurePasswordStorage();
+                // Clear Password
+                passField.setText("");
 
-                try {
+                auth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
 
-                    String hashPassword = passManager.signUp(inputUser, inputPass);
-                    dbHelper.loginCheck(inputUser,hashPassword,MainActivity.this);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                            FirebaseUser user = auth.getCurrentUser();
 
-
-                /*
-                SecurePasswordStorage passManager = new SecurePasswordStorage();
-
-                // TODO - read user and password from database
-                String userName = "admin";
-                String password = "password";
-
-
-                // TODO - this try is just for tasting without database data
-                try {
-                    passManager.signUp(userName, password);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-
-
-                boolean status = false;
-                try {
-                    status = passManager.authenticateUser(inputUser, inputPass);
-                    if (status) {
-                        Log.d("Login", " > Logged in!");
-
-                        // Need to open the food list page with the drawer menu on top now.
-                        Intent logIntent = new Intent(MainActivity.this, drawer_activity.class);
-                        MainActivity.this.startActivity(logIntent);
-
-                    } else {
-
-                        Log.d("Login", " > Not logged in, wrong username/password ");
+                            if(user.isEmailVerified()){
+                                updateUI(user);
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
+                });
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-*/
+                inputPass = null;
             }
         });
 
@@ -135,11 +101,10 @@ public class MainActivity extends AppCompatActivity {
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent regIntent = new Intent(MainActivity.this, RegistActivity.class);
-                MainActivity.this.startActivity(regIntent);
+                Intent regIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                LoginActivity.this.startActivity(regIntent);
             }
         });
-
     }
 
     public static String filterEmailKey(String email) {
@@ -154,6 +119,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return str_final;
+    }
+
+    // Change UI according to user data.
+    public void updateUI(FirebaseUser user){
+        // If user is logged in and verified he is takes to the food screen instantly.
+        if(user != null && user.isEmailVerified()){
+            startActivity(new Intent(LoginActivity.this, drawer_activity.class));
+        }
+        else {
+            Toast.makeText(this,"There was an error updating the UI due to user not being found.", Toast.LENGTH_LONG).show();
+        }
     }
 
 
