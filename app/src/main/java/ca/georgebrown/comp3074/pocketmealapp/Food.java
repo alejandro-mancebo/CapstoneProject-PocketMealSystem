@@ -42,7 +42,6 @@ public class Food {
         this.expiry_date = expiry_date;
         this.ingredients = ingredients;
 
-
     }
 
     public Food(String foodname, String category, String expiry_date, String ingredients, String email) {

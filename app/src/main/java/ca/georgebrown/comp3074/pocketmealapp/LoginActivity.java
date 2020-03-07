@@ -23,12 +23,15 @@ public class LoginActivity extends AppCompatActivity {
 
     // Firebase Variables
     public static DBHelper dbHelper;
-    public FirebaseAuth auth;
-    public FirebaseUser user;
+    public static FirebaseAuth mAuth;
+    public static FirebaseUser currentUser;
 
     // UI Navigation Code Variables
     private EditText emailField, passField;
     private Button logIn, reg, guest;
+
+    // Registration Request Code
+    static final int REGISTRATION_REQUEST = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Firebase Variables
         dbHelper = new DBHelper();
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
 
         // UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
@@ -68,20 +69,20 @@ public class LoginActivity extends AppCompatActivity {
                 // Firebase Authentication
                 String inputUser = emailField.getText().toString();
                 String inputPass = passField.getText().toString();
-                final FirebaseAuth auth = FirebaseAuth.getInstance();
+                mAuth = FirebaseAuth.getInstance();
 
                 // Clear Password
                 passField.setText("");
 
-                auth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
 
-                            FirebaseUser user = auth.getCurrentUser();
+                            currentUser = mAuth.getCurrentUser();
 
-                            if(user.isEmailVerified()){
-                                updateUI(user);
+                            if(currentUser.isEmailVerified()){
+                                updateUI(currentUser);
                             }
                             else {
                                 Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
@@ -102,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent regIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                LoginActivity.this.startActivity(regIntent);
+                startActivityForResult(regIntent, REGISTRATION_REQUEST);
             }
         });
     }
@@ -129,6 +130,20 @@ public class LoginActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(this,"There was an error updating the UI due to user not being found.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // What happens when you finish registration
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Check which request we're responding to
+        if (requestCode == REGISTRATION_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == 2) {
+                String message = data.getStringExtra("MESSAGE");
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
