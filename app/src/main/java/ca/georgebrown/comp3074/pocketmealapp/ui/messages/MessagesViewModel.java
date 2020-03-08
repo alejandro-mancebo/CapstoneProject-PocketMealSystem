@@ -1,16 +1,16 @@
-package ca.georgebrown.comp3074.pocketmealapp.ui.gallery;
+package ca.georgebrown.comp3074.pocketmealapp.ui.messages;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
+public class MessagesViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public MessagesViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is messages fragment");
     }
 
     public LiveData<String> getText() {

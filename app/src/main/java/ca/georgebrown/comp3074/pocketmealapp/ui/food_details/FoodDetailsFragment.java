@@ -1,4 +1,4 @@
-package ca.georgebrown.comp3074.pocketmealapp.ui.slideshow;
+package ca.georgebrown.comp3074.pocketmealapp.ui.food_details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import ca.georgebrown.comp3074.pocketmealapp.R;
 
-public class SlideshowFragment extends Fragment {
+public class FoodDetailsFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private FoodDetailsViewModel foodDetailsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(this, new Observer<String>() {
+        foodDetailsViewModel =
+                ViewModelProviders.of(this).get(FoodDetailsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_food_details, container, false);
+        final TextView textView = root.findViewById(R.id.text_food_details);
+        foodDetailsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

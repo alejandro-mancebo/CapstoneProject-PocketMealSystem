@@ -10,7 +10,7 @@ public class FoodViewModel extends ViewModel {
 
     public FoodViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is food list fragment");
     }
 
     public LiveData<String> getText() {
