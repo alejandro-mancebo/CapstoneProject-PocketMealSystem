@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class drawer_activity extends AppCompatActivity {
@@ -44,6 +45,9 @@ public class drawer_activity extends AppCompatActivity {
                 R.id.nav_messages, R.id.nav_add_food, R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
+
+
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
