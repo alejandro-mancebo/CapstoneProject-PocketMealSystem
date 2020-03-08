@@ -11,19 +11,17 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
-public class GPStracker
-  /*  implements LocationListener*/ {
+public class GPStracker implements LocationListener{
 
-  /* Context context;
+    Context context;
 
     public GPStracker(Context c) {
         context = c;
     }
 
     public Location getLocation(){
-        if(ContextCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(context, "Persmission not granted", Toast.LENGTH_SHORT ).show();
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(context, "GPS permissions not granted.", Toast.LENGTH_SHORT ).show();
             return  null;
         }
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -33,7 +31,7 @@ public class GPStracker
             Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             return l;
         } else {
-            Toast.makeText(context,"Please enable GPS", Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Please enable GPS on your device.", Toast.LENGTH_LONG).show();
         }
         return null;
     }
@@ -57,6 +55,4 @@ public class GPStracker
     public void onProviderDisabled(String s) {
 
     }
-
-   */
 }
