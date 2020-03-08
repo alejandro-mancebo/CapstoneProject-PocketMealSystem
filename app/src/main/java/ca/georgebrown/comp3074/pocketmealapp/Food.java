@@ -7,6 +7,7 @@ public class Food {
     private String expiry_date;
     private String ingredients;
     private String email;
+    private Point userPoint;
 
     public String getFoodname() {
         return foodname;
@@ -22,6 +23,11 @@ public class Food {
     public void setIngredients(String ingredients) { this.ingredients = ingredients; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+    public Point getUserPoint() { return userPoint; }
+    public void setUserPoint(double lat,double lon){
+        userPoint.setLatitude(lat);
+        userPoint.setLongitude(lon);
+    }
 
     public Food(String category, String expiry_date, String ingredients) {
 
@@ -30,6 +36,7 @@ public class Food {
         this.expiry_date = expiry_date;
         this.ingredients = ingredients;
 
+        userPoint = new Point(0,0);
     }
 
     public Food(String foodname,
@@ -42,6 +49,7 @@ public class Food {
         this.expiry_date = expiry_date;
         this.ingredients = ingredients;
 
+        userPoint = new Point(0,0);
     }
 
     public Food(String foodname, String category, String expiry_date, String ingredients, String email) {
@@ -51,7 +59,9 @@ public class Food {
         this.expiry_date = expiry_date;
         this.ingredients = ingredients;
         this.email = email;
+        // can check type of user before initiating the food list
 
+        userPoint = new Point(0,0);
     }
 
 
