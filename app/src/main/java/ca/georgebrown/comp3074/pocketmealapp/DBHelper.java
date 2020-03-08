@@ -93,7 +93,7 @@ public class DBHelper {
 
                                 double lon = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
                                 double lat = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
-                                user.setUserPoint(lat, lon);
+                                // user.setUserPoint(lat, lon);
                                 reffUserManager.child(LoginActivity.filterEmailKey(newData)).setValue(user);
 
 
@@ -357,7 +357,7 @@ public class DBHelper {
 
                                             double lon = Double.parseDouble(dataUser.child("userPoint/longitude").getValue().toString());
                                             double lat = Double.parseDouble(dataUser.child("userPoint/latitude").getValue().toString());
-                                            user.setUserPoint(lat, lon);
+                                            // user.setUserPoint(lat, lon);
 
 
                                             if (dataUser.child("FoodList").exists()) {

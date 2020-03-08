@@ -11,7 +11,6 @@ public class User {
     // combination of city and 2 first characters of postal code example torontom5
     private String city_postalcode;
     private ArrayList<Food> foodList;
-    private Point userPoint;
 
     // Getters and Setters
     public String getFirst_name() {
@@ -36,11 +35,7 @@ public class User {
         return city_postalcode;
     }
     public void setCity_postalcode(String city_postalcode) { this.city_postalcode = city_postalcode; }
-    public Point getUserPoint() { return userPoint; }
-    public void setUserPoint(double lat,double lon){
-        userPoint.setLatitude(lat);
-        userPoint.setLongitude(lon);
-    }
+
     public ArrayList<Food> getFoodArrayList() { return foodList; }
     public void setFoodArrayList(ArrayList<Food> f) { this.foodList = f; }
 
@@ -53,9 +48,6 @@ public class User {
         this.first_name = first_name;
         this.last_name = last_name;
         this.city_postalcode = city.toLowerCase() + postalCode.toLowerCase();
-
-        // can check type of user before initiating the food list
-        userPoint = new Point(0,0);
 
         Food f = new Food("","","");
         foodList = new ArrayList<>();
@@ -91,10 +83,4 @@ public class User {
             }
     return false;}
 */
-
-     // When user log out you need to reset their coordinates
-     public void resetUserPoint(){
-            userPoint.setLongitude(0);
-            userPoint.setLatitude(0);
-     }
 }

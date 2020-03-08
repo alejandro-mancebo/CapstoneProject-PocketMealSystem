@@ -22,6 +22,20 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/usernameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/usernameEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress" />
+
+            <TextView
                 android:id="@+id/emailText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,39 +49,57 @@
                 android:ems="10"
                 android:inputType="textEmailAddress" />
 
-            <TextView
-                android:id="@+id/fNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="First Name"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/fNameEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/lNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Last Name"
-                android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/fNameText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="First Name"
+                        android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/lNameEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                    <EditText
+                        android:id="@+id/fNameEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lNameText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Last Name"
+                        android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/lNameEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textPersonName" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/cityText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="City (Not filling this out might cause the app to not function as intended)"
+                android:text="City"
                 android:textSize="18sp" />
 
             <EditText

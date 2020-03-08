@@ -1,4 +1,4 @@
-package ca.georgebrown.comp3074.pocketmealapp.ui.gallery;
+package ca.georgebrown.comp3074.pocketmealapp.ui.messages;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import ca.georgebrown.comp3074.pocketmealapp.R;
 
-public class GalleryFragment extends Fragment {
+public class MessagesFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private MessagesViewModel messagesViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(this, new Observer<String>() {
+        messagesViewModel =
+                ViewModelProviders.of(this).get(MessagesViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_messages, container, false);
+        final TextView textView = root.findViewById(R.id.text_tools);
+        messagesViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
