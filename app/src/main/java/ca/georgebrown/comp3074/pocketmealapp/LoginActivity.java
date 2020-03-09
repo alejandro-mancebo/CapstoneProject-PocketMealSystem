@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         guest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
                 LoginActivity.this.startActivity(logIntent);
             }
@@ -126,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
     public void updateUI(FirebaseUser user){
         // If user is logged in and verified he is takes to the food screen instantly.
         if(user != null && user.isEmailVerified()){
+            //testing purpose drawer_activity replaced
             startActivity(new Intent(LoginActivity.this, drawer_activity.class));
         }
         else {

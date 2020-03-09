@@ -21,7 +21,7 @@ import ca.georgebrown.comp3074.pocketmealapp.drawer_activity;
 public class FoodFragment extends Fragment {
 
     private FoodViewModel foodViewModel;
-    private DBHelper dbHelper;
+
     private ListView li;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,8 +30,8 @@ public class FoodFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_food, container, false);
         li = root.findViewById(R.id.listView1);
 
-      //  dbHelper = new DBHelper();
-       // dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),50.0,50.0,li, getActivity());
+
+        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),50.0,50.0,li, getActivity());
 
 
         final TextView textView = root.findViewById(R.id.text_food);
@@ -42,8 +42,6 @@ public class FoodFragment extends Fragment {
 
             }
         });
-
-        foodViewModel.setList(LoginActivity.currentUser.getDisplayName(),50.0,50.0,li,getActivity());
         return root;
     }
 }
