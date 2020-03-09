@@ -23,6 +23,7 @@ public class FoodFragment extends Fragment {
     private FoodViewModel foodViewModel;
 
     private ListView li;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         foodViewModel =
@@ -31,7 +32,7 @@ public class FoodFragment extends Fragment {
         li = root.findViewById(R.id.listView1);
 
 
-        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),50.0,50.0,li, getActivity());
+        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),50.0,50.0, li, getActivity());
 
 
         final TextView textView = root.findViewById(R.id.text_food);
