@@ -1,10 +1,12 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -311,8 +313,8 @@ public class DBHelper {
 
         //  userArrayList = new ArrayList<User>();
 
-      final  Map<Double,Food> map = new TreeMap<>();
-
+    //  final  Map<Double,Food> map = new TreeMap<>();
+        //foodList = new ArrayList<Food>();
         reff.getReference("UserManager/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -351,8 +353,11 @@ public class DBHelper {
                                                         String ingredients = fooddata.child("ingredients").getValue().toString();
                                                         Food f = new Food(fooddata.getKey().toString(), category, expi, ingredients, email);
                                                         f.setUserPoint(lat,lon);
-                                                       Point point2 = new Point(lon,lat);
-                                                        map.put(getDistance(point1,point2),f);
+                                                        Point point2 = new Point(lon,lat);
+                                                        f.setDistance(getDistance(point1,point2));
+                                                        //foodList.add(f);
+                                                        DynamicList.insert(f);
+                                                        //map.put(getDistance(point1,point2),f);
                                                         count++;
                                                     } else {
                                                         break;
@@ -360,19 +365,21 @@ public class DBHelper {
                                                 }
                                             }
                                         }
-                                        foodList = new ArrayList<Food>(map.values());
-                                        Log.d("List", foodList.toString());
-                                        MyArrayAdapter myArrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, foodList);
+
+
+                                        Log.d("List", DynamicList.foodList.toString());
+                                        MyArrayAdapter myArrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, DynamicList.foodList);
                                         listView.setAdapter(myArrayAdapter);
                                         myArrayAdapter.notifyDataSetChanged();
 
-                                        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override
                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
+                                             Intent i = new Intent(context,FoodDetailActivity.class);
+                                              Food f = ((Food) parent.getItemAtPosition(position));
+                                               // TextView t =  .findViewById(R.id.textViewDet1);
                                             }
-                                        }); */
+                                        });
                                         //Log.d("===", String.valueOf(lonMainUser));
                                         //do item event listener here and intent then call get user to set their the text
 

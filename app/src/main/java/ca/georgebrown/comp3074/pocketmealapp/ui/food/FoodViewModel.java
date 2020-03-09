@@ -26,10 +26,10 @@ public class FoodViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
-    public void setList(String username, double lon, double lat, ListView li, Context c){
+  /*  public void setList(String username, double lon, double lat, ListView li, Context c){
 
         dbHelper = new DBHelper();
         dbHelper.getSpecificArrayList(username,lon,lat,li,c);
 
-    }
+    }*/
 }
