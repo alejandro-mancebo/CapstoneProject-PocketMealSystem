@@ -3,19 +3,6 @@ package ca.georgebrown.comp3074.pocketmealapp;
 public class Food {
 
     private String foodname;
-
-
-    public Double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-    public void setUserPoint(Point userPoint) {
-        this.userPoint = userPoint;
-    }
-
     private Double distance;
     private String category;
     private String expiry_date;
@@ -23,6 +10,15 @@ public class Food {
     private String email;
     private Point userPoint;
 
+    public Double getDistance() {
+        return distance;
+    }
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+    public void setUserPoint(Point userPoint) {
+        this.userPoint = userPoint;
+    }
     public String getFoodname() {
         return foodname;
     }
