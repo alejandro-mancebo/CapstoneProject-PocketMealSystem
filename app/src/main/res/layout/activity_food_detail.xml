@@ -7,7 +7,7 @@
     tools:context=".FoodDetailActivity">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textViewDet1"
         android:layout_width="147dp"
         android:layout_height="27dp"
         android:layout_marginStart="111dp"

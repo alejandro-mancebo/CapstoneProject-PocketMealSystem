@@ -13,6 +13,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -20,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class drawer_activity extends AppCompatActivity {
 
@@ -31,26 +36,24 @@ public class drawer_activity extends AppCompatActivity {
         setContentView(R.layout.activity_drawer_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_food, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.nav_food, R.id.nav_profile,
+                R.id.nav_messages, R.id.nav_add_food, R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
+
+
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        if(LoginActivity.currentUser != null){
+            updateNavHeader();
+        }
     }
 
     @Override
@@ -65,5 +68,19 @@ public class drawer_activity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    // This will update the current user email and username on the navigation drawer.
+    public void updateNavHeader(){
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserEmail = headerView.findViewById(R.id.nav_user_email);
+        TextView navUserName = headerView.findViewById(R.id.nav_user_username);
+        ImageView navUserImage = headerView.findViewById(R.id.nav_user_image);
+
+        navUserEmail.setText(LoginActivity.currentUser.getEmail());
+        navUserName.setText(LoginActivity.currentUser.getDisplayName());
+
+        // Update Profile Picture Code Goes Here.
     }
 }
