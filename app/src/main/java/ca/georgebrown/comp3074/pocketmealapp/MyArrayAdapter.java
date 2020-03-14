@@ -29,7 +29,7 @@ public class MyArrayAdapter extends ArrayAdapter<Food> {
             convertView = inflater.inflate(layoutId,null);}
 
         TextView txt = convertView.findViewById(R.id.textVFoodname);
-       txt.setText(getItem(position).getFoodname());
+       txt.setText(getItem(position).getFoodname() +"----"+ getItem(position).getEmail() +"------"+ getItem(position).getDistance() +" km");
 
         return convertView;
     }

@@ -1,11 +1,17 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +20,9 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class DBHelper {
 
@@ -47,6 +56,7 @@ public class DBHelper {
                         } else {
                             //  Food f = new Food("","","");
                             //       u.foodList.add(f);
+
                             reffUserManager.child(username).setValue(u);
 
                             Log.d("Insert:", "New User insert successfully");
@@ -65,58 +75,35 @@ public class DBHelper {
 
     }
 
-    public void updateUserInfo(final String username, final String newData, final String columnToBeUpdated) {
+    public void updateUserInfo(final String email, final String newData, final String columnToBeUpdated) {
 
-        reff.getReference("UserManager/" + username)
+        reffUserManager.orderByChild("email").equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
 
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                         if (dataSnapshot.exists()) {
                             //update email,  not lat and lon and id
-
+                            String username = dataSnapshot.getKey().toString();
                             if (columnToBeUpdated.equals("email")) {
 
+                                DatabaseReference specificReff = reff.getReference("UserManager/" + username);
+                                specificReff.child(columnToBeUpdated).setValue(newData);
 
-                                int id = Integer.parseInt(dataSnapshot.child("id").getValue().toString());
-                                String email = newData;
-                                String cityPostalCode = dataSnapshot.child("city_postalcode").getValue().toString();
-                                String first_name = dataSnapshot.child("first_name").getValue().toString();
-                                String last_name = dataSnapshot.child("last_name").getValue().toString();
-                                /*String pass = dataSnapshot.child("password").getValue().toString();*/
-                                String type = dataSnapshot.child("type").getValue().toString();
-
-                                user = new User(email, first_name, last_name, "", "");
-                                user.setCity_postalcode(cityPostalCode);
-
-                                double lon = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
-                                double lat = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
-                                // user.setUserPoint(lat, lon);
-                                reffUserManager.child(LoginActivity.filterEmailKey(newData)).setValue(user);
-
-
-                                Log.d("===", String.valueOf(dataSnapshot.child("FoodList").exists()));
-                                if (dataSnapshot.child("FoodList").exists()) {
-                                    for (DataSnapshot fooddata : dataSnapshot.child("FoodList").getChildren()) {
-                                        Log.d("===", fooddata.child("category").getValue().toString());
-                                        String category = fooddata.child("category").getValue().toString();
-                                        String expi = fooddata.child("expiry_date").getValue().toString();
-                                        String ingredients = fooddata.child("ingredients").getValue().toString();
-                                        Food f = new Food(category, expi, ingredients);
-
-                                        reff.getReference("UserManager/" + LoginActivity.filterEmailKey(newData) + "/FoodList")
-                                                .child(fooddata.getKey().toString()).setValue(f);
-                                    }
-                                }
-
-                                reffUserManager.child(username).removeValue();
+                                user.updateEmail(newData);
 
                             }
 
-                            if (columnToBeUpdated.equals("first_name") || columnToBeUpdated.equals("last_name") ||
-                                    columnToBeUpdated.equals("password") || columnToBeUpdated.equals("city_postalcode")) {
+                            if(columnToBeUpdated.equals("password")){
+
+                                user.updatePassword(newData);
+
+                            }
+
+                            if (columnToBeUpdated.equals("first_name") || columnToBeUpdated.equals("last_name") || columnToBeUpdated.equals("city_postalcode")) {
                                 DatabaseReference specificReff = reff.getReference("UserManager/" + username);
                                 specificReff.child(columnToBeUpdated).setValue(newData);
                                 Log.d("User Info Update", "User Information updated successfully");
@@ -138,12 +125,13 @@ public class DBHelper {
                 });
 
 
-    //update email,  not lat and lon and id
+        //update email,  not lat and lon and id
     }
 
-    public void updateUserPoint(final String username, final double lon, final double lat) {
 
-        reffUserManager.orderByKey().equalTo(username)
+    public void deleteUser(final String email) {
+
+        reffUserManager.orderByChild("email").equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
@@ -152,36 +140,9 @@ public class DBHelper {
 
                         Log.d("===", String.valueOf(dataSnapshot.exists()));
                         if (dataSnapshot.exists()) {
-                            DatabaseReference specificReff = reff.getReference("UserManager/" + username + "/userPoint");
-                            specificReff.child("latitude").setValue(lat);
-                            specificReff.child("longitude").setValue(lon);
-                            Log.d("User Point Update", "User point updated");
-
-                        } else {
-                            Log.d("Data:", "Data doesn't exist");
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-    }
-
-    public void deleteUser(final String username) {
-
-        reffUserManager.orderByKey().equalTo(username)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-
-                    @Override
-
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        Log.d("===", String.valueOf(dataSnapshot.exists()));
-                        if (dataSnapshot.exists()) {
-
+                            String username = dataSnapshot.getKey().toString();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            user.delete();
                             reffUserManager.child(username).removeValue();
                         } else {
 
@@ -288,6 +249,38 @@ public class DBHelper {
 
     }
 
+
+    public void updateFoodPoint(final String email, final String foodname, final double lon, final double lat) {
+
+        reffUserManager.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Log.d("===", String.valueOf(dataSnapshot.exists()));
+                        if (dataSnapshot.exists() && dataSnapshot.child("foodList/"+foodname).exists()) {
+                            String username = dataSnapshot.getKey().toString();
+                            DatabaseReference specificReff = reff.getReference("UserManager/" + username + "foodList/"+foodname);
+                            specificReff.child("userPoint/latitude").setValue(lat);
+                            specificReff.child("userPoint/longitude").setValue(lon);
+                            Log.d("Food Point Update", "Food point updated");
+
+                        } else {
+                            Log.d("Data:", "Data doesn't exist");
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+
     public void deleteFood(final String username, final String foodname) {
 
         reff.getReference("UserManager/" + username + "/FoodList/" + foodname).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -316,14 +309,12 @@ public class DBHelper {
     }
 
 
-    public void getSpecificArrayList(String username, final ListView listView, final Context context) {
+    public void getSpecificArrayList(String username, final Double mainLon, final Double mainLat, final ListView listView, final Context context) {
 
-        //need to impliment it
-//check by city, first two characters of the postal code and those online, who have point lat and lon != 0 if the userr has food.
-//check if the user exist
-//instead of returning the arraylist we will put the adapter and the list here..
         //  userArrayList = new ArrayList<User>();
-        foodList = new ArrayList<Food>();
+
+    //  final  Map<Double,Food> map = new TreeMap<>();
+        //foodList = new ArrayList<Food>();
         reff.getReference("UserManager/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -332,69 +323,57 @@ public class DBHelper {
                 if (dataSnapshot.exists()) {
                     String city_postal = dataSnapshot.child("city_postalcode").getValue().toString();
                     Log.d("===", city_postal);
-                    final double lonMainUser = Double.parseDouble(dataSnapshot.child("userPoint/longitude").getValue().toString());
-                    double latMainUser = Double.parseDouble(dataSnapshot.child("userPoint/latitude").getValue().toString());
+                         final Point point1 = new Point(mainLon,mainLat);
 
-                    reffUserManager.orderByChild("city_postalcode").equalTo(city_postal).limitToFirst(30)
+                    reffUserManager.orderByChild("city_postalcode").equalTo(city_postal).limitToFirst(50)
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.getValue() != null) {
                                         for (DataSnapshot dataUser : dataSnapshot.getChildren()) {
-                                            //check by city, first two characters of the postal code and those online, who have point lat and lon != 0 if the userr has food.
-//check if the user exist
-                                            //calculate by distance after having the array...
-                                            int id = -1;
+
                                             String email = dataUser.child("email").getValue().toString();
-                                            String cityPostalCode = dataUser.child("city_postalcode").getValue().toString();
-                                            String first_name = dataUser.child("first_name").getValue().toString();
-                                            String last_name = dataUser.child("last_name").getValue().toString();
-                                            String pass = "";
-                                            String type = "";
+                                            double lon  =0;
+                                            double lat = 0;
 
-                                            user = new User(email, first_name, last_name, "", "");
-                                            user.setCity_postalcode(cityPostalCode);
 
-                                            double lon = Double.parseDouble(dataUser.child("userPoint/longitude").getValue().toString());
-                                            double lat = Double.parseDouble(dataUser.child("userPoint/latitude").getValue().toString());
                                             // user.setUserPoint(lat, lon);
-
 
                                             if (dataUser.child("FoodList").exists()) {
                                                 int count = 0;
                                                 for (DataSnapshot fooddata : dataUser.child("FoodList").getChildren()) {
                                                     Log.d("===", fooddata.child("category").getValue().toString());
-                                                    if (count <= 6) {
+
+                                                    lat = Double.parseDouble(fooddata.child("userPoint/latitude").getValue().toString());
+                                                    lon = Double.parseDouble(fooddata.child("userPoint/longitude").getValue().toString());
+
+                                                    if (count <= 7 && lat !=0 && lon !=0) {
                                                         String category = fooddata.child("category").getValue().toString();
                                                         String expi = fooddata.child("expiry_date").getValue().toString();
                                                         String ingredients = fooddata.child("ingredients").getValue().toString();
-                                                        Food f = new Food(fooddata.getKey().toString(), category, expi, ingredients, user.getEmail());
-                                                        //  Log.d("keys", fooddata.getKey().toString());
-                                                        foodList.add(f);
-                                                        user.addFood(f);
+                                                        Food f = new Food(fooddata.getKey().toString(), category, expi, ingredients, email);
+                                                        f.setUserPoint(lat,lon);
+                                                        Point point2 = new Point(lon,lat);
+                                                        f.setDistance(getDistance(point1,point2));
+                                                        //foodList.add(f);
+                                                        DynamicList.insert(f);
+                                                        //map.put(getDistance(point1,point2),f);
                                                         count++;
                                                     } else {
                                                         break;
                                                     }
-
                                                 }
                                             }
-
-
-                                            if (lat != 0 && lon != 0 && user.getFoodArrayList() != null) {
-                                                // Log.d("userfood", user.getFoodArrayList().toString());
-                                                // userArrayList.add(user);
-
-                                            }
-
                                         }
 
-                                        //if it is working we will sort
 
-                                        MyArrayAdapter myArrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, foodList);
+                                        Log.d("List", DynamicList.foodList.toString());
+                                        MyArrayAdapter myArrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, DynamicList.foodList);
                                         listView.setAdapter(myArrayAdapter);
                                         myArrayAdapter.notifyDataSetChanged();
-                                        Log.d("===", String.valueOf(lonMainUser));
+
+
+                                        //Log.d("===", String.valueOf(lonMainUser));
                                         //do item event listener here and intent then call get user to set their the text
 
                                     }
