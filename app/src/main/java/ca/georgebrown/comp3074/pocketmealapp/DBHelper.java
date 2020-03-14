@@ -372,14 +372,7 @@ public class DBHelper {
                                         listView.setAdapter(myArrayAdapter);
                                         myArrayAdapter.notifyDataSetChanged();
 
-                                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                            @Override
-                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                             Intent i = new Intent(context,FoodDetailActivity.class);
-                                              Food f = ((Food) parent.getItemAtPosition(position));
-                                               // TextView t =  .findViewById(R.id.textViewDet1);
-                                            }
-                                        });
+
                                         //Log.d("===", String.valueOf(lonMainUser));
                                         //do item event listener here and intent then call get user to set their the text
 

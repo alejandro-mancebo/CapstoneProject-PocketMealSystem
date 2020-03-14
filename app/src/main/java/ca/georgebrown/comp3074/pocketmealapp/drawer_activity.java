@@ -1,5 +1,6 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,9 +23,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.Serializable;
 
 public class drawer_activity extends AppCompatActivity {
 
@@ -47,13 +51,13 @@ public class drawer_activity extends AppCompatActivity {
                 .build();
 
 
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        if(LoginActivity.currentUser != null){
+        if (LoginActivity.currentUser != null) {
             updateNavHeader();
         }
+
     }
 
     @Override
