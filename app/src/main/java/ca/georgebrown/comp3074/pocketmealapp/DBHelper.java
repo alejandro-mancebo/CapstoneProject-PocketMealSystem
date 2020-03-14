@@ -310,13 +310,9 @@ public class DBHelper {
 
 
     public void getSpecificArrayList(String username, final Double mainLon, final Double mainLat, final ListView listView, final Context context) {
-
-        // userArrayList = new ArrayList<User>();
-
-        // final  Map<Double,Food> map = new TreeMap<>();
-        // foodList = new ArrayList<Food>();
-
+        
         DynamicList.foodList.clear();
+        //  userArrayList = new ArrayList<User>();
 
         reff.getReference("UserManager/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

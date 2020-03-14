@@ -8,6 +8,9 @@ public class Food {
     private String expiry_date;
     private String ingredients;
     private String email;
+
+
+    private String description, Allergies;
     private Point userPoint;
 
     public Double getDistance() {
@@ -34,6 +37,24 @@ public class Food {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public Point getUserPoint() { return userPoint; }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAllergies() {
+        return Allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        Allergies = allergies;
+    }
+
+
     public void setUserPoint(double lat,double lon){
         userPoint.setLatitude(lat);
         userPoint.setLongitude(lon);
