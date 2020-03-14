@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
                 LoginActivity.this.startActivity(logIntent);
+
             }
         });
 
@@ -68,34 +69,41 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Firebase Authentication
-                String inputUser = emailField.getText().toString();
-                String inputPass = passField.getText().toString();
-                mAuth = FirebaseAuth.getInstance();
+                if(emailField.getText().toString().isEmpty() && passField.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Please fill in all fields.", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    String inputUser = emailField.getText().toString();
+                    String inputPass = passField.getText().toString();
 
-                // Clear Password
-                passField.setText("");
 
-                mAuth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                    mAuth = FirebaseAuth.getInstance();
 
-                            currentUser = mAuth.getCurrentUser();
+                    // Clear Password
+                    passField.setText("");
 
-                            if(currentUser.isEmailVerified()){
-                                updateUI(currentUser);
+                    mAuth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+
+                                currentUser = mAuth.getCurrentUser();
+
+                                if(currentUser.isEmailVerified()){
+                                    updateUI(currentUser);
+                                }
+                                else {
+                                    Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
+                                }
                             }
                             else {
-                                Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
-                        else {
-                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                    });
 
-                inputPass = null;
+                    inputPass = null;
+                }
             }
         });
 
