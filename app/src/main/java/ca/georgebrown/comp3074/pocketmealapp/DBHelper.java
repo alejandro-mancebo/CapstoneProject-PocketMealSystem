@@ -310,7 +310,7 @@ public class DBHelper {
 
 
     public void getSpecificArrayList(String username, final Double mainLon, final Double mainLat, final ListView listView, final Context context) {
-
+              DynamicList.foodList.clear();
         //  userArrayList = new ArrayList<User>();
 
     //  final  Map<Double,Food> map = new TreeMap<>();

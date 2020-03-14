@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import java.util.Date;
 
+import ca.georgebrown.comp3074.pocketmealapp.Food;
 import ca.georgebrown.comp3074.pocketmealapp.LoginActivity;
 import ca.georgebrown.comp3074.pocketmealapp.R;
 
@@ -35,7 +36,7 @@ public class AddFoodFragment extends Fragment {
                 ViewModelProviders.of(this).get(AddFoodViewModel.class);
         View root = inflater.inflate(R.layout.fragment_add_food, container, false);
         final TextView textView = root.findViewById(R.id.text_add_food);
-        addFoodViewModel.getText().observe(this, new Observer<String>() {
+        addFoodViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
@@ -57,6 +58,11 @@ public class AddFoodFragment extends Fragment {
                 // Check Expiry Date provided by the user.
                 if (foodExp.getText().toString().matches("\\d{2}-\\d{2}-\\d{2}")) {
 
+                    Food f = new Food("Type"+foodName.getText().toString()
+                            ,foodExp.getText().toString()
+                            ,foodAllergy.getText().toString()+foodDisc.getText().toString());
+                    
+                    LoginActivity.dbHelper.addFood(LoginActivity.currentUser.getDisplayName(),foodName.getText().toString(),f);
                     // Create food object and place it inside database. Use the LoginActivity.currentUser.getDisplayName() to see what user it should go under.
 
                 } else {
