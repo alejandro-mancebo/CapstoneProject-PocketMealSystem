@@ -44,8 +44,9 @@ public class FoodFragment extends Fragment {
 
         GPStracker gps = new GPStracker(getActivity());
         Location l = gps.getLocation();
-
-        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),l.getLongitude(),l.getLatitude(), li, getActivity());
+         double longitude = l.getLongitude();
+         double latitude = l.getLatitude();
+        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),longitude,latitude, li, getActivity());
 
         li.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

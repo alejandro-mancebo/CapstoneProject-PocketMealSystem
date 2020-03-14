@@ -61,7 +61,7 @@ public class AddFoodFragment extends Fragment {
                     Food f = new Food("Type"+foodName.getText().toString()
                             ,foodExp.getText().toString()
                             ,foodAllergy.getText().toString()+foodDisc.getText().toString());
-                    
+
                     LoginActivity.dbHelper.addFood(LoginActivity.currentUser.getDisplayName(),foodName.getText().toString(),f);
                     // Create food object and place it inside database. Use the LoginActivity.currentUser.getDisplayName() to see what user it should go under.
 
