@@ -315,7 +315,7 @@ public class DBHelper {
 
         // final  Map<Double,Food> map = new TreeMap<>();
         // foodList = new ArrayList<Food>();
-        
+
         DynamicList.foodList.clear();
 
         reff.getReference("UserManager/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
