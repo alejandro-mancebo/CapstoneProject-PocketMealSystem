@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // This is the creation of the LOGIN PAGE
         requestStoregePremission();
-        
+
         // Initialize Firebase Variables
         dbHelper = new DBHelper();
 
