@@ -11,10 +11,20 @@ public class FoodDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
-        TextView t = findViewById(R.id.textViewDet1);
+        TextView txtVFoodType = findViewById(R.id.textVTypeFood);
+        TextView txtVIngre = findViewById(R.id.textVIngredient);
+        TextView txtVUsername = findViewById(R.id.textVUsername);
+        TextView txtVExpiry = findViewById(R.id.textVExpiry);
 
-        String s = getIntent().getExtras().getString("FoodItem");
-        t.setText(s);
+        String str_FoodType = getIntent().getExtras().getString("FoodType");
+        String str_Username = getIntent().getExtras().getString("FoodUsername");
+        String str_Ingre = getIntent().getExtras().getString("FoodIngre");
+        String str_Expiry = getIntent().getExtras().getString("Expiry");
+
+        txtVFoodType.setText("Food Type:  "+str_FoodType);
+        txtVIngre.setText("Ingredient:  "+ str_Ingre);
+        txtVUsername.setText("Username:  "+ str_Username);
+        txtVExpiry.setText("Expiry Date:  " +str_Expiry);
 
     }
 }

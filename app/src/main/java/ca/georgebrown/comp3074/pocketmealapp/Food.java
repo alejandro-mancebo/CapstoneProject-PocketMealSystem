@@ -10,9 +10,16 @@ public class Food {
     private String email;
 
 
+    private String username;
+
     private String description, Allergies;
     private Point userPoint;
 
+    public String getUsername() {
+        return username; }
+
+    public void setUsername(String username) {
+        this.username = username; }
     public Double getDistance() {
         return distance;
     }

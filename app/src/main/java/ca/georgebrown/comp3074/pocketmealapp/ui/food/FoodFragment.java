@@ -54,7 +54,10 @@ public class FoodFragment extends Fragment {
 
                 Food f = ((Food) parent.getItemAtPosition(position));
                 Intent i = new Intent(getActivity(),FoodDetailActivity.class);
-                i.putExtra("FoodItem",f.getEmail());
+                 i.putExtra("FoodType",f.getFoodname());
+                i.putExtra("FoodUsername",f.getUsername());
+                i.putExtra("FoodIngre",f.getIngredients());
+                 i.putExtra("Expiry",f.getExpiry_date());
                 startActivity(i);
                 /*
                 FragmentTransaction transection=getFragmentManager().beginTransaction();

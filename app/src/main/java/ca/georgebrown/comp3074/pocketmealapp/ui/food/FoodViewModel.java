@@ -18,7 +18,7 @@ public class FoodViewModel extends ViewModel {
 
     public FoodViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is food list fragment");
+        mText.setValue("Food List (sort by Km)");
     }
 
     public LiveData<String> getText() {

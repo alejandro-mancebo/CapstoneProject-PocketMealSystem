@@ -354,6 +354,7 @@ public class DBHelper {
                                                         f.setUserPoint(lat,lon);
                                                         Point point2 = new Point(lon,lat);
                                                         f.setDistance(getDistance(point1,point2));
+                                                        f.setUsername(dataUser.getKey().toString());
                                                         //foodList.add(f);
                                                         DynamicList.insert(f);
                                                         //map.put(getDistance(point1,point2),f);
