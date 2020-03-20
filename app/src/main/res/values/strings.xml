@@ -22,4 +22,6 @@
     <string name="menu_messages">Messages</string>
     <string name="menu_add_food">Add Food</string>
     <string name="menu_logout">Logout</string>
+
+    <string name="map_key" translatable="false">AIzaSyAnjX1BRY-UFZWr1rwI1_nuqxThU70wBQc</string>
 </resources>
