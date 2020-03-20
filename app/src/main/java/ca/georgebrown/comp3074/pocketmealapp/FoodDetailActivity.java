@@ -2,7 +2,9 @@ package ca.georgebrown.comp3074.pocketmealapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class FoodDetailActivity extends AppCompatActivity {
@@ -25,6 +27,15 @@ public class FoodDetailActivity extends AppCompatActivity {
         txtVIngre.setText("Ingredient:  "+ str_Ingre);
         txtVUsername.setText("Username:  "+ str_Username);
         txtVExpiry.setText("Expiry Date:  " +str_Expiry);
+        txtVUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               //go to profile page
+                Intent i = new Intent(FoodDetailActivity.this,drawer_activity.class);
+                startActivity(i);
+            }
+        });
 
     }
 }

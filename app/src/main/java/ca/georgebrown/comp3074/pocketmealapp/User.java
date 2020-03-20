@@ -8,6 +8,10 @@ public class User {
     private String first_name;
     private String last_name;
     private String email;
+
+
+
+    private String username;
     // combination of city and 2 first characters of postal code example torontom5
     private String city_postalcode;
     private ArrayList<Food> foodList;
@@ -35,6 +39,9 @@ public class User {
         return city_postalcode;
     }
     public void setCity_postalcode(String city_postalcode) { this.city_postalcode = city_postalcode; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+
 
     public ArrayList<Food> getFoodArrayList() { return foodList; }
     public void setFoodArrayList(ArrayList<Food> f) { this.foodList = f; }
