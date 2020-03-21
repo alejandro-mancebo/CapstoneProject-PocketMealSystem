@@ -2,6 +2,7 @@ package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +30,9 @@ public class DBHelper {
     private FirebaseDatabase reff;
     private DatabaseReference reffUserManager;
     private DatabaseReference reffChatManager;
-
+    private DataSnapshot dataSnapshot1;
+    public static MessageArrayAdapter messAdapter;
+    private  ArrayList<User> receiverList = new ArrayList<>();
 
     public DBHelper() {
 
@@ -475,14 +478,15 @@ public class DBHelper {
 
     // and chat function remaining
 
-private void sendChat(final Chat chat, final String username){
-        reffUserManager.addListenerForSingleValueEvent(new ValueEventListener() {
+public void sendChat(final Chat chat){
+        //sender = username
+        reff.getReference("UserManager/"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
                 if(dataSnapshot.exists()){
-                    reffChatManager.child(username).child(chat.getReceiver()).push().setValue(chat.getMessage());
+                    reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
 
                 }
                 else{
@@ -524,27 +528,42 @@ private void deleteMessages(final Chat chat){
 
 }
 
-public void getReceiverList(final Context context, ListView li, final String username){
-final ArrayList<User> receiverList = new ArrayList<>();
-    reff.getReference("ChatManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
+public void getReceiverList(final Context context, final ListView li, final String username){
+
+receiverList.clear();
+    reffChatManager.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-
+            Log.d("===", String.valueOf(dataSnapshot.exists()));
             if(dataSnapshot.exists()){
-                  for(DataSnapshot receiver : dataSnapshot.getChildren()){
-                      User user1 = new User("","","","","");
-                      user1.setUsername(receiver.getKey().toString());
-                      receiverList.add(user1);
+              for(DataSnapshot data : dataSnapshot.getChildren()) {
+                  String key = data.getKey().toString();
+                  if (key.contains(username)) {
+                      String arr[] = key.split("_", 2);
+                      User user = new User("", "", "", "", "");
+
+                      if (!arr[0].equals(username)) {
+                          user.setUsername(arr[0]);
+                          Log.d("===", arr[0]);
+                      } else {
+                          user.setUsername(arr[1]);
+                      }
+                      receiverList.add(user);
+                      //find a way to improve filter
+                      //Log.d("===", user.getUsername().toString());
                   }
+              }
+               // Log.d("===", receiverList.toString());
 
             }
             else{
 
 
             }
-
-         //   UserArrayAdapter userAdapter = new UserArrayAdapter(context,R.layout.users_item_design,receiverList );
+            UserArrayAdapter userAdapter = new UserArrayAdapter(context,R.layout.users_item_design,receiverList );
+            li.setAdapter(userAdapter);
+            userAdapter.notifyDataSetChanged();
         }
 
         @Override
@@ -555,24 +574,53 @@ final ArrayList<User> receiverList = new ArrayList<>();
 
 }
 
-public void getMessages(String username,String receiver){
-      ArrayList<String>messages= new ArrayList<>();
-        reff.getReference("ChatMessage/"+username+"/"+receiver).addListenerForSingleValueEvent(new ValueEventListener() {
+public void getMessages(final String username, final String receiver, final ListView li , final Context c){
+
+        final ArrayList<Chat>messages= new ArrayList<>();
+
+        reff.getReference("ChatManager/"+username+"_"+receiver).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 if(dataSnapshot.exists()){
-for(DataSnapshot message : dataSnapshot.getChildren()){
-
-    //retrieve messages here.
-
-
-}
-
-
+dataSnapshot1 = dataSnapshot;
                 }
 
-                else{}
+                else{
+                    reff.getReference("ChatManager/"+receiver+"_"+username).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+
+                            dataSnapshot1 = dataSnapshot;
+                                }
+
+                            }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                Log.d("===", String.valueOf(dataSnapshot1.exists()));
+                      if(dataSnapshot1.exists()){
+                for(DataSnapshot chat : dataSnapshot1.getChildren()) {
+                    String receiver = chat.child("receiver").getValue().toString();
+                    String sender = chat.child("sender").getValue().toString();
+                    String message = chat.child("message").getValue().toString();
+
+                    Chat chat1 = new Chat(sender, message, receiver);
+                    messages.add(chat1);
+                }
+                      }
+
+
+
+                       messAdapter = new MessageArrayAdapter(c,R.layout.message_details_design,messages);
+                      messAdapter.notifyDataSetChanged();
+                      li.setAdapter(messAdapter);
             }
 
             @Override
