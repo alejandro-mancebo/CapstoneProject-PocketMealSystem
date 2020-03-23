@@ -42,7 +42,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/foodnameText" />
@@ -85,7 +85,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +130,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:inputType="date"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expDateText" />
@@ -147,23 +147,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/google_map" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/sv_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:elevation="5dp"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toTopOf="@+id/google_map"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expDateEdit"
-        app:queryHint="Search..."></androidx.appcompat.widget.SearchView>
-
     <fragment
         android:id="@+id/google_map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -171,13 +154,14 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/addFoodBTN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sv_location"></fragment>
+        app:layout_constraintTop_toBottomOf="@+id/expDateEdit"></fragment>
 
     <TextView
         android:id="@+id/textView"
