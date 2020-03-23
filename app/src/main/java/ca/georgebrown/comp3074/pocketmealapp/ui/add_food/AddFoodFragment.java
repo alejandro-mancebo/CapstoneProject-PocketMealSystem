@@ -86,6 +86,7 @@ public class AddFoodFragment extends Fragment {
                     f.setUserPoint(foodLat,foodLon);
                     // Place food into the database
                     LoginActivity.dbHelper.addFood(LoginActivity.currentUser.getDisplayName(),foodName.getText().toString(),f);
+
                 } else {
                     // Show error msg
                     Toast.makeText(getContext(), "Please enter a valid expiry date using the format provided.", Toast.LENGTH_LONG).show();
