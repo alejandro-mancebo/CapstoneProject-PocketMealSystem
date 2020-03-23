@@ -25,11 +25,12 @@ public class GPStracker implements LocationListener{
             Toast.makeText(context, "GPS permissions not granted.", Toast.LENGTH_SHORT ).show();
             return  null;
         }
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        boolean isGPSEnable = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        //boolean isGPSEnable = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isGPSEnable = LoginActivity.lManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if(isGPSEnable){
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000,10, this);
-            Location l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            LoginActivity.lManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000,10, this);
+            Location l = LoginActivity.lManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             return l;
         } else {
             Toast.makeText(context,"Please enable GPS on your device.", Toast.LENGTH_LONG).show();
