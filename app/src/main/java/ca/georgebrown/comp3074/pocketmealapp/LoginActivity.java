@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     public static DBHelper dbHelper;
     public static FirebaseAuth mAuth;
     public static FirebaseUser currentUser;
+
+    // Location Manager
+    public static LocationManager lManager;
 
     // UI Navigation Code Variables
     private EditText emailField, passField;
@@ -192,6 +197,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == STORAGE_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 Toast.makeText(LoginActivity.this, "Location permission GRANTED", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(LoginActivity.this, "Location permission DENIED", Toast.LENGTH_SHORT).show();
