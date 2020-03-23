@@ -1,6 +1,7 @@
 package ca.georgebrown.comp3074.pocketmealapp.ui.food;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 import ca.georgebrown.comp3074.pocketmealapp.DBHelper;
 import ca.georgebrown.comp3074.pocketmealapp.Food;
 import ca.georgebrown.comp3074.pocketmealapp.FoodDetailActivity;
+import ca.georgebrown.comp3074.pocketmealapp.GPStracker;
 import ca.georgebrown.comp3074.pocketmealapp.LoginActivity;
 import ca.georgebrown.comp3074.pocketmealapp.R;
 import ca.georgebrown.comp3074.pocketmealapp.drawer_activity;
@@ -31,6 +33,7 @@ public class FoodFragment extends Fragment {
     private FoodViewModel foodViewModel;
 
     public static ListView li;
+    
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         foodViewModel =
@@ -39,7 +42,11 @@ public class FoodFragment extends Fragment {
         li = root.findViewById(R.id.listView1);
 
 
-        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),50.0,50.0,li, getActivity());
+        GPStracker gps = new GPStracker(getActivity());
+        Location l = gps.getLocation();
+         double longitude = l.getLongitude();
+         double latitude = l.getLatitude();
+        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),longitude,latitude, li, getActivity());
 
         li.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,7 +54,10 @@ public class FoodFragment extends Fragment {
 
                 Food f = ((Food) parent.getItemAtPosition(position));
                 Intent i = new Intent(getActivity(),FoodDetailActivity.class);
-                i.putExtra("FoodItem",f.getEmail());
+                 i.putExtra("FoodType",f.getFoodname());
+                i.putExtra("FoodUsername",f.getUsername());
+                i.putExtra("FoodIngre",f.getIngredients());
+                 i.putExtra("Expiry",f.getExpiry_date());
                 startActivity(i);
                 /*
                 FragmentTransaction transection=getFragmentManager().beginTransaction();

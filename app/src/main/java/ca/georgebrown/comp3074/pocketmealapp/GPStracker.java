@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 public class GPStracker implements LocationListener{
@@ -55,4 +56,5 @@ public class GPStracker implements LocationListener{
     public void onProviderDisabled(String s) {
 
     }
+
 }

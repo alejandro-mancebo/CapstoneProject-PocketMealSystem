@@ -2,6 +2,7 @@ package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,15 +29,16 @@ public class DBHelper {
 
     private FirebaseDatabase reff;
     private DatabaseReference reffUserManager;
-    private User user;
-
-    private ArrayList<User> userArrayList;
-    private ArrayList<Food> foodList;
+    private DatabaseReference reffChatManager;
+    private DataSnapshot dataSnapshot1;
+    public static MessageArrayAdapter messAdapter;
+    private  ArrayList<User> receiverList = new ArrayList<>();
 
     public DBHelper() {
 
         reff = FirebaseDatabase.getInstance();
         reffUserManager = reff.getReference("UserManager");
+        reffChatManager = reff.getReference("ChatManager");
     }
 
 
@@ -310,11 +312,10 @@ public class DBHelper {
 
 
     public void getSpecificArrayList(String username, final Double mainLon, final Double mainLat, final ListView listView, final Context context) {
-
+        
+        DynamicList.foodList.clear();
         //  userArrayList = new ArrayList<User>();
 
-    //  final  Map<Double,Food> map = new TreeMap<>();
-        //foodList = new ArrayList<Food>();
         reff.getReference("UserManager/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -322,7 +323,7 @@ public class DBHelper {
 
                 if (dataSnapshot.exists()) {
                     String city_postal = dataSnapshot.child("city_postalcode").getValue().toString();
-                    Log.d("===", city_postal);
+                   // Log.d("===", city_postal);
                          final Point point1 = new Point(mainLon,mainLat);
 
                     reffUserManager.orderByChild("city_postalcode").equalTo(city_postal).limitToFirst(50)
@@ -342,7 +343,7 @@ public class DBHelper {
                                             if (dataUser.child("FoodList").exists()) {
                                                 int count = 0;
                                                 for (DataSnapshot fooddata : dataUser.child("FoodList").getChildren()) {
-                                                    Log.d("===", fooddata.child("category").getValue().toString());
+                                                  //  Log.d("===", fooddata.child("category").getValue().toString());
 
                                                     lat = Double.parseDouble(fooddata.child("userPoint/latitude").getValue().toString());
                                                     lon = Double.parseDouble(fooddata.child("userPoint/longitude").getValue().toString());
@@ -355,6 +356,7 @@ public class DBHelper {
                                                         f.setUserPoint(lat,lon);
                                                         Point point2 = new Point(lon,lat);
                                                         f.setDistance(getDistance(point1,point2));
+                                                        f.setUsername(dataUser.getKey().toString());
                                                         //foodList.add(f);
                                                         DynamicList.insert(f);
                                                         //map.put(getDistance(point1,point2),f);
@@ -367,12 +369,10 @@ public class DBHelper {
                                         }
 
 
-                                        Log.d("List", DynamicList.foodList.toString());
+                                      //  Log.d("List", DynamicList.foodList.toString());
                                         MyArrayAdapter myArrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, DynamicList.foodList);
                                         listView.setAdapter(myArrayAdapter);
                                         myArrayAdapter.notifyDataSetChanged();
-
-
                                         //Log.d("===", String.valueOf(lonMainUser));
                                         //do item event listener here and intent then call get user to set their the text
 
@@ -403,7 +403,8 @@ public class DBHelper {
 
 
     public void getDonorFoodList(String username, final ListView lView, final Context context) {
-        final ArrayList<Food> foodArrayList = new ArrayList<>();
+
+        DynamicList.foodList.clear();
         reff.getReference("UserManager/" + username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -415,13 +416,14 @@ public class DBHelper {
                         String category = fooddata.child("category").getValue().toString();
                         String expi = fooddata.child("expiry_date").getValue().toString();
                         String ingredients = fooddata.child("ingredients").getValue().toString();
+
                         Food f = new Food(fooddata.getKey().toString(), category, expi, ingredients);
 
-                        foodArrayList.add(f);
+                        DynamicList.foodList.add(f);
 
                     }
 
-                    MyArrayAdapter arrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, foodArrayList);
+                    MyArrayAdapter arrayAdapter = new MyArrayAdapter(context, R.layout.food_item_design, DynamicList.foodList);
                     lView.setAdapter(arrayAdapter);
                     arrayAdapter.notifyDataSetChanged();
 
@@ -440,8 +442,195 @@ public class DBHelper {
     }
 
 
-//displayFoodDetails() take text and set, displayProfileUser() basically setter for text
-// and chat function remaining
+
+    public void setProfileInfo(String username){
+
+        reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()) {
+                    String email = dataSnapshot.child("email").getValue().toString();
+                    String lastName = dataSnapshot.child("last_name").getValue().toString();
+                    String firstName = dataSnapshot.child("first_name").getValue().toString();
+                    String city = dataSnapshot.child("city_postalcode").getValue().toString();
+                    //find a solution to separate city and postal code use dash _ when user register.
+                    //for now user cannot update username
+                    // textview will be set here..
+
+
+                }
+
+                else{
+
+                    Log.d("User does not exit", "No Data");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    // and chat function remaining
+
+public void sendChat(final Chat chat){
+        //sender = username
+        reff.getReference("UserManager/"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                if(dataSnapshot.exists()){
+                    reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+
+                }
+                else{
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+}
+
+private void deleteMessages(final Chat chat){
+    reff.getReference("ChatManager/"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+            if(dataSnapshot.exists()){
+                reffChatManager.child(chat.getSender()).child(chat.getReceiver()).removeValue();
+
+            }
+            else{
+
+
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+
+
+}
+
+public void getReceiverList(final Context context, final ListView li, final String username){
+
+receiverList.clear();
+    reffChatManager.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            Log.d("===", String.valueOf(dataSnapshot.exists()));
+            if(dataSnapshot.exists()){
+              for(DataSnapshot data : dataSnapshot.getChildren()) {
+                  String key = data.getKey().toString();
+                  if (key.contains(username)) {
+                      String arr[] = key.split("_", 2);
+                      User user = new User("", "", "", "", "");
+
+                      if (!arr[0].equals(username)) {
+                          user.setUsername(arr[0]);
+                          Log.d("===", arr[0]);
+                      } else {
+                          user.setUsername(arr[1]);
+                      }
+                      receiverList.add(user);
+                      //find a way to improve filter
+                      //Log.d("===", user.getUsername().toString());
+                  }
+              }
+               // Log.d("===", receiverList.toString());
+
+            }
+            else{
+
+
+            }
+            UserArrayAdapter userAdapter = new UserArrayAdapter(context,R.layout.users_item_design,receiverList );
+            li.setAdapter(userAdapter);
+            userAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });
+
+}
+
+public void getMessages(final String username, final String receiver, final ListView li , final Context c){
+
+        final ArrayList<Chat>messages= new ArrayList<>();
+
+        reff.getReference("ChatManager/"+username+"_"+receiver).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.exists()){
+dataSnapshot1 = dataSnapshot;
+                }
+
+                else{
+                    reff.getReference("ChatManager/"+receiver+"_"+username).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+
+                            dataSnapshot1 = dataSnapshot;
+                                }
+
+                            }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+                Log.d("===", String.valueOf(dataSnapshot1.exists()));
+                      if(dataSnapshot1.exists()){
+                for(DataSnapshot chat : dataSnapshot1.getChildren()) {
+                    String receiver = chat.child("receiver").getValue().toString();
+                    String sender = chat.child("sender").getValue().toString();
+                    String message = chat.child("message").getValue().toString();
+
+                    Chat chat1 = new Chat(sender, message, receiver);
+                    messages.add(chat1);
+                }
+                      }
+
+
+
+                       messAdapter = new MessageArrayAdapter(c,R.layout.message_details_design,messages);
+                      messAdapter.notifyDataSetChanged();
+                      li.setAdapter(messAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+}
 
 
     private double getDistance(Point p1, Point p2) {

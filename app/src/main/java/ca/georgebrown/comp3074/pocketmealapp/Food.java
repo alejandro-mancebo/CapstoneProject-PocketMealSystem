@@ -3,26 +3,32 @@ package ca.georgebrown.comp3074.pocketmealapp;
 public class Food {
 
     private String foodname;
+    private Double distance;
+    private String category;
+    private String expiry_date;
+    private String ingredients;
+    private String email;
 
 
+    private String username;
+
+    private String description, Allergies;
+    private Point userPoint;
+
+    public String getUsername() {
+        return username; }
+
+    public void setUsername(String username) {
+        this.username = username; }
     public Double getDistance() {
         return distance;
     }
-
     public void setDistance(Double distance) {
         this.distance = distance;
     }
     public void setUserPoint(Point userPoint) {
         this.userPoint = userPoint;
     }
-
-    private Double distance;
-    private String category;
-    private String expiry_date;
-    private String ingredients;
-    private String email;
-    private Point userPoint;
-
     public String getFoodname() {
         return foodname;
     }
@@ -38,6 +44,24 @@ public class Food {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public Point getUserPoint() { return userPoint; }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAllergies() {
+        return Allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        Allergies = allergies;
+    }
+
+
     public void setUserPoint(double lat,double lon){
         userPoint.setLatitude(lat);
         userPoint.setLongitude(lon);

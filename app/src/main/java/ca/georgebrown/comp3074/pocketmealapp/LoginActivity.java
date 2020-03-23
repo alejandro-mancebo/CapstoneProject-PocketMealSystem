@@ -2,9 +2,14 @@ package ca.georgebrown.comp3074.pocketmealapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -32,12 +37,14 @@ public class LoginActivity extends AppCompatActivity {
 
     // Registration Request Code
     static final int REGISTRATION_REQUEST = 2;
+    private int STORAGE_PERMISSION_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // This is the creation of the LOGIN PAGE
+        requestStoregePremission();
 
         // Initialize Firebase Variables
         dbHelper = new DBHelper();
@@ -58,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
                 LoginActivity.this.startActivity(logIntent);
+
             }
         });
 
@@ -68,34 +76,41 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Firebase Authentication
-                String inputUser = emailField.getText().toString();
-                String inputPass = passField.getText().toString();
-                mAuth = FirebaseAuth.getInstance();
+                if(emailField.getText().toString().isEmpty() && passField.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "Please fill in all fields.", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    String inputUser = emailField.getText().toString();
+                    String inputPass = passField.getText().toString();
 
-                // Clear Password
-                passField.setText("");
 
-                mAuth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                    mAuth = FirebaseAuth.getInstance();
 
-                            currentUser = mAuth.getCurrentUser();
+                    // Clear Password
+                    passField.setText("");
 
-                            if(currentUser.isEmailVerified()){
-                                updateUI(currentUser);
+                    mAuth.signInWithEmailAndPassword(inputUser, inputPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+
+                                currentUser = mAuth.getCurrentUser();
+
+                                if(currentUser.isEmailVerified()){
+                                    updateUI(currentUser);
+                                }
+                                else {
+                                    Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
+                                }
                             }
                             else {
-                                Toast.makeText(LoginActivity.this, "Please verify your email address.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
-                        else {
-                            Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+                    });
 
-                inputPass = null;
+                    inputPass = null;
+                }
             }
         });
 
@@ -149,9 +164,42 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void requestStoregePremission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission Needed")
+                    .setMessage("This permission is needed for the food list that will automatically sort based on your current position.")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(LoginActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, STORAGE_PERMISSION_CODE);
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == STORAGE_PERMISSION_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(LoginActivity.this, "Location permission GRANTED", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(LoginActivity.this, "Location permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
-/*private void readData(final MyCallback myCall) {
+    /*private void readData(final MyCallback myCall) {
 
         reffUserManager.orderByKey().equalTo(filterEmailKey("Stephan.junior@gmail.com"))
                 .addListenerForSingleValueEvent(new ValueEventListener() {

@@ -18,18 +18,11 @@ public class FoodViewModel extends ViewModel {
 
     public FoodViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is food list fragment");
-       // dbHelper = new DBHelper();
-
+        mText.setValue("Food List (sort by Km)");
     }
 
     public LiveData<String> getText() {
         return mText;
     }
-  /*  public void setList(String username, double lon, double lat, ListView li, Context c){
 
-        dbHelper = new DBHelper();
-        dbHelper.getSpecificArrayList(username,lon,lat,li,c);
-
-    }*/
 }
