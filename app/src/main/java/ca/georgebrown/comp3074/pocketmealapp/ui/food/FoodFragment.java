@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -44,9 +45,14 @@ public class FoodFragment extends Fragment {
 
         GPStracker gps = new GPStracker(getActivity());
         Location l = gps.getLocation();
-         double longitude = l.getLongitude();
-         double latitude = l.getLatitude();
-        LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),longitude,latitude, li, getActivity());
+        if(l == null){
+            Toast.makeText(getContext(), "There is an issue with retrieving your location.", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            double longitude = l.getLongitude();
+            double latitude = l.getLatitude();
+            LoginActivity.dbHelper.getSpecificArrayList(LoginActivity.currentUser.getDisplayName(),longitude,latitude, li, getActivity());
+        }
 
         li.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
