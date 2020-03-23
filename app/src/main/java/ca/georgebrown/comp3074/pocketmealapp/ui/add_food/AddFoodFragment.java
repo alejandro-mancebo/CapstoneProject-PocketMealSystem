@@ -73,22 +73,19 @@ public class AddFoodFragment extends Fragment {
         foodExp = root.findViewById(R.id.expDateEdit);
 
         addFood = root.findViewById(R.id.addFoodBTN);
-
+        // What happens when someone clicks Add Food button.
         addFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // What happens when someone clicks Add Food button.
                 // Check Expiry Date provided by the user.
                 if (foodExp.getText().toString().matches("\\d{2}-\\d{2}-\\d{2}")) {
-
                     Food f = new Food("Type"+foodName.getText().toString()
                             ,foodExp.getText().toString()
                             ,foodAllergy.getText().toString()+foodDisc.getText().toString());
-
+                    // Set the location to the chosen location on the map or default the current location of the user's device
+                    f.setUserPoint(foodLat,foodLon);
+                    // Place food into the database
                     LoginActivity.dbHelper.addFood(LoginActivity.currentUser.getDisplayName(),foodName.getText().toString(),f);
-                    // Create food object and place it inside database. Use the LoginActivity.currentUser.getDisplayName() to see what user it should go under.
-
                 } else {
                     // Show error msg
                     Toast.makeText(getContext(), "Please enter a valid expiry date using the format provided.", Toast.LENGTH_LONG).show();
