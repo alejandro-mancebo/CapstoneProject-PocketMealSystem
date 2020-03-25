@@ -61,9 +61,7 @@ public class Food {
         userPoint = new Point(0,0);
     }
 
-    public Food(String foodname,
-            String category,
-            String expiry_date) {
+    public Food(String foodname, String category, String expiry_date) {
 
         this.foodname = foodname;
         this.category = category;
@@ -81,6 +79,33 @@ public class Food {
         // can check type of user before initiating the food list
 
         userPoint = new Point(0,0);
+    }
+
+    public Food(String foodname, String category, String expiry_date, String description, String email) {
+
+        this.foodname = foodname;
+        this.post_date = post_date;
+        this.expiry_date = expiry_date;
+        this.description = description;
+        //this.allergies = allergies;
+        this.category = category;
+        this.email = email;
+
+        userPoint = new Point(0,0);
+
+    }
+
+    public Food(String foodname, String post_date, String expiry_date, String description, String allergies, String category) {
+
+        this.foodname = foodname;
+        this.post_date = post_date;
+        this.expiry_date = expiry_date;
+        this.description = description;
+        this.allergies = allergies;
+        this.category = category;
+
+        userPoint = new Point(0,0);
+
     }
 
     public String toString() {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context=".LoginActivity">
 
     <TextView
@@ -28,18 +29,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginText" />
-
     <EditText
         android:id="@+id/loginEmailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
+        android:layout_marginTop="8dp"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/textViewPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"/>
 
     <TextView
         android:id="@+id/textViewPass"
@@ -50,19 +50,19 @@
         app:layout_constraintBottom_toTopOf="@+id/loginPasswordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginEmailText" />
+        app:layout_constraintTop_toBottomOf="@+id/loginEmailText"/>
 
     <EditText
         android:id="@+id/loginPasswordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ems="10"
+        android:layout_marginTop="8dp"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/loginBTN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPass" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPass"/>
 
     <Button
         android:id="@+id/loginBTN"
@@ -74,7 +74,7 @@
         android:text="Login"
         app:layout_constraintEnd_toStartOf="@+id/registerBTN"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPasswordText" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPasswordText"/>
 
     <Button
         android:id="@+id/registerBTN"
@@ -86,7 +86,7 @@
         android:text="Register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/loginBTN"
-        app:layout_constraintTop_toBottomOf="@+id/loginPasswordText" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPasswordText"/>
 
     <Button
         android:id="@+id/guestLoginBTN"

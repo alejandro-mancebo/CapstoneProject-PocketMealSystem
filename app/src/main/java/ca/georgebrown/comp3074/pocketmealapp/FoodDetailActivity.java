@@ -13,10 +13,10 @@ public class FoodDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_detail);
-        TextView txtVFoodType = findViewById(R.id.textVTypeFood);
-        TextView txtVIngre = findViewById(R.id.textVIngredient);
+        TextView txtVFoodType = findViewById(R.id.textVFoodName);
+        TextView txtVIngre = findViewById(R.id.textVDescription);
         TextView txtVUsername = findViewById(R.id.textVUsername);
-        TextView txtVExpiry = findViewById(R.id.textVExpiry);
+        TextView txtVExpiry = findViewById(R.id.textVAllergies);
 
         String str_FoodType = getIntent().getExtras().getString("FoodType");
         String str_Username = getIntent().getExtras().getString("FoodUsername");
