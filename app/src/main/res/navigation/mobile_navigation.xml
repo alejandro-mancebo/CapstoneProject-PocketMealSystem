@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_food">
+
+    <fragment
+        android:id="@+id/nav_food"
+        android:name="ca.georgebrown.comp3074.pocketmealapp.ui.food.FoodFragment"
+        android:label="@string/menu_food"
+        tools:layout="@layout/fragment_food" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="ca.georgebrown.comp3074.pocketmealapp.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_food_details"
+        android:name="ca.georgebrown.comp3074.pocketmealapp.ui.food_details.FoodDetailsFragment"
+        android:label="@string/menu_add_food"
+        tools:layout="@layout/fragment_food_details" />
+
+    <fragment
+        android:id="@+id/nav_messages"
+        android:name="ca.georgebrown.comp3074.pocketmealapp.ui.messages.MessagesFragment"
+        android:label="@string/menu_messages"
+        tools:layout="@layout/fragment_messages" />
+
+    <fragment
+        android:id="@+id/nav_add_food"
+        android:name="ca.georgebrown.comp3074.pocketmealapp.ui.add_food.AddFoodFragment"
+        android:label="@string/menu_add_food"
+        tools:layout="@layout/fragment_add_food" />
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="ca.georgebrown.comp3074.pocketmealapp.ui.logout.LogoutFragment"
+        android:label="@string/menu_logout"
+        tools:layout="@layout/fragment_logout" />
+</navigation>
