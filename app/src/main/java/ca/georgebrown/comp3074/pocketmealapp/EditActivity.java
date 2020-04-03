@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,22 +32,25 @@ public class EditActivity extends AppCompatActivity {
         final EditText txtBio = findViewById(R.id.editBioText);
         Button btnSaveEdit = findViewById(R.id.btnSaveEdit);
 
-        String str_FullName = getIntent().getExtras().getString("FullName");
-        String str_City = getIntent().getExtras().getString("CityPro");
+        final String str_FullName = getIntent().getExtras().getString("FullName");
+        final String str_City = getIntent().getExtras().getString("CityPro");
         final String str_EmailPro = getIntent().getExtras().getString("EmailPro");
-        String str_Bio = getIntent().getExtras().getString("Bio");
-
+        final String str_Bio = getIntent().getExtras().getString("Bio");
+        final String str_Digit = getIntent().getExtras().getString("digitPro");
         //set edit text
         txtEmailEdit.setText(str_EmailPro);
         txtCityEdit.setText(str_City);
+        txtDigit.setText(str_Digit);
         String arr_FullName[] = str_FullName.split("\\s+",2);
-        txtfName.setText(arr_FullName[0]);
-        txtlName.setText(arr_FullName[1]);
+        final String fN = arr_FullName[0];
+        final String lN = arr_FullName[1];
+        txtfName.setText(fN);
+        txtlName.setText(lN);
         txtBio.setText(str_Bio);
 
         //Pass command
 
-        final Map<String,String> mapCommand = new HashMap<String,String>();
+        final Map<String,String> mapCommand = new HashMap<>();
 
         btnSaveEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,30 +59,33 @@ public class EditActivity extends AppCompatActivity {
                 mapCommand.put("first_name",txtfName.getText().toString());
                 mapCommand.put("last_name",txtlName.getText().toString());
                 mapCommand.put("bio",txtBio.getText().toString());
-                String str_City_postal=txtCityEdit.getText().toString()+"_"+txtDigit.getText().toString().equals("");
-                if(!txtCityEdit.getText().toString().equals("") && txtDigit.getText().toString().equals("")){
-                    str_City_postal = txtCityEdit.getText().toString()+"_";
-                }
-                else if(txtCityEdit.getText().toString().equals("") && !txtDigit.getText().toString().equals("")){
-                    str_City_postal = "_"+txtDigit.getText().toString();
-
-                }
-                 mapCommand.put("city_postalcode",str_City_postal);
+                mapCommand.put("city_postalcode",txtCityEdit.getText().toString()+"_"+txtDigit.getText().toString());
                 mapCommand.put("password",txtPass.getText().toString());
+
+
                 for(Map.Entry mapElement : mapCommand.entrySet()){
-                    if(!mapElement.getValue().toString().equals("")) {
 
-                         if (mapElement.getKey().toString().equals("password")
-                                && !txtPass.getText().toString().equals(txtPass2.getText().toString())){
+                    Log.d("Whoo",mapElement.toString());
 
-                         }
-                        else{
-                            LoginActivity.dbHelper.updateUserInfo(str_EmailPro,mapElement.getValue().toString(),mapElement.getKey().toString());
+                    if(mapElement.getValue().toString().isEmpty()
+                            || mapElement.getValue().toString().equals(str_EmailPro)
+                            || mapElement.getValue().toString().equals(str_Bio)
+                            || mapElement.getValue().equals(fN)
+                            || mapElement.getValue().equals(lN)
+                            || mapElement.getValue().equals(str_City+"_"+str_Digit)
+                            || mapElement.getKey().toString().equals("password")
+                             && !mapElement.getValue().toString().equals(txtPass2.getText().toString())
+                            || mapElement.getValue().toString().equals("")
+                    ) {
 
-                        }
+                        continue;
+                    }
+
+                    else{
+
+                        LoginActivity.dbHelper.updateUserInfo(LoginActivity.currentUser.getDisplayName(), mapElement.getValue().toString(), mapElement.getKey().toString());
 
                     }
-                    else{continue;}
 
 
                 }

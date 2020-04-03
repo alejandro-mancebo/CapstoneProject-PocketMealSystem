@@ -37,6 +37,8 @@ public class ProfileFragment extends Fragment {
         final TextView txtFullName = root.findViewById(R.id.txtVFullName);
         final TextView txtBio = root.findViewById(R.id.txtVprofileBio);
         final TextView txtEmail = root.findViewById(R.id.textVEmailPro);
+        final TextView digit = root.findViewById(R.id.textVDigitPro);
+
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
 //change it to the parameter username passed
@@ -44,7 +46,7 @@ public class ProfileFragment extends Fragment {
          btnChat.setVisibility(View.GONE);
 
           txtUsername.setText(LoginActivity.currentUser.getDisplayName());
-          LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio);
+          LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio,digit);
 
            btnEdit.setOnClickListener(new View.OnClickListener() {
                @Override
@@ -55,6 +57,7 @@ public class ProfileFragment extends Fragment {
                    i.putExtra("FullName",txtFullName.getText().toString());
                    i.putExtra("CityPro",txtCity.getText().toString());
                    i.putExtra("EmailPro",txtEmail.getText().toString());
+                   i.putExtra("digitPro",digit.getText().toString());
                    i.putExtra("Bio",txtBio.getText());
 
                    startActivity(i);
@@ -66,7 +69,7 @@ public class ProfileFragment extends Fragment {
        else{
            btnEdit.setVisibility(View.GONE);
            txtUsername.setText(FoodDetailActivity.usernameProfile);
-           LoginActivity.dbHelper.setProfileInfo(FoodDetailActivity.usernameProfile,txtCity,txtFullName,txtEmail,txtBio);
+           LoginActivity.dbHelper.setProfileInfo(FoodDetailActivity.usernameProfile,txtCity,txtFullName,txtEmail,txtBio,digit);
            //use chat btn here
            btnChat.setOnClickListener(new View.OnClickListener() {
                @Override

@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MyFoodDetailActivity extends AppCompatActivity {
 
     @Override
@@ -18,25 +21,55 @@ public class MyFoodDetailActivity extends AppCompatActivity {
 
 
 
-        EditText txtVFoodType = findViewById(R.id.textVFoodName);
-        // TextView txtVIngre = findViewById(R.id.textVDescription);
+        final TextView txtVFoodType = findViewById(R.id.textVFoodName);
+         final EditText txtVDescript = findViewById(R.id.textVDescription);
+         final EditText txtAllergies = findViewById(R.id.textVAllergies);
         TextView txtVUsername = findViewById(R.id.textVUsernamePro);
-        EditText txtVExpiry = findViewById(R.id.textVAllergies);
-        Button btnEditFood = findViewById(R.id.btnSaveEditFood);
-        String str_FoodType = getIntent().getExtras().getString("FoodType");
-        //final String str_Username = getIntent().getExtras().getString("FoodUsername");
-        //  String str_Ingre = getIntent().getExtras().getString("FoodIngre");
-        String str_Expiry = getIntent().getExtras().getString("Expiry");
+        final EditText txtVExpiry = findViewById(R.id.textVAllergies);
 
-        txtVFoodType.setText(str_FoodType);
-        //  txtVIngre.setText("Ingredient:  "+ str_Ingre);
+        Button btnEditFood = findViewById(R.id.btnSaveEditFood);
+
+        final String str_FoodName = getIntent().getExtras().getString("FoodName");
+         final String str_Description = getIntent().getExtras().getString("Description");
+         final String str_Allergies = getIntent().getExtras().getString("Allergies");
+        final String str_Expiry = getIntent().getExtras().getString("Expiry");
+
+        txtVFoodType.setText(str_FoodName);
+        txtAllergies.setText(str_Allergies);
+        txtVDescript.setText(str_Description);
         txtVUsername.setText(LoginActivity.currentUser.getDisplayName());
         txtVExpiry.setText(str_Expiry);
+
+        final Map<String,String> commandFood = new HashMap<>();
+
 
         btnEditFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+                commandFood.put("description",txtVDescript.getText().toString());
+                commandFood.put("allergies",txtAllergies.getText().toString());
+                commandFood.put("expiry",txtVExpiry.getText().toString());
+
+
+                 for(Map.Entry mapElement : commandFood.entrySet()){
+                     if(mapElement.getValue().toString().equals("") ||
+                             mapElement.getValue().toString().equals(str_Allergies)
+                     || mapElement.getValue().toString().equals(str_Description) &&
+                             mapElement.getValue().toString().equals(str_Expiry)){
+
+                         continue;
+                     }
+                     else{
+
+                          LoginActivity.dbHelper.updateFood(LoginActivity.currentUser.getDisplayName(),mapElement.getValue().toString(),mapElement.getKey().toString(),str_FoodName);
+
+                      }
+
+
+
+                }
                 //save in db and go to add fragment
             }
         });

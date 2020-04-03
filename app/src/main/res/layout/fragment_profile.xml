@@ -13,12 +13,13 @@
         android:layout_marginLeft="12dp"
         android:layout_marginEnd="18dp"
         android:layout_marginRight="18dp"
-        android:layout_marginBottom="296dp"
+        android:layout_marginBottom="244dp"
         android:text="City"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textVCity"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -29,7 +30,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="28dp"
         android:layout_marginRight="28dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="56dp"
         android:text="Email"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -55,20 +56,20 @@
         android:id="@+id/txtVFullName"
         android:layout_width="246dp"
         android:layout_height="43dp"
-        android:layout_marginTop="79dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:text="Full Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EditBtn" />
 
     <TextView
         android:id="@+id/txtVprofileBio"
-        android:layout_width="300dp"
-        android:layout_height="142dp"
-        android:layout_marginTop="448dp"
-        android:layout_marginEnd="56dp"
-        android:layout_marginRight="56dp"
+        android:layout_width="316dp"
+        android:layout_height="117dp"
+        android:layout_marginTop="496dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
         android:text="Bio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_gallery" />
@@ -95,21 +96,18 @@
         android:text="Email"
         app:layout_constraintBottom_toTopOf="@+id/textVCity"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtVFullName" />
+        app:layout_constraintTop_toBottomOf="@+id/txtVFullName"
+        app:layout_constraintVertical_bias="0.866" />
 
     <TextView
         android:id="@+id/textVCity"
-        android:layout_width="248dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginLeft="18dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="143dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="48dp"
         android:text="City"
         app:layout_constraintBottom_toTopOf="@+id/txtVprofileBio"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView7" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textVUsernamePro"
@@ -143,7 +141,7 @@
         android:id="@+id/btnChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="16dp"
         android:text="Chat"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,5 +160,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_gallery"
         app:srcCompat="@drawable/ic_profile" />
+
+    <TextView
+        android:id="@+id/textVDigitPro"
+        android:layout_width="52dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginBottom="45dp"
+        android:text="Digit"
+        app:layout_constraintBottom_toTopOf="@+id/txtVprofileBio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textVEmailPro" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

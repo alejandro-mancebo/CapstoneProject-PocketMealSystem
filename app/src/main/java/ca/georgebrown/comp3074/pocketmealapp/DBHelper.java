@@ -78,9 +78,9 @@ public class DBHelper {
 
     }
 
-    public void updateUserInfo(final String email, final String newData, final String columnToBeUpdated) {
+    public void updateUserInfo(final String username, final String newData, final String columnToBeUpdated) {
 
-        reffUserManager.orderByChild("email").equalTo(email)
+        reff.getReference("UserManager/"+username)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
@@ -89,33 +89,33 @@ public class DBHelper {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
                         if (dataSnapshot.exists()) {
-                            //update email,  not lat and lon and id
-                            String username = dataSnapshot.getKey().toString();
+
                             if (columnToBeUpdated.equals("email")) {
 
                                 DatabaseReference specificReff = reff.getReference("UserManager/" + username);
                                 specificReff.child(columnToBeUpdated).setValue(newData);
 
                                 user.updateEmail(newData);
-
+                                Log.d("User Info Update", "User Information updated successfully");
                             }
 
-                            if(columnToBeUpdated.equals("password")){
+                          else if(columnToBeUpdated.equals("password")){
 
                                 user.updatePassword(newData);
-
+                                Log.d("User Info Update", "User Information updated successfully");
                             }
-                            if(columnToBeUpdated.equals("city_postalcode")){
+                           else if(columnToBeUpdated.equals("city_postalcode")){
                               String lastChar = String.valueOf(newData.charAt(newData.length()-1));
                               String firstChar = String.valueOf(newData.charAt(0));
                                 DatabaseReference specificReff = reff.getReference("UserManager/" + username);
                                 String arr_city_pos[]=  dataSnapshot.child("city_postalcode").toString().split("_",2);
                                 if(lastChar.equals("_")){
                                     specificReff.child(columnToBeUpdated).setValue(newData+arr_city_pos[1]);
+                                    Log.d("User Info Update", "User Information updated successfully");
                                 }
                                 else if(firstChar.equals("_")){
                                     specificReff.child(columnToBeUpdated).setValue(arr_city_pos[0]+newData);
-
+                                    Log.d("User Info Update", "User Information updated successfully");
                                 }
                                 else{
 
@@ -125,7 +125,7 @@ public class DBHelper {
 
                             }
 
-                            if (columnToBeUpdated.equals("first_name") || columnToBeUpdated.equals("last_name")  || columnToBeUpdated.equals("bio")) {
+                          else if (columnToBeUpdated.equals("first_name") || columnToBeUpdated.equals("last_name")  || columnToBeUpdated.equals("bio")) {
                                 DatabaseReference specificReff = reff.getReference("UserManager/" + username);
                                 specificReff.child(columnToBeUpdated).setValue(newData);
                                 Log.d("User Info Update", "User Information updated successfully");
@@ -224,19 +224,8 @@ public class DBHelper {
 
                         if (dataSnapshot.exists()) {
                             //update email,  not lat and lon and id
-                            if (columnToBeUpdated.equals("foodname")) {
-                                String cat = dataSnapshot.child("category").getValue().toString();
-                                String ingredients = dataSnapshot.child("ingredients").getValue().toString();
-                                String expi = dataSnapshot.child("expiry_date").getValue().toString();
-
-                                Food f = new Food(cat, expi, ingredients);
-
-                                addFood(username, newData, f);
-                                Log.d("Food Update", "Food updated");
-
-
-                            } else if (columnToBeUpdated.equals("category") || columnToBeUpdated.equals("expiry_date") ||
-                                    columnToBeUpdated.equals("ingredients")) {
+                          if (columnToBeUpdated.equals("category") || columnToBeUpdated.equals("expiry_date") ||
+                                    columnToBeUpdated.equals("ingredients") || columnToBeUpdated.equals("allergies")) {
                                 DatabaseReference specificReff = reff.getReference("UserManager/" + username + "/FoodList/" + Foodname);
                                 specificReff.child(columnToBeUpdated).setValue(newData);
                                 Log.d("Food Update", "Food updated");
@@ -338,7 +327,7 @@ public class DBHelper {
                             if (dataSnapshot.getValue() != null ) {
                                 for (DataSnapshot dataUser : dataSnapshot.getChildren()) {
                                    if(dataUser.getKey().toString().equals(username)){continue;}
-                                   
+
                                     String email = dataUser.child("email").getValue().toString();
                                     double lon  =0;
                                     double lat = 0;
@@ -434,7 +423,8 @@ public class DBHelper {
         });
     }
 
-    public void setProfileInfo(String username, final TextView City, final TextView fullName, final TextView Email, final TextView Bio){
+    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio,
+                               final TextView digit){
 
         reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -455,7 +445,9 @@ public class DBHelper {
                     Email.setText(email);
                     Bio.setText(bio);
                     String arr_city[] =  city.split("_",2);
-                    City.setText(arr_city[0]);
+                    City_postal.setText(arr_city[0]);
+
+                    digit.setText(arr_city[1]);
                     //for now user cannot update username
                     // textview will be set here..
 

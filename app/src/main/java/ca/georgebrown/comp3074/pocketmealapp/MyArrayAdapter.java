@@ -43,7 +43,8 @@ public class MyArrayAdapter extends ArrayAdapter<Food> {
 
         else{
             TextView txtFoodName = convertView.findViewById(R.id.textVMyFoodName);
-            txtFoodName.setText(getItem(position).getFoodname());
+            txtFoodName.setText(getItem(position).getFoodname() +"         "+getItem(position).getCategory()
+                    +"         "+getItem(position).getAllergies() +"         "+getItem(position).getExpiry_date());
             ImageView btnEditFood = convertView.findViewById(R.id.imageVEditFood);
             ImageView btnDelete = convertView.findViewById(R.id.imageVDel);
 
@@ -53,9 +54,11 @@ public class MyArrayAdapter extends ArrayAdapter<Food> {
                 public void onClick(View v) {
                     Intent i = new Intent(getContext(),MyFoodDetailActivity.class);
 
-                    i.putExtra("FoodType",getItem(position).getFoodname());
+                    i.putExtra("FoodName",getItem(position).getFoodname());
                     i.putExtra("FoodUsername",LoginActivity.currentUser.getDisplayName());
                     //  String str_Ingre = getIntent().getExtras().getString("FoodIngre");
+                    i.putExtra("Description",getItem(position).getDescription());
+                    i.putExtra("Allergies",getItem(position).getAllergies());
                     i.putExtra("Expiry",getItem(position).getExpiry_date());
                     getContext().startActivity(i);
 
