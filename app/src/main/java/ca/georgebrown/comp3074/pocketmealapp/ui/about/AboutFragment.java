@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import ca.georgebrown.comp3074.pocketmealapp.R;
@@ -18,11 +19,14 @@ public class AboutFragment extends Fragment {
 
     // UI Navigation Code Variables
     private TextView AboutContent;
+    private Button btnBack;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
+        View root = inflater.inflate(R.layout.fragment_about, container, false);
+        btnBack = root.findViewById(R.id.buttonBack);
 
         View aboutPage = new AboutPage(getContext())
                 .isRTL(false)
@@ -35,7 +39,12 @@ public class AboutFragment extends Fragment {
                 .addEmail("101133638@georgebrown.ca")
                 .create();
 
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
 
         return inflater.inflate(R.layout.fragment_about, container, false);
     }

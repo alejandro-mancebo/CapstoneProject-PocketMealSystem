@@ -14,7 +14,8 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyFoodDetailActivity"></activity>
+        <activity android:name=".AgreementTermsActivity"></activity>
+        <activity android:name=".MyFoodDetailActivity" />
         <activity android:name=".MyFoodListActivity" />
         <activity android:name=".EditActivity" />
 
