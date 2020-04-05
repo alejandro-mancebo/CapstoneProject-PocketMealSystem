@@ -33,7 +33,6 @@ public class FoodDetailsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_food_details, container, false);
         final TextView textView = root.findViewById(R.id.text_food_details);
 
-
         final TextView txtVFoodType = root.findViewById(R.id.textVFoodName);
         final TextView txtVDescript = root.findViewById(R.id.textVDescription);
         final TextView txtAllergies = root.findViewById(R.id.textVAllergies);
@@ -57,7 +56,7 @@ public class FoodDetailsFragment extends Fragment {
         txtVFoodType.setText(str_FoodName);
         txtAllergies.setText(str_Allergies);
         txtVDescript.setText(str_Description);
-        txtVUsername.setText(LoginActivity.currentUser.getDisplayName());
+        txtVUsername.setText(str_Username);
         txtVExpiry.setText(str_Expiry);
 
         txtVUsername.setOnClickListener(new View.OnClickListener() {

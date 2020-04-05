@@ -42,8 +42,11 @@ public class ProfileFragment extends Fragment {
 
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
+
+        final String str_Username = getArguments().getString("Username");
+
 //change it to the parameter username passed
-        if(FoodDetailActivity.usernameProfile.equals("")){
+        if(str_Username.equals("")){
             btnChat.setVisibility(View.GONE);
 
             if(LoginActivity.currentUser != null){
