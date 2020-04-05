@@ -18,20 +18,17 @@ public class MyFoodDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_food_detail);
 
-
-
-
         final TextView txtVFoodType = findViewById(R.id.textVFoodName);
-         final EditText txtVDescript = findViewById(R.id.textVDescription);
-         final EditText txtAllergies = findViewById(R.id.textVAllergies);
+        final EditText txtVDescript = findViewById(R.id.textVDescription);
+        final EditText txtAllergies = findViewById(R.id.textVAllergies);
         TextView txtVUsername = findViewById(R.id.textVUsernamePro);
         final EditText txtVExpiry = findViewById(R.id.textVAllergies);
 
         Button btnEditFood = findViewById(R.id.btnSaveEditFood);
 
         final String str_FoodName = getIntent().getExtras().getString("FoodName");
-         final String str_Description = getIntent().getExtras().getString("Description");
-         final String str_Allergies = getIntent().getExtras().getString("Allergies");
+        final String str_Description = getIntent().getExtras().getString("Description");
+        final String str_Allergies = getIntent().getExtras().getString("Allergies");
         final String str_Expiry = getIntent().getExtras().getString("Expiry");
 
         txtVFoodType.setText(str_FoodName);
@@ -47,13 +44,11 @@ public class MyFoodDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 commandFood.put("description",txtVDescript.getText().toString());
                 commandFood.put("allergies",txtAllergies.getText().toString());
                 commandFood.put("expiry",txtVExpiry.getText().toString());
 
-
-                 for(Map.Entry mapElement : commandFood.entrySet()){
+                for(Map.Entry mapElement : commandFood.entrySet()){
                      if(mapElement.getValue().toString().equals("") ||
                              mapElement.getValue().toString().equals(str_Allergies)
                      || mapElement.getValue().toString().equals(str_Description) &&
@@ -62,13 +57,8 @@ public class MyFoodDetailActivity extends AppCompatActivity {
                          continue;
                      }
                      else{
-
                           LoginActivity.dbHelper.updateFood(LoginActivity.currentUser.getDisplayName(),mapElement.getValue().toString(),mapElement.getKey().toString(),str_FoodName);
-
-                      }
-
-
-
+                     }
                 }
                 //save in db and go to add fragment
             }

@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel =
                 ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+
         final TextView textView = root.findViewById(R.id.text_gallery);
         final TextView txtUsername = root.findViewById(R.id.textVUsernamePro);
         final TextView txtCity = root.findViewById(R.id.textVCity);
@@ -41,14 +42,24 @@ public class ProfileFragment extends Fragment {
 
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
+
+         String str_Username = "";
+        if(!getArguments().getString("Username").isEmpty()){
+
+            str_Username = getArguments().getString("Username");
+
+        };
+
 //change it to the parameter username passed
-       if(FoodDetailActivity.usernameProfile.equals("")){
-         btnChat.setVisibility(View.GONE);
+        if(str_Username.equals("")){
+            btnChat.setVisibility(View.GONE);
 
-          txtUsername.setText(LoginActivity.currentUser.getDisplayName());
-          LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio,digit);
+            if(LoginActivity.currentUser != null){
+                txtUsername.setText(LoginActivity.currentUser.getDisplayName());
+                LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio,digit);
+            }
 
-           btnEdit.setOnClickListener(new View.OnClickListener() {
+            btnEdit.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
 
@@ -62,29 +73,26 @@ public class ProfileFragment extends Fragment {
 
                    startActivity(i);
                }
-           });
-
+            });
        }
-
        else{
            btnEdit.setVisibility(View.GONE);
-           txtUsername.setText(FoodDetailActivity.usernameProfile);
-           LoginActivity.dbHelper.setProfileInfo(FoodDetailActivity.usernameProfile,txtCity,txtFullName,txtEmail,txtBio,digit);
+           txtUsername.setText(str_Username);
+           LoginActivity.dbHelper.setProfileInfo(str_Username,txtCity,txtFullName,txtEmail,txtBio,digit);
            //use chat btn here
-           btnChat.setOnClickListener(new View.OnClickListener() {
+            final String finalStr_Username = str_Username;
+            btnChat.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
 
                    Intent i = new Intent(getActivity(), ChatDetails.class);
-                   i.putExtra("Receiver","His username here");
+                   i.putExtra("Receiver", finalStr_Username);
                    startActivity(i);
 
                }
            });
-
-
-
        }
+
         profileViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

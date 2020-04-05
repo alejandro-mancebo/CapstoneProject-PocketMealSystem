@@ -1,8 +1,9 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,18 +34,24 @@ public class FoodDetailActivity extends AppCompatActivity {
         txtVUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //--------------go to profile fragment with passed parameters str_Username--------------
 
-               //--------------go to profile fragment with passed parameters str_Username--------------
+                // Create fragment and give it an argument specifying the article it should show
+                ProfileFragment newFragment = new ProfileFragment();
+                Bundle args = new Bundle();
+                int position = 0;
+                args.putInt(str_Username, position);
+                newFragment.setArguments(args);
 
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-               // Intent i = new Intent(FoodDetailActivity.this, ProfileFragment.class);
-                usernameProfile = str_Username;
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.nav_host_fragment, newFragment);
+                transaction.addToBackStack(null);
 
-             //  ProfileFragment fragment = new ProfileFragment();
-             //   FragmentManager fragmentManager = getSupportFragmentManager();
-             //   fragmentManager.beginTransaction().replace(R.id.fragment_Profile,fragment).commit();
-
-               // startActivity(i);
+                // Commit the transaction
+                transaction.commit();
             }
         });
 
