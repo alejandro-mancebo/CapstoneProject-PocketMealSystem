@@ -1,17 +1,26 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
+import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -31,10 +40,20 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
+import java.net.URL;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 public class drawer_activity extends AppCompatActivity {
+
+    private static final int PICK_IMAGE_REQUEST = 200;
+
+    private TextView navUserEmail;
+    private TextView navUserName;
+    private ImageView navUserImage;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -58,8 +77,9 @@ public class drawer_activity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
         if (LoginActivity.currentUser != null) {
-            updateNavHeader();
+            // updateNavHeader();
         }
 
     }
@@ -82,20 +102,35 @@ public class drawer_activity extends AppCompatActivity {
     public void updateNavHeader(){
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUserEmail = headerView.findViewById(R.id.nav_user_email);
-        TextView navUserName = headerView.findViewById(R.id.nav_user_username);
-        ImageView navUserImage = headerView.findViewById(R.id.nav_user_image);
+        navUserEmail = headerView.findViewById(R.id.nav_user_email);
+        navUserName = headerView.findViewById(R.id.nav_user_username);
+        navUserImage = headerView.findViewById(R.id.nav_user_image);
+        if (LoginActivity.currentUser != null) {
+            navUserEmail.setText(LoginActivity.currentUser.getEmail());
+            navUserName.setText(LoginActivity.currentUser.getDisplayName());
 
-        navUserEmail.setText(LoginActivity.currentUser.getEmail());
-        navUserName.setText(LoginActivity.currentUser.getDisplayName());
+            LoginActivity.mStorageRef.child("pics/").child(LoginActivity.mAuth.getInstance().getCurrentUser().getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Toast t = new Toast(getApplicationContext());
+                    //LoginActivity.dbHelper.getProfilePic(this, getApplicationContext(), navUserImage, uri, t);
+                    // GET IMAGE AND PLACE IT INTO navUserImage
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(drawer_activity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
 
-        final Uri[] imageUri = new Uri[1];
-        LoginActivity.mStorageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> urlTask) {
-                imageUri[0] = urlTask.getResult();
-            }
-        });
-        navUserImage.setImageURI(imageUri[0]);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+//        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK){
+//            // FOR USE IN LATER ACTIVITIES THAT MIGHT REQUIRE A RESULT
+//        }
     }
 }

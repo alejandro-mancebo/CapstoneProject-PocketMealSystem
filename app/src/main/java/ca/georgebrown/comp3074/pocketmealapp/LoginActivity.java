@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     public static FirebaseAuth mAuth;
     public static FirebaseUser currentUser;
     public static StorageReference mStorageRef;
+    public static DatabaseReference mDatabaseRef;
 
     // Location Manager
     public static LocationManager lManager;
@@ -57,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize Firebase Variables
         dbHelper = new DBHelper();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         // UI Navigation Code
         logIn = findViewById(R.id.loginBTN);

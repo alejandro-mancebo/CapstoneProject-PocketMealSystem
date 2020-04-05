@@ -42,13 +42,15 @@ public class ProfileFragment extends Fragment {
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
 //change it to the parameter username passed
-       if(FoodDetailActivity.usernameProfile.equals("")){
-         btnChat.setVisibility(View.GONE);
+        if(FoodDetailActivity.usernameProfile.equals("")){
+            btnChat.setVisibility(View.GONE);
 
-          txtUsername.setText(LoginActivity.currentUser.getDisplayName());
-          LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio,digit);
+            if(LoginActivity.currentUser != null){
+                txtUsername.setText(LoginActivity.currentUser.getDisplayName());
+                LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio,digit);
+            }
 
-           btnEdit.setOnClickListener(new View.OnClickListener() {
+            btnEdit.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
 
@@ -62,10 +64,8 @@ public class ProfileFragment extends Fragment {
 
                    startActivity(i);
                }
-           });
-
+            });
        }
-
        else{
            btnEdit.setVisibility(View.GONE);
            txtUsername.setText(FoodDetailActivity.usernameProfile);
@@ -81,10 +81,8 @@ public class ProfileFragment extends Fragment {
 
                }
            });
-
-
-
        }
+
         profileViewModel.getText().observe(getActivity(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

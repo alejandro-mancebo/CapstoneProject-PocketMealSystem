@@ -1,16 +1,22 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
@@ -32,6 +39,9 @@ public class DBHelper {
     private FirebaseDatabase reff;
     private DatabaseReference reffUserManager;
     private DatabaseReference reffChatManager;
+    private DatabaseReference imgDatabaseReff;
+    private StorageReference imgStorageReff;
+
     private DataSnapshot dataSnapshot1;
     public static MessageArrayAdapter messAdapter;
     private  ArrayList<User> receiverList = new ArrayList<>();
@@ -41,6 +51,9 @@ public class DBHelper {
         reff = FirebaseDatabase.getInstance();
         reffUserManager = reff.getReference("UserManager");
         reffChatManager = reff.getReference("ChatManager");
+        imgStorageReff = FirebaseStorage.getInstance().getReference("pics");
+        imgDatabaseReff = FirebaseDatabase.getInstance().getReference("pics");
+
     }
 
     public void insertUser(final String username, final User u) {
@@ -619,6 +632,21 @@ public class DBHelper {
 
     private double deg2rad(double deg) {
         return deg * (Math.PI / 180);
+    }
+
+    // UNSURE IF IT WORKS!
+    private void getProfilePic(final Activity activity, final Context context, final OnSuccessListener<Uri> uri, final ImageView imageView, final Toast errToast){
+        imgDatabaseReff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Glide.with(context).load(uri).into(imageView); // imgStorageReff.child(LoginActivity.currentUser.getUid() + ".JPEG")
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                errToast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
