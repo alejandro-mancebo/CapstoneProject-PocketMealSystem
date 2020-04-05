@@ -42,7 +42,6 @@ public class DBHelper {
     private DatabaseReference imgDatabaseReff;
     private StorageReference imgStorageReff;
 
-    private DataSnapshot dataSnapshot1;
     public static MessageArrayAdapter messAdapter;
     private  ArrayList<User> receiverList = new ArrayList<>();
 
@@ -574,33 +573,35 @@ public class DBHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists()){ dataSnapshot1 = dataSnapshot; }
+                if(dataSnapshot.exists()){ for(DataSnapshot chat : dataSnapshot.getChildren()) {
+                    String receiver = chat.child("receiver").getValue().toString();
+                    String sender = chat.child("sender").getValue().toString();
+                    String message = chat.child("message").getValue().toString();
+
+                    Chat chat1 = new Chat(sender, message, receiver);
+                    messages.add(chat1);
+                } }
                 else{
                     reff.getReference("ChatManager/"+receiver+"_"+username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) { dataSnapshot1 = dataSnapshot; }
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                            if (dataSnapshot1.exists()) {
+                                for(DataSnapshot chat : dataSnapshot1.getChildren()) {
+                                    String receiver = chat.child("receiver").getValue().toString();
+                                    String sender = chat.child("sender").getValue().toString();
+                                    String message = chat.child("message").getValue().toString();
+
+                                    Chat chat1 = new Chat(sender, message, receiver);
+                                    messages.add(chat1);
+                                }
+
+                            }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
-                }
-
-                if(dataSnapshot1.exists()) {
-                    Log.d("===", String.valueOf(dataSnapshot1.exists()));
-                }
-
-                if(dataSnapshot1.exists()){
-                    for(DataSnapshot chat : dataSnapshot1.getChildren()) {
-                        String receiver = chat.child("receiver").getValue().toString();
-                        String sender = chat.child("sender").getValue().toString();
-                        String message = chat.child("message").getValue().toString();
-
-                        Chat chat1 = new Chat(sender, message, receiver);
-                        messages.add(chat1);
-                    }
                 }
 
                 messAdapter = new MessageArrayAdapter(c,R.layout.message_details_design,messages);

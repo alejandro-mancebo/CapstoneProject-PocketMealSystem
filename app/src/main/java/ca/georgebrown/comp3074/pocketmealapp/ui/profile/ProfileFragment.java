@@ -46,7 +46,12 @@ public class ProfileFragment extends Fragment {
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
 
-        final String str_Username = getArguments().getString("Username");
+        String str_Username = "";
+        if(!getArguments().getString("Username").isEmpty()){
+
+            str_Username = getArguments().getString("Username");
+
+        };
 
 //change it to the parameter username passed
         if(str_Username.equals("")){
@@ -99,12 +104,13 @@ public class ProfileFragment extends Fragment {
            txtUsername.setText(str_Username);
            LoginActivity.dbHelper.setProfileInfo(str_Username,txtCity,txtFullName,txtEmail,txtBio,digit);
            //use chat btn here
-           btnChat.setOnClickListener(new View.OnClickListener() {
+            final String finalStr_Username = str_Username;
+            btnChat.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
 
                    Intent i = new Intent(getActivity(), ChatDetails.class);
-                   i.putExtra("Receiver","His username here");
+                   i.putExtra("Receiver", finalStr_Username);
                    startActivity(i);
 
                }
