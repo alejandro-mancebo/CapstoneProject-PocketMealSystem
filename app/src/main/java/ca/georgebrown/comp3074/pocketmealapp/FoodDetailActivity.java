@@ -1,8 +1,8 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,18 +33,16 @@ public class FoodDetailActivity extends AppCompatActivity {
         txtVUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //--------------go to profile fragment with passed parameters str_Username--------------
 
-               //--------------go to profile fragment with passed parameters str_Username--------------
 
-
-               // Intent i = new Intent(FoodDetailActivity.this, ProfileFragment.class);
+                // Intent i = new Intent(FoodDetailActivity.this, ProfileFragment.class);
                 usernameProfile = str_Username;
+                ProfileFragment profileFragment = new ProfileFragment();
+                FragmentManager manager = getFragmentManager();
+                manager.beginTransaction().replace(R.id.nav_host_fragment, ProfileFragment).commit();
 
-             //  ProfileFragment fragment = new ProfileFragment();
-             //   FragmentManager fragmentManager = getSupportFragmentManager();
-             //   fragmentManager.beginTransaction().replace(R.id.fragment_Profile,fragment).commit();
-
-               // startActivity(i);
+                // startActivity(i);
             }
         });
 

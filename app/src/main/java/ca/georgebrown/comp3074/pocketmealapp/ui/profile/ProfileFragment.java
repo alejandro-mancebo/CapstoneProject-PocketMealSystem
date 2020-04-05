@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel =
                 ViewModelProviders.of(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
+
         final TextView textView = root.findViewById(R.id.text_gallery);
         final TextView txtUsername = root.findViewById(R.id.textVUsernamePro);
         final TextView txtCity = root.findViewById(R.id.textVCity);
