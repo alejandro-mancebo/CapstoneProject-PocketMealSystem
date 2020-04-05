@@ -42,7 +42,6 @@ public class DBHelper {
     private DatabaseReference imgDatabaseReff;
     private StorageReference imgStorageReff;
 
-
     public static MessageArrayAdapter messAdapter;
     private  ArrayList<User> receiverList = new ArrayList<>();
 
@@ -448,9 +447,8 @@ public class DBHelper {
                     String lastName = dataSnapshot.child("last_name").getValue().toString();
                     String firstName = dataSnapshot.child("first_name").getValue().toString();
                     String city = dataSnapshot.child("city_postalcode").getValue().toString();
-                     String bio = "";
+                    String bio = "";
                     if(dataSnapshot.child("bio").exists()){
-
                         bio = dataSnapshot.child("bio").getValue().toString();
                     }
 
