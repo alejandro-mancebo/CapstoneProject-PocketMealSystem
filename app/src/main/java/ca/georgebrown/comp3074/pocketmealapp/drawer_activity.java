@@ -1,13 +1,17 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -85,6 +89,13 @@ public class drawer_activity extends AppCompatActivity {
         navUserEmail.setText(LoginActivity.currentUser.getEmail());
         navUserName.setText(LoginActivity.currentUser.getDisplayName());
 
-        // Update Profile Picture Code Goes Here.
+        final Uri[] imageUri = new Uri[1];
+        LoginActivity.mStorageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> urlTask) {
+                imageUri[0] = urlTask.getResult();
+            }
+        });
+        navUserImage.setImageURI(imageUri[0]);
     }
 }
