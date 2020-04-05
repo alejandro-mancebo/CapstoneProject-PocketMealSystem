@@ -448,9 +448,8 @@ public class DBHelper {
                     String lastName = dataSnapshot.child("last_name").getValue().toString();
                     String firstName = dataSnapshot.child("first_name").getValue().toString();
                     String city = dataSnapshot.child("city_postalcode").getValue().toString();
-                     String bio = "";
+                    String bio = "";
                     if(dataSnapshot.child("bio").exists()){
-
                         bio = dataSnapshot.child("bio").getValue().toString();
                     }
 
@@ -589,7 +588,9 @@ public class DBHelper {
                     });
                 }
 
-                Log.d("===", String.valueOf(dataSnapshot1.exists()));
+                if(dataSnapshot1.exists()) {
+                    Log.d("===", String.valueOf(dataSnapshot1.exists()));
+                }
 
                 if(dataSnapshot1.exists()){
                     for(DataSnapshot chat : dataSnapshot1.getChildren()) {
