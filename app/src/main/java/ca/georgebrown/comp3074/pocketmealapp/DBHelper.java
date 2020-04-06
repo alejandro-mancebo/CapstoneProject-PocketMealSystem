@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -435,12 +437,11 @@ public class DBHelper {
         });
     }
 
-    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio){ //, final TextView digit
+    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio, final ImageView imageView){ //, final TextView digit
 
         reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 if(dataSnapshot.exists()) {
                     String email = dataSnapshot.child("email").getValue().toString();
                     String lastName = dataSnapshot.child("last_name").getValue().toString();
@@ -454,18 +455,30 @@ public class DBHelper {
                     fullName.setText(firstName +"  "+lastName);
                     Email.setText(email);
                     Bio.setText(bio);
-//                    String arr_city[] = city.split("_",2);
+                    // String arr_city[] = city.split("_",2);
                     City_postal.setText(city); //arr_city[0]
 
-                    //digit.setText(arr_city[1]);
-                    //for now user cannot update username
+                    // digit.setText(arr_city[1]);
+                    // for now user cannot update username
                     // textview will be set here..
 
-
+                    // Setting image for profile needs to get UID of certain user.
+                    // HOW DO YOU FIND UID OF USER WITH NAME X SET THAT TO EQUAL userID and code will work!
+                    String userID = LoginActivity.mAuth.getInstance().getCurrentUser().getUid(); // NEEDS FIX BY STEEVEN
+                    String photoID = userID + ".jpg";
+                    LoginActivity.mStorageRef.child(photoID).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).into(imageView);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Toast.makeText(drawer_activity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
-
                 else{
-
                     Log.d("User does not exit", "No Data");
                 }
             }
@@ -475,8 +488,6 @@ public class DBHelper {
 
             }
         });
-
-
     }
 
     // and chat function remaining

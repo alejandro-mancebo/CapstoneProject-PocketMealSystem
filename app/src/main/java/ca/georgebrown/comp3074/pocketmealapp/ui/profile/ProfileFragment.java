@@ -1,12 +1,14 @@
 package ca.georgebrown.comp3074.pocketmealapp.ui.profile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -15,6 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.squareup.picasso.Picasso;
 
 import ca.georgebrown.comp3074.pocketmealapp.Chat;
 import ca.georgebrown.comp3074.pocketmealapp.ChatDetails;
@@ -42,6 +48,7 @@ public class ProfileFragment extends Fragment {
         final TextView txtBio = root.findViewById(R.id.txtVprofileBio);
         final TextView txtEmail = root.findViewById(R.id.textVEmailPro);
 //        final TextView digit = root.findViewById(R.id.textVDigitPro);
+        final ImageView imageView = root.findViewById(R.id.imageView2);
 
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
@@ -59,7 +66,7 @@ public class ProfileFragment extends Fragment {
 
             if(LoginActivity.currentUser != null){
                 txtUsername.setText(LoginActivity.currentUser.getDisplayName());
-                LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio); // ,digit
+                LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio, imageView); // ,digit
             }
 
             btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -102,19 +109,17 @@ public class ProfileFragment extends Fragment {
        else{
            btnEdit.setVisibility(View.GONE);
            txtUsername.setText(str_Username);
-           LoginActivity.dbHelper.setProfileInfo(str_Username,txtCity,txtFullName,txtEmail,txtBio); // ,digit
+           LoginActivity.dbHelper.setProfileInfo(str_Username,txtCity,txtFullName,txtEmail,txtBio, imageView); // ,digit
            //use chat btn here
             final String finalStr_Username = str_Username;
             btnChat.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-
                    Intent i = new Intent(getActivity(), ChatDetails.class);
                    i.putExtra("Receiver", finalStr_Username);
                    startActivity(i);
-
                }
-           });
+            });
        }
 
         profileViewModel.getText().observe(getActivity(), new Observer<String>() {
