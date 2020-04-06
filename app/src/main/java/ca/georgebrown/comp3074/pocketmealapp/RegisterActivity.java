@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         fnameField = findViewById(R.id.txtfNameEdit);
         lnameField = findViewById(R.id.txtLNameEdit);
         cityField = findViewById(R.id.txtcityEdit);
-        postalField = findViewById(R.id.txtDigitEdit);
+//      postalField = findViewById(R.id.txtDigitEdit);
 
         // User inputs must be:
 
@@ -59,14 +59,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String passwordConfirm = passConfirmField.getText().toString();
 
                 // Sanitized
-                if(postalField.length() == 2) {
+                //if(postalField.length() == 2) {
                     if (passField.length() > 7 && password.equals(passwordConfirm)) {
                         // Creating user object from provided fields.
                         final User u = new User(userEmail,
                                 fnameField.getText().toString(),
                                 lnameField.getText().toString(),
                                 cityField.getText().toString(),
-                                postalField.getText().toString());
+                                ""); // postalField.getText().toString()
 
                         // Registration process with firebase.
                         LoginActivity.mAuth = FirebaseAuth.getInstance();
@@ -109,10 +109,10 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(RegisterActivity.this, "Your password must be 8 characters long and match the confirm password.", Toast.LENGTH_LONG).show();
                     }
-                }
-                else {
-                    Toast.makeText(RegisterActivity.this, "Please provide the first two characters of your postal code.", Toast.LENGTH_LONG).show();
-                }
+//                }
+//                else {
+//                    Toast.makeText(RegisterActivity.this, "Please provide the first two characters of your postal code.", Toast.LENGTH_LONG).show();
+//                }
             }
         });
     }

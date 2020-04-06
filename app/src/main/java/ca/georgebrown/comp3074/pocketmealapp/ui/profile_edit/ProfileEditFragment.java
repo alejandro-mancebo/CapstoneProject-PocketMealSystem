@@ -90,7 +90,7 @@ public class ProfileEditFragment extends Fragment {
         txtfName = root.findViewById(R.id.txtfNameEdit);
         txtlName = root.findViewById(R.id.txtLNameEdit);
         txtCityEdit = root.findViewById(R.id.txtcityEdit);
-        txtDigit = root.findViewById(R.id.txtDigitEdit);
+//        txtDigit = root.findViewById(R.id.txtDigitEdit);
         txtPass = root.findViewById(R.id.txtPassEdit);
         txtPass2 = root.findViewById(R.id.txtPassEdit2);
         txtBio = root.findViewById(R.id.editBioText);
@@ -101,12 +101,12 @@ public class ProfileEditFragment extends Fragment {
         final String str_City = getArguments().getString("CityPro");
         final String str_EmailPro = getArguments().getString("EmailPro");
         final String str_Bio = getArguments().getString("Bio");
-        final String str_Digit = getArguments().getString("digitPro");
+//        final String str_Digit = getArguments().getString("digitPro");
 
         //set edit text
         txtEmailEdit.setText(str_EmailPro);
         txtCityEdit.setText(str_City);
-        txtDigit.setText(str_Digit);
+//        txtDigit.setText(str_Digit);
         String arr_FullName[] = str_FullName.split("\\s+",2);
         final String fN = arr_FullName[0];
         final String lN = arr_FullName[1];
@@ -146,7 +146,7 @@ public class ProfileEditFragment extends Fragment {
                 mapCommand.put("first_name",txtfName.getText().toString());
                 mapCommand.put("last_name",txtlName.getText().toString());
                 mapCommand.put("bio",txtBio.getText().toString());
-                mapCommand.put("city_postalcode",txtCityEdit.getText().toString()+"_"+txtDigit.getText().toString());
+                mapCommand.put("city_postalcode",txtCityEdit.getText().toString()+""); //"_"+txtDigit.getText().toString()
                 mapCommand.put("password",txtPass.getText().toString());
 
                 for(Map.Entry mapElement : mapCommand.entrySet()){
@@ -158,7 +158,7 @@ public class ProfileEditFragment extends Fragment {
                             || mapElement.getValue().toString().equals(str_Bio)
                             || mapElement.getValue().equals(fN)
                             || mapElement.getValue().equals(lN)
-                            || mapElement.getValue().equals(str_City+"_"+str_Digit)
+                            || mapElement.getValue().equals(str_City+"") //"_"+str_Digit
                             || mapElement.getKey().toString().equals("password")
                             && !mapElement.getValue().toString().equals(txtPass2.getText().toString())
                             || mapElement.getValue().toString().equals("")){

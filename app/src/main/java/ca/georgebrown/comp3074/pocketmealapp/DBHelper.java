@@ -435,8 +435,7 @@ public class DBHelper {
         });
     }
 
-    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio,
-                               final TextView digit){
+    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio){ //, final TextView digit
 
         reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -455,10 +454,10 @@ public class DBHelper {
                     fullName.setText(firstName +"  "+lastName);
                     Email.setText(email);
                     Bio.setText(bio);
-                    String arr_city[] =  city.split("_",2);
-                    City_postal.setText(arr_city[0]);
+//                    String arr_city[] = city.split("_",2);
+                    City_postal.setText(city); //arr_city[0]
 
-                    digit.setText(arr_city[1]);
+                    //digit.setText(arr_city[1]);
                     //for now user cannot update username
                     // textview will be set here..
 

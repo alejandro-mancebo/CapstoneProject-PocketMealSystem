@@ -41,7 +41,7 @@ public class ProfileFragment extends Fragment {
         final TextView txtFullName = root.findViewById(R.id.txtVFullName);
         final TextView txtBio = root.findViewById(R.id.txtVprofileBio);
         final TextView txtEmail = root.findViewById(R.id.textVEmailPro);
-        final TextView digit = root.findViewById(R.id.textVDigitPro);
+//        final TextView digit = root.findViewById(R.id.textVDigitPro);
 
         ImageButton btnEdit = root.findViewById(R.id.EditBtn);
         Button btnChat = root.findViewById(R.id.btnChat);
@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
 
             if(LoginActivity.currentUser != null){
                 txtUsername.setText(LoginActivity.currentUser.getDisplayName());
-                LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio,digit);
+                LoginActivity.dbHelper.setProfileInfo(LoginActivity.currentUser.getDisplayName(),txtCity,txtFullName,txtEmail,txtBio); // ,digit
             }
 
             btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +72,7 @@ public class ProfileFragment extends Fragment {
                    args.putString("FullName", txtFullName.getText().toString());
                    args.putString("CityPro", txtCity.getText().toString());
                    args.putString("EmailPro", txtEmail.getText().toString());
-                   args.putString("digitPro", digit.getText().toString());
+//                   args.putString("digitPro", digit.getText().toString());
                    args.putString("Bio", txtBio.getText().toString());
                    newFragment.setArguments(args);
 
@@ -102,7 +102,7 @@ public class ProfileFragment extends Fragment {
        else{
            btnEdit.setVisibility(View.GONE);
            txtUsername.setText(str_Username);
-           LoginActivity.dbHelper.setProfileInfo(str_Username,txtCity,txtFullName,txtEmail,txtBio,digit);
+           LoginActivity.dbHelper.setProfileInfo(str_Username,txtCity,txtFullName,txtEmail,txtBio); // ,digit
            //use chat btn here
             final String finalStr_Username = str_Username;
             btnChat.setOnClickListener(new View.OnClickListener() {

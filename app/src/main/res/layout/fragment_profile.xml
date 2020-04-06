@@ -136,16 +136,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textVEmailPro" />
 
     <TextView
-        android:id="@+id/textVDigitPro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Digit"
-        app:layout_constraintBottom_toTopOf="@+id/txtVprofileBio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textVCity" />
-
-    <TextView
         android:id="@+id/txtVprofileBio"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -159,7 +149,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnChat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textVDigitPro" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <Button
         android:id="@+id/btnChat"
