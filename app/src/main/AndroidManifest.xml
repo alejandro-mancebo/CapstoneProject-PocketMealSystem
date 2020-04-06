@@ -2,9 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.georgebrown.comp3074.pocketmealapp">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -14,11 +17,17 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ProfileReviewActivity" />
+        <activity android:name=".AgreementTermsActivity" />
+        <activity android:name=".MyFoodDetailActivity" />
+        <activity android:name=".MyFoodListActivity" />
+        <activity android:name=".EditActivity" />
 
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_key"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key" />
 
-        <activity android:name=".ChatDetails"></activity>
+        <activity android:name=".ChatDetails" />
         <activity android:name=".RegisterActivity" />
         <activity
             android:name=".drawer_activity"

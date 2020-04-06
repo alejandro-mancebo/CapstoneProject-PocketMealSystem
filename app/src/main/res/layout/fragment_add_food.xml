@@ -42,7 +42,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/foodnameText" />
@@ -85,7 +85,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -130,37 +130,37 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
-        android:inputType="date"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expDateText" />
 
     <Button
         android:id="@+id/addFoodBTN"
-        android:layout_width="200dp"
+        android:layout_width="173dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:text="Add Food"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/sv_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Add Food"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_map" />
+
+    <Button
+        android:id="@+id/SeeListFood"
+        android:layout_width="173dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:elevation="5dp"
-        app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toTopOf="@+id/google_map"
+        android:layout_marginBottom="8dp"
+        android:text="My Food List"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expDateEdit"
-        app:queryHint="Search..."></androidx.appcompat.widget.SearchView>
+        app:layout_constraintTop_toBottomOf="@+id/google_map"
+        app:layout_constraintVertical_bias="1.0" />
 
     <fragment
         android:id="@+id/google_map"
@@ -169,12 +169,26 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/addFoodBTN"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sv_location"></fragment>
+        app:layout_constraintTop_toBottomOf="@+id/expDateEdit"></fragment>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Press and hold on the map to select a location!"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/addFoodBTN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_map" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

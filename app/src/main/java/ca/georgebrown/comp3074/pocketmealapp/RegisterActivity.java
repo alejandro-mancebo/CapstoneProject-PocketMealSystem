@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,13 +19,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity {
 
     // Hristo UI Navigation Code Variables
     private EditText usernameField, emailField, fnameField, lnameField, cityField, postalField, passField, passConfirmField;
+    private CheckBox checkAgreement;
     private Button reg;
 
     @Override
@@ -37,16 +37,17 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Hristo UI Navigation Code
         // Register Button on Register Page
-        reg = findViewById(R.id.registerFinalBTN);
+        reg = findViewById(R.id.btnSaveEdit);
         // REGISTER page fields needed to register user
-        usernameField = findViewById(R.id.usernameEdit);
-        emailField = findViewById(R.id.emailEdit);
-        passField = findViewById(R.id.passEdit);
-        passConfirmField = findViewById(R.id.passEdit2);
-        fnameField = findViewById(R.id.fNameEdit);
-        lnameField = findViewById(R.id.lNameEdit);
-        cityField = findViewById(R.id.cityEdit);
-        postalField = findViewById(R.id.postalEdit);
+        usernameField = findViewById(R.id.txtEditUsername);
+        emailField = findViewById(R.id.txtEmailEdit);
+        passField = findViewById(R.id.txtPassEdit);
+        passConfirmField = findViewById(R.id.txtPassEdit2);
+        fnameField = findViewById(R.id.txtfNameEdit);
+        lnameField = findViewById(R.id.txtLNameEdit);
+        cityField = findViewById(R.id.txtcityEdit);
+        checkAgreement = (CheckBox)findViewById(R.id.checkBoxAgree);
+//      postalField = findViewById(R.id.txtDigitEdit);
 
         // User inputs must be:
 
@@ -61,14 +62,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String passwordConfirm = passConfirmField.getText().toString();
 
                 // Sanitized
-                if(postalField.length() == 2) {
+                if(checkAgreement.isChecked() == true) {
                     if (passField.length() > 7 && password.equals(passwordConfirm)) {
                         // Creating user object from provided fields.
                         final User u = new User(userEmail,
                                 fnameField.getText().toString(),
                                 lnameField.getText().toString(),
                                 cityField.getText().toString(),
-                                postalField.getText().toString());
+                                ""); // postalField.getText().toString()
 
                         // Registration process with firebase.
                         LoginActivity.mAuth = FirebaseAuth.getInstance();
@@ -113,7 +114,18 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    Toast.makeText(RegisterActivity.this, "Please provide the first two characters of your postal code.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "Please accept our terms of agreement.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        checkAgreement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkAgreement.isChecked()) {
+                    Toast.makeText(RegisterActivity.this, "You have accepted our Terms of Agreement", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getApplicationContext(), AgreementTermsActivity.class);
+                    startActivity(i);
                 }
             }
         });

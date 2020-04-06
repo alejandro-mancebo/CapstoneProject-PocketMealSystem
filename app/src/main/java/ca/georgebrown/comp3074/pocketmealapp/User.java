@@ -54,7 +54,7 @@ public class User {
         this.email = email;
         this.first_name = first_name;
         this.last_name = last_name;
-        this.city_postalcode = city.toLowerCase() + postalCode.toLowerCase();
+        this.city_postalcode = city.toLowerCase() + postalCode.toLowerCase(); // +"_"
 
         Food f = new Food("","","");
         foodList = new ArrayList<>();

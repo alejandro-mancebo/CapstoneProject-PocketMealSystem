@@ -24,6 +24,7 @@ public UserArrayAdapter(@NonNull Context context, int resource, @NonNull List<Us
 public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
 
         if(convertView==null){
+
         LayoutInflater inflater=LayoutInflater.from(getContext());
         convertView=inflater.inflate(layoutId,null);}
 
