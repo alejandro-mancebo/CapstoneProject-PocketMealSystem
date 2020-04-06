@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "238936795013-or6nd6iabvgl6bonqu3sf3n0r4abhc20.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.georgebrown.comp3074.pocketmealapp",
+            "certificate_hash": "dc50f8359b52248e62fc6b5517264f07c8e64431"
+          }
+        },
+        {
           "client_id": "238936795013-j25sl722aueu7u44pbschv4o28m0n78c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

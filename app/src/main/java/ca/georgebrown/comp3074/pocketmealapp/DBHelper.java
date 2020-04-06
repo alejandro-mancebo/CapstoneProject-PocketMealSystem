@@ -1,16 +1,22 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
@@ -32,7 +39,9 @@ public class DBHelper {
     private FirebaseDatabase reff;
     private DatabaseReference reffUserManager;
     private DatabaseReference reffChatManager;
-    private DataSnapshot dataSnapshot1;
+    private DatabaseReference imgDatabaseReff;
+    private StorageReference imgStorageReff;
+
     public static MessageArrayAdapter messAdapter;
     private  ArrayList<User> receiverList = new ArrayList<>();
 
@@ -41,6 +50,9 @@ public class DBHelper {
         reff = FirebaseDatabase.getInstance();
         reffUserManager = reff.getReference("UserManager");
         reffChatManager = reff.getReference("ChatManager");
+        imgStorageReff = FirebaseStorage.getInstance().getReference("pics");
+        imgDatabaseReff = FirebaseDatabase.getInstance().getReference("pics");
+
     }
 
     public void insertUser(final String username, final User u) {
@@ -423,8 +435,7 @@ public class DBHelper {
         });
     }
 
-    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio,
-                               final TextView digit){
+    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio){ //, final TextView digit
 
         reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -435,19 +446,18 @@ public class DBHelper {
                     String lastName = dataSnapshot.child("last_name").getValue().toString();
                     String firstName = dataSnapshot.child("first_name").getValue().toString();
                     String city = dataSnapshot.child("city_postalcode").getValue().toString();
-                     String bio = "";
+                    String bio = "";
                     if(dataSnapshot.child("bio").exists()){
-
                         bio = dataSnapshot.child("bio").getValue().toString();
                     }
 
                     fullName.setText(firstName +"  "+lastName);
                     Email.setText(email);
                     Bio.setText(bio);
-                    String arr_city[] =  city.split("_",2);
-                    City_postal.setText(arr_city[0]);
+//                    String arr_city[] = city.split("_",2);
+                    City_postal.setText(city); //arr_city[0]
 
-                    digit.setText(arr_city[1]);
+                    //digit.setText(arr_city[1]);
                     //for now user cannot update username
                     // textview will be set here..
 
@@ -473,26 +483,51 @@ public class DBHelper {
 
     public void sendChat(final Chat chat){
         //sender = username
-        reff.getReference("UserManager/"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    reff.getReference("ChatManager/"+chat.getSender()+'_'+chat.getReceiver()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+
+                            }
+
+                            else{
+                               reff.getReference("ChatManager/"+chat.getReceiver()+"_"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                   @Override
+                                   public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                                       if(dataSnapshot1.exists()){
+
+                                           reffChatManager.child(chat.getReceiver()+"_"+chat.getSender()).push().setValue(chat);
+                                       }
+
+                                       else{
+
+                                           reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+                                       }
+
+                                   }
+
+                                   @Override
+                                   public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                   }
+                               });
 
 
-                if(dataSnapshot.exists()){
-                    reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
 
-                }
-                else{
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
 
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
 
     }
 
@@ -562,31 +597,35 @@ public class DBHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists()){ dataSnapshot1 = dataSnapshot; }
+                if(dataSnapshot.exists()){ for(DataSnapshot chat : dataSnapshot.getChildren()) {
+                    String receiver = chat.child("receiver").getValue().toString();
+                    String sender = chat.child("sender").getValue().toString();
+                    String message = chat.child("message").getValue().toString();
+
+                    Chat chat1 = new Chat(sender, message, receiver);
+                    messages.add(chat1);
+                } }
                 else{
                     reff.getReference("ChatManager/"+receiver+"_"+username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) { dataSnapshot1 = dataSnapshot; }
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                            if (dataSnapshot1.exists()) {
+                                for(DataSnapshot chat : dataSnapshot1.getChildren()) {
+                                    String receiver = chat.child("receiver").getValue().toString();
+                                    String sender = chat.child("sender").getValue().toString();
+                                    String message = chat.child("message").getValue().toString();
+
+                                    Chat chat1 = new Chat(sender, message, receiver);
+                                    messages.add(chat1);
+                                }
+
+                            }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
-                }
-
-                Log.d("===", String.valueOf(dataSnapshot1.exists()));
-
-                if(dataSnapshot1.exists()){
-                    for(DataSnapshot chat : dataSnapshot1.getChildren()) {
-                        String receiver = chat.child("receiver").getValue().toString();
-                        String sender = chat.child("sender").getValue().toString();
-                        String message = chat.child("message").getValue().toString();
-
-                        Chat chat1 = new Chat(sender, message, receiver);
-                        messages.add(chat1);
-                    }
                 }
 
                 messAdapter = new MessageArrayAdapter(c,R.layout.message_details_design,messages);
@@ -619,6 +658,21 @@ public class DBHelper {
 
     private double deg2rad(double deg) {
         return deg * (Math.PI / 180);
+    }
+
+    // UNSURE IF IT WORKS!
+    private void getProfilePic(final Activity activity, final Context context, final OnSuccessListener<Uri> uri, final ImageView imageView, final Toast errToast){
+        imgDatabaseReff.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Glide.with(context).load(uri).into(imageView); // imgStorageReff.child(LoginActivity.currentUser.getUid() + ".JPEG")
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                errToast.makeText(activity, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

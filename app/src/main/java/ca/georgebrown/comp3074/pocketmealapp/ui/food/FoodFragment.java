@@ -59,16 +59,38 @@ public class FoodFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Food f = ((Food) parent.getItemAtPosition(position));
+
+                // Create fragment and give it an argument specifying the article it should show
+                FoodDetailsFragment newFragment = new FoodDetailsFragment();
+                Bundle args = new Bundle();
+                args.putString("FoodName", f.getFoodname());
+                args.putString("FoodUsername", f.getUsername());
+                args.putString("Allergies", f.getAllergies());
+                args.putString("Description", f.getDescription());
+                args.putString("Expiry", f.getExpiry_date());
+                newFragment.setArguments(args);
+
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.nav_host_fragment, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+
+                /*
                 Intent i = new Intent(getActivity(),FoodDetailActivity.class);
                 i.putExtra("FoodType",f.getFoodname());
                 i.putExtra("FoodUsername",f.getUsername());
-               // i.putExtra("FoodIngre",f.getDescription());
+             // i.putExtra("FoodIngre",f.getDescription());
                 i.putExtra("Expiry",f.getExpiry_date());
                 startActivity(i);
-                /*
+                /////////////////////////////////////////////////////////////////////////
                 FragmentTransaction transection=getFragmentManager().beginTransaction();
                 FoodDetailsFragment mfragment=new FoodDetailsFragment();
-//using Bundle to send data
+                //using Bundle to send data
                 Bundle bundle=new Bundle();
                 bundle.putString("FoodEmail",f.getEmail());
                 bundle.putString("FoodName",f.getFoodname());
