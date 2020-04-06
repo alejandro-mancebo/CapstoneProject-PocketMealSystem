@@ -76,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+
                 Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
                 LoginActivity.this.startActivity(logIntent);
 
