@@ -31,11 +31,11 @@ public class MessageArrayAdapter extends ArrayAdapter<Chat> {
         }
 
         TextView txt = convertView.findViewById(R.id.txtVMessage);
-        if(LoginActivity.currentUser.getDisplayName().equals(getItem(position).getSender()) || LoginActivity.currentUser.getDisplayName().equals(getItem(position).getReceiver())){
-            txt.setText(padLeftSpaces("You : "+getItem(position).getMessage(),110));
+        if(LoginActivity.currentUser.getDisplayName().equals(getItem(position).getSender())){
+            txt.setText(padLeftSpaces("You : " + getItem(position).getMessage(),110));
         }
         else{
-            txt.setText(getItem(position).getSender() +" : "+getItem(position).getMessage());
+            txt.setText(getItem(position).getSender() +" : " + getItem(position).getMessage());
         }
 
         return convertView;

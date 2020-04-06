@@ -39,7 +39,7 @@ public class ChatDetails extends AppCompatActivity {
             public void run() {
                 LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,c);
             }
-        },0,30000);
+        },0,5000);
 
         btnSendMess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +58,22 @@ public class ChatDetails extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,this);
+        // LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,this);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,c);
+
+            }
+        },0,1000);
+
+    }
+
+    public void onPause() {
+        super.onPause();
+
+        timer.cancel();
 
     }
 
