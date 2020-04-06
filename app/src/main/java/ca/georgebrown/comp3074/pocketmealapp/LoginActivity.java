@@ -59,8 +59,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Firebase Variables
         dbHelper = new DBHelper();
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference("uploads");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
 
         // UI Navigation Code
         logIn = findViewById(R.id.loginBTN);
@@ -75,8 +75,6 @@ public class LoginActivity extends AppCompatActivity {
         guest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 Intent logIntent = new Intent(LoginActivity.this, drawer_activity.class);
                 LoginActivity.this.startActivity(logIntent);

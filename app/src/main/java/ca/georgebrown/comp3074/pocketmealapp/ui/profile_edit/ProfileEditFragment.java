@@ -48,6 +48,7 @@ import ca.georgebrown.comp3074.pocketmealapp.ui.profile.ProfileFragment;
 
 import static android.app.Activity.RESULT_OK;
 import static ca.georgebrown.comp3074.pocketmealapp.LoginActivity.mDatabaseRef;
+import static ca.georgebrown.comp3074.pocketmealapp.LoginActivity.mStorageRef;
 
 public class ProfileEditFragment extends Fragment {
 
@@ -58,8 +59,6 @@ public class ProfileEditFragment extends Fragment {
 
     private Uri mImageUri;
     private StorageTask mUploadTask;
-
-    private StorageReference pStorageRef;
 
     private ImageView btnProfileImageView;
     private ProgressBar progressBar;
@@ -73,8 +72,6 @@ public class ProfileEditFragment extends Fragment {
     private EditText txtPass2;
     private EditText txtBio;
 
-    private EditText mEditTextFileName;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         profileEditViewModel =
@@ -83,8 +80,6 @@ public class ProfileEditFragment extends Fragment {
 
         final TextView textView = root.findViewById(R.id.text_profile_edit);
 
-
-        pStorageRef = FirebaseStorage.getInstance().getReference("pics");
         btnProfileImageView = root.findViewById(R.id.profileImageView);
         progressBar = root.findViewById(R.id.progressbar_pic);
 
@@ -123,7 +118,7 @@ public class ProfileEditFragment extends Fragment {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
                     Toast.makeText(getActivity(), "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
-                    //takePicktureIntent();
+                    takePicktureIntent();
                 }
             }
         });
@@ -134,7 +129,7 @@ public class ProfileEditFragment extends Fragment {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
                     Toast.makeText(getActivity(), "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
-                    //openFileChooser();
+                    openFileChooser();
                 }
             }
         });
@@ -248,10 +243,10 @@ public class ProfileEditFragment extends Fragment {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
-
+    // Upload picture code.
     private void uploadFile() {
         if (mImageUri != null) {
-            StorageReference fileReference = pStorageRef.child("pics/").child(LoginActivity.mAuth.getInstance().getCurrentUser().getUid() + "." + getFileExtension(mImageUri));
+            StorageReference fileReference = mStorageRef.child(LoginActivity.mAuth.getInstance().getCurrentUser().getUid() + "." + getFileExtension(mImageUri));
 
             mUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -266,8 +261,8 @@ public class ProfileEditFragment extends Fragment {
                             }, 500);
 
                             Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
-                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getUploadSessionUri().toString()); // .getDownloadUrl() insted of .getUploadSessionUri()
+                            Upload upload = new Upload((LoginActivity.mAuth.getInstance().getCurrentUser().getUid() + "." + getFileExtension(mImageUri)).trim(),
+                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
                         }
