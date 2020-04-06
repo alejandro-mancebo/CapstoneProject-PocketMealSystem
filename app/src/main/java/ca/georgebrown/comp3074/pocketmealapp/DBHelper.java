@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,7 +46,6 @@ public class DBHelper {
 
     public static MessageArrayAdapter messAdapter;
     private  ArrayList<User> receiverList = new ArrayList<>();
-    ArrayList<Chat>messages= new ArrayList<>();
 
     public DBHelper() {
 
@@ -497,50 +495,38 @@ public class DBHelper {
     public void sendChat(final Chat chat){
         //sender = username
 
-                    reff.getReference("ChatManager/"+chat.getSender()+'_'+chat.getReceiver()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
-                                reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+        reff.getReference("ChatManager/"+chat.getSender()+'_'+chat.getReceiver()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+                }
+                else{
+                   reff.getReference("ChatManager/"+chat.getReceiver()+"_"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                           if(dataSnapshot1.exists()){
+                               reffChatManager.child(chat.getReceiver()+"_"+chat.getSender()).push().setValue(chat);
+                           }
+                           else{
+                               reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+                           }
+                       }
 
-                            }
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            else{
-                               reff.getReference("ChatManager/"+chat.getReceiver()+"_"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                   @Override
-                                   public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                                       if(dataSnapshot1.exists()){
+                       }
+                   });
 
-                                           reffChatManager.child(chat.getReceiver()+"_"+chat.getSender()).push().setValue(chat);
-                                       }
+                }
+            }
 
-                                       else{
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                           reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
-                                       }
-
-                                   }
-
-                                   @Override
-                                   public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                   }
-                               });
-
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-
-
-
+            }
+        });
 
     }
 
@@ -604,15 +590,13 @@ public class DBHelper {
 
     public void getMessages(final String username, final String receiver, final ListView li , final Context c){
 
-
+        final ArrayList<Chat>messages= new ArrayList<>();
 
         reff.getReference("ChatManager/"+username+"_"+receiver).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists()){
-                    messages.clear();
-                    for(DataSnapshot chat : dataSnapshot.getChildren()) {
+                if(dataSnapshot.exists()){ for(DataSnapshot chat : dataSnapshot.getChildren()) {
                     String receiver = chat.child("receiver").getValue().toString();
                     String sender = chat.child("sender").getValue().toString();
                     String message = chat.child("message").getValue().toString();
@@ -625,7 +609,6 @@ public class DBHelper {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                             if (dataSnapshot1.exists()) {
-                                messages.clear();
                                 for(DataSnapshot chat : dataSnapshot1.getChildren()) {
                                     String receiver = chat.child("receiver").getValue().toString();
                                     String sender = chat.child("sender").getValue().toString();
@@ -637,7 +620,6 @@ public class DBHelper {
 
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -648,8 +630,6 @@ public class DBHelper {
                 messAdapter = new MessageArrayAdapter(c,R.layout.message_details_design,messages);
                 messAdapter.notifyDataSetChanged();
                 li.setAdapter(messAdapter);
-                messAdapter.notifyDataSetChanged();
-
             }
 
             @Override

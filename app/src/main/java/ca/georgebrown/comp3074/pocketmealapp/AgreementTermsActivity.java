@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ca.georgebrown.comp3074.pocketmealapp.ui.about.AboutFragment;
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
 
@@ -30,7 +31,7 @@ public class AgreementTermsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+              finish();
             }
         });
 

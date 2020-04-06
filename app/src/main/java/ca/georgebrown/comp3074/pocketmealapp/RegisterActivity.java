@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // Hristo UI Navigation Code Variables
     private EditText usernameField, emailField, fnameField, lnameField, cityField, postalField, passField, passConfirmField;
+    private CheckBox checkAgreement;
     private Button reg;
 
     @Override
@@ -44,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         fnameField = findViewById(R.id.txtfNameEdit);
         lnameField = findViewById(R.id.txtLNameEdit);
         cityField = findViewById(R.id.txtcityEdit);
+        checkAgreement = (CheckBox)findViewById(R.id.checkBoxAgree);
 //      postalField = findViewById(R.id.txtDigitEdit);
 
         // User inputs must be:
@@ -59,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String passwordConfirm = passConfirmField.getText().toString();
 
                 // Sanitized
-                //if(postalField.length() == 2) {
+                if(checkAgreement.isChecked() == true) {
                     if (passField.length() > 7 && password.equals(passwordConfirm)) {
                         // Creating user object from provided fields.
                         final User u = new User(userEmail,
@@ -109,10 +112,21 @@ public class RegisterActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(RegisterActivity.this, "Your password must be 8 characters long and match the confirm password.", Toast.LENGTH_LONG).show();
                     }
-//                }
-//                else {
-//                    Toast.makeText(RegisterActivity.this, "Please provide the first two characters of your postal code.", Toast.LENGTH_LONG).show();
-//                }
+                }
+                else {
+                    Toast.makeText(RegisterActivity.this, "Please accept our terms of agreement.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        checkAgreement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(checkAgreement.isChecked()) {
+                    Toast.makeText(RegisterActivity.this, "You have accepted our Terms of Agreement", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getApplicationContext(), AgreementTermsActivity.class);
+                    startActivity(i);
+                }
             }
         });
     }
