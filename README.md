@@ -1,5 +1,2 @@
 # CapstoneProject-PocketMealSystem
-Instruction 
-To run this project you need to install Android studio.
-After installing open Android studio open the folder inside the CaptoneProject folder which contains app, gradle... 
-Then run it.
+Download Android Studio Open existing project Go to folder inside CapstoneProject which contains app, gradle ... Enjoy our app
