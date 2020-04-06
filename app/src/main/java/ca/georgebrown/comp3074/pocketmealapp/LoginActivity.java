@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
         if(requestCode == STORAGE_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 lManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                Toast.makeText(LoginActivity.this, "Location permission GRANTED", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "Location permission GRANTED", Toast.LENGTH_SHORT).show();
             }else{
                 Toast.makeText(LoginActivity.this, "Location permission DENIED", Toast.LENGTH_SHORT).show();
             }
