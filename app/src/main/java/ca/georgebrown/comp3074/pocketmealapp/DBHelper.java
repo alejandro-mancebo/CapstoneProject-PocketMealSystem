@@ -484,26 +484,51 @@ public class DBHelper {
 
     public void sendChat(final Chat chat){
         //sender = username
-        reff.getReference("UserManager/"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    reff.getReference("ChatManager/"+chat.getSender()+'_'+chat.getReceiver()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+
+                            }
+
+                            else{
+                               reff.getReference("ChatManager/"+chat.getReceiver()+"_"+chat.getSender()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                   @Override
+                                   public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                                       if(dataSnapshot1.exists()){
+
+                                           reffChatManager.child(chat.getReceiver()+"_"+chat.getSender()).push().setValue(chat);
+                                       }
+
+                                       else{
+
+                                           reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
+                                       }
+
+                                   }
+
+                                   @Override
+                                   public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                   }
+                               });
 
 
-                if(dataSnapshot.exists()){
-                    reffChatManager.child(chat.getSender()+"_"+chat.getReceiver()).push().setValue(chat);
 
-                }
-                else{
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
 
 
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
 
     }
 
