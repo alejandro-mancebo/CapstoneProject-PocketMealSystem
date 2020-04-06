@@ -2,65 +2,54 @@
 <resources>
     <string name="htmlAgreementTerms">
         <![CDATA[
-
-    <h1>Term of Agreement</h1>
-
-    <h2><strong>1. Terms of Use</strong></h2>
-    <p>By downloading, accessing or using <strong>Pocket Meal application ( “Mobile Application” ) </strong>, you agree to be bound by these Terms of Agreement. We reserve the right to amend these Terms of Agreement at any time. If you disagree with any of these Terms of Agreement, you must immediately discontinue your access to the Mobile Application. Continued use of the Mobile Application will constitute acceptance of these Terms of Agreement, as may be amended from time to time.</p>
-
-    <h2><strong>2. Definitions</strong></h2>
-    <p>In these Terms of Agreement, the following capitalised terms shall have the following meanings, except where the context otherwise requires:</p>
-    <p><strong>Needful Person: </strong> It is the user who needs help in terms of food. It can be homeless people, people of low income, people who forgot their valuables and are unable to get food for themselves.</p>
-    <p><strong>Donor:</strong> It is the user who wants donate his food. It can be a natural person or legal entities.</p>
-    <p><strong>Users:</strong>  means users of the Mobile Application, including Needful Person and Donor. </p>
-    <p><strong>Account:</strong> means an account created by a User on the Mobile Application as part of Registration. </p>
-    <p><strong>Privacy Policy:</strong>  means the privacy policy set out in Clause 7 of these Terms of Agreement.</p>
-
-    <h2><strong>3. Your Obligations</strong></h2>
-    <p><i>Accurate information:</i> You warrant that all information provided on Registration and contained as part of your Account is true, complete and accurate and that you will promptly inform us of any changes to such information by updating the information in your Account</p>
-    <p><i>Content on the Mobile Application and Service:</i> It is your responsibility to ensure that any products, or information available through the Mobile Application meet your specific requirements before upload them.</p>
-    <p><i>Prohibitions in relation to usage of Mobile Application:</i> Without limitation, you undertake not to use or permit anyone else to use the Mobile Application:</p>
-    <p>- to send or receive any product which is not civil or tasteful;</p>
-    <p>- to send or receive any product which is technically harmful or is <strong>expired</strong>;</p>
-    <p>- to intercept or attempt to intercept any communications transmitted by way of a telecommunications system;</p>
-    <p>- for any fraudulent purpose;</p>
-    <p>- other than in conformance with accepted Internet practices and practices of any connected networks;</p>
-    <p><i>Prohibitions in relation to usage of Mobile Application:</i> Without limitation, you further undertake not to or permit anyone else to:</p>
-    <p>- sell any products;</p>
-    <p>- furnish false data including false names, addresses and contact details;</p>
-    <p>- execute any form of network monitoring which will intercept data not intended for you;</p>
-    <p>- extract data from or hack into the Mobile Application;</p>
-    <p>- engage in any unlawful activity in connection with the use of the Mobile Application </p>
-
-    <h2><strong>4. Rules About Use of The Mobile Application</strong></h2>
-    <p>We do not warrant that your use of the Mobile Application will be uninterrupted and we do not warrant that any information (or messages) transmitted via the Mobile Application will be transmitted accurately, reliably, in a timely manner or at all. Notwithstanding that we will try to allow uninterrupted access to the Mobile Application, access to the Mobile Application may be suspended, restricted or terminated at any time.</p>
-    <p>We do not give any warranty that the Mobile Application are free from viruses or anything else which may have a harmful effect on any technology.</p>
-    <p>We reserve the right to change, modify, substitute, suspend or remove without notice any information on the Mobile Application from time to time. Your access to the Mobile Application may also be occasionally restricted to allow for repairs, maintenance or the introduction of new facilities. We will attempt to restore such access as soon as we reasonably can. For the avoidance of doubt, we reserve the right to withdraw any information from the Mobile Application at any time.</p>
-    <p>We reserve the right to block access to and/or to edit or remove any product which in our reasonable opinion may give rise to a breach of these Terms of Agreement.</p>
-
-    <h2><strong>5. Suspension and Termination</strong></h2>
-    <p>If you use (or anyone other than you, with your permission uses) the Mobile Application in contravention of these Terms of Agreement, we may suspend your use of the Mobile Application.</p>
-    <p>Without limitation to anything else in this Clause 5, we shall be entitled immediately or at any time (in whole or in part) to:</p>
-    <p>(a) suspend your use of the Mobile Application; and/or</p>
-    <p>(b) suspend the use of the Mobile Application if:</p>
-    <p>- you commit any breach of these Terms of Agreement;</p>
-    <p>- we suspect, on reasonable grounds, that you have, might or will commit a breach of these Terms of Agreement; or</p>
-    <p>- we suspect, on reasonable grounds, that you may have committed or be committing any fraud against any person.</p>
-    <p>Our rights under this Clause 8 shall not prejudice any other right or remedy we may have in respect of any breach or any rights, obligations or liabilities accrued prior to termination.</p>
-
-    <h2><strong>6. Applicable Law and Jurisdiction</strong></h2>
-    <p>The Mobile Application can be accessed from Canada only.</p>
-    <p>You accept and agree that both you and we shall submit to the exclusive jurisdiction of the courts of Canada in respect of any dispute arising out of and/or in connection with these Terms of Agreement.</p>
-
-    <h2><strong>7. Privacy Policy</strong></h2>
-    <p>Access to the Mobile Application offered by Pocket Meal project team is subject to this Privacy Policy. By accessing the Mobile Application, you are deemed to have accepted this Privacy Policy, and in particular, you are deemed to have consented to our use and disclosure of your personal information in the manner prescribed in this Privacy Policy and for the purposes set out in Clauses 4. We reserve the right to amend this Privacy Policy from time to time. If you disagree with any part of this Privacy Policy, you must immediately discontinue your access to the Mobile Application.</P>
-    <p>As part of the normal operation of our services, we collect, use and, in some cases, disclose information about you to third parties. Accordingly, we have developed this Privacy Policy in order for you to understand how we collect, use, communicate and disclose and make use of your personal information when you use the services on the Mobile Application</P>
-    <p>- We will not collecting any personal information</P>
-    <p>- We will only retain personal information as long as necessary for the fulfillment of those purposes</P>
-    <p>- Personal information should be relevant to the purposes for which it is to be used, and, to the extent necessary for those purposes, should be accurate, complete, and up-to-date.</P>
-    <p>- We will protect personal information by reasonable security safeguards against loss or theft, as well as unauthorized access, disclosure, copying, use or modification.</P>
-    <p>- We are committed to conducting our business in accordance with these principles in order to ensure that the confidentiality of personal information is protected and maintained.</P>
-
+            <h1>Terms of Agreements</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+               Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
+               hen an unknown printer took a galley of type and scrambled it to make a type
+               specimen book.
+            </p>
+            <p>It has survived not only five centuries, but also the leap
+               into electronic typesetting, remaining essentially unchanged. It was popularised
+               in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+               and more recently with desktop publishing software like Aldus PageMaker including
+               versions of Lorem Ipsum.
+            </p>
+            <h1>Terms of Agreements</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+               Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
+               hen an unknown printer took a galley of type and scrambled it to make a type
+               specimen book.
+            </p>
+            <p>It has survived not only five centuries, but also the leap
+               into electronic typesetting, remaining essentially unchanged. It was popularised
+               in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+               and more recently with desktop publishing software like Aldus PageMaker including
+               versions of Lorem Ipsum.
+            </p>
+            <h1>Terms of Agreements</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+               Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
+               hen an unknown printer took a galley of type and scrambled it to make a type
+               specimen book.
+            </p>
+            <p>It has survived not only five centuries, but also the leap
+               into electronic typesetting, remaining essentially unchanged. It was popularised
+               in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+               and more recently with desktop publishing software like Aldus PageMaker including
+               versions of Lorem Ipsum.
+            </p>
+            <h1>Terms of Agreements</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+               Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,
+               hen an unknown printer took a galley of type and scrambled it to make a type
+               specimen book.
+            </p>
+            <p>It has survived not only five centuries, but also the leap
+               into electronic typesetting, remaining essentially unchanged. It was popularised
+               in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+               and more recently with desktop publishing software like Aldus PageMaker including
+               versions of Lorem Ipsum.
+            </p>
         ]]>
     </string>
 </resources>
