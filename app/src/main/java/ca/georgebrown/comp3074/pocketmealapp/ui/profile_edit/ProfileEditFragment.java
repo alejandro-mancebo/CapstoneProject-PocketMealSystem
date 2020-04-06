@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -43,6 +44,7 @@ import ca.georgebrown.comp3074.pocketmealapp.EditActivity;
 import ca.georgebrown.comp3074.pocketmealapp.LoginActivity;
 import ca.georgebrown.comp3074.pocketmealapp.R;
 import ca.georgebrown.comp3074.pocketmealapp.Upload;
+import ca.georgebrown.comp3074.pocketmealapp.ui.profile.ProfileFragment;
 
 import static android.app.Activity.RESULT_OK;
 import static ca.georgebrown.comp3074.pocketmealapp.LoginActivity.mDatabaseRef;
@@ -166,16 +168,26 @@ public class ProfileEditFragment extends Fragment {
                     }
                     else{
                         LoginActivity.dbHelper.updateUserInfo(LoginActivity.currentUser.getDisplayName(), mapElement.getValue().toString(), mapElement.getKey().toString());
+
+                        //-------------------go to profile fragment, do not use finish() so the page can be refresh and have new value-------------
+
+                        // Create fragment and give it an argument specifying the article it should show
+                        ProfileFragment newFragment = new ProfileFragment();
+        //                Bundle args = new Bundle();
+        //                args.putString("Username", str_Username);
+        //                newFragment.setArguments(args);
+
+                        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+
+                        // Replace whatever is in the fragment_container view with this fragment,
+                        // and add the transaction to the back stack so the user can navigate back
+                        transaction.replace(R.id.nav_host_fragment, newFragment);
+                        transaction.addToBackStack(null);
+
+                        // Commit the transaction
+                        transaction.commit();
                     }
                 }
-
-                //-------------------go to profile fragment, do not use finish() so the page can be refresh and have new value-------------
-
-                // Intent i = new Intent(EditActivity.this,ProfileFragment.class);
-
-                //  ProfileFragment fragment = new ProfileFragment();
-                //  FragmentManager fragmentManager = getSupportFragmentManager();
-                //  fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
             }
         });
 
@@ -190,91 +202,91 @@ public class ProfileEditFragment extends Fragment {
 
 
     // Initiates the camera for a picture.
-//    private void takePicktureIntent(){
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//        }
-//    }
-//
-//    // Waits for result ether from camera or file chooser.
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//
-//            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//            String path = MediaStore.Images.Media.insertImage(getContentResolver(), imageBitmap, LoginActivity.currentUser.getUid(), null);
-//            mImageUri = Uri.parse(path);
-//
-//            uploadFile();
-//            btnProfileImageView.setImageBitmap(imageBitmap);
-//        }
-//
-//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-//                && data != null && data.getData() != null) {
-//            mImageUri = data.getData();
-//            Picasso.get().load(mImageUri).into(btnProfileImageView);
-//            uploadFile();
-//        }
-//    }
+    private void takePicktureIntent(){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    // Waits for result ether from camera or file chooser.
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), imageBitmap, LoginActivity.currentUser.getUid(), null);
+            mImageUri = Uri.parse(path);
+
+            uploadFile();
+            btnProfileImageView.setImageBitmap(imageBitmap);
+        }
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            Picasso.get().load(mImageUri).into(btnProfileImageView);
+            uploadFile();
+        }
+    }
 
     // Opens file chooser.
-//    private void openFileChooser() {
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-//    }
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
 
     // Grabs the file extension.
-//    private String getFileExtension(Uri uri) {
-//        ContentResolver cR = getContentResolver();
-//        MimeTypeMap mime = MimeTypeMap.getSingleton();
-//        return mime.getExtensionFromMimeType(cR.getType(uri));
-//    }
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getActivity().getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
 
-//    private void uploadFile() {
-//        if (mImageUri != null) {
-//            StorageReference fileReference = pStorageRef.child("pics/").child(LoginActivity.mAuth.getInstance().getCurrentUser().getUid() + "." + getFileExtension(mImageUri));
-//
-//            mUploadTask = fileReference.putFile(mImageUri)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            Handler handler = new Handler();
-//                            handler.postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    progressBar.setProgress(0);
-//                                }
-//                            }, 500);
-//
-//                            Toast.makeText(EditActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-//                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-//                                    taskSnapshot.getUploadSessionUri().toString()); // .getDownloadUrl() insted of .getUploadSessionUri()
-//                            String uploadId = mDatabaseRef.push().getKey();
-//                            mDatabaseRef.child(uploadId).setValue(upload);
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(EditActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-//                            progressBar.setProgress((int) progress);
-//                        }
-//                    });
-//        } else {
-//            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    private void uploadFile() {
+        if (mImageUri != null) {
+            StorageReference fileReference = pStorageRef.child("pics/").child(LoginActivity.mAuth.getInstance().getCurrentUser().getUid() + "." + getFileExtension(mImageUri));
+
+            mUploadTask = fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setProgress(0);
+                                }
+                            }, 500);
+
+                            Toast.makeText(getActivity(), "Upload successful", Toast.LENGTH_LONG).show();
+                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
+                                    taskSnapshot.getUploadSessionUri().toString()); // .getDownloadUrl() insted of .getUploadSessionUri()
+                            String uploadId = mDatabaseRef.push().getKey();
+                            mDatabaseRef.child(uploadId).setValue(upload);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progressBar.setProgress((int) progress);
+                        }
+                    });
+        } else {
+            Toast.makeText(getActivity(), "No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
