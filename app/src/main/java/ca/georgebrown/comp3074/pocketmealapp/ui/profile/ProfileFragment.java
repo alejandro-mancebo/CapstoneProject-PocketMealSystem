@@ -47,7 +47,6 @@ public class ProfileFragment extends Fragment {
         Button btnChat = root.findViewById(R.id.btnChat);
 
         String str_Username = "";
-
         if(getArguments() != null){
 
             str_Username = getArguments().getString("Username");
