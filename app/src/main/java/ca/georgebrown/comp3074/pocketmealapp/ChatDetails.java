@@ -2,11 +2,15 @@ package ca.georgebrown.comp3074.pocketmealapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ChatDetails extends AppCompatActivity {
 
@@ -14,6 +18,8 @@ public class ChatDetails extends AppCompatActivity {
     EditText message;
     Button btnSendMess;
     String str_Receiver;
+    Timer timer = new Timer();
+    Context c = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +32,14 @@ public class ChatDetails extends AppCompatActivity {
 
         str_Receiver = getIntent().getExtras().getString("Receiver");
 
-        LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,this);
+        // LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,this);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,c);
+            }
+        },0,30000);
 
         btnSendMess.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +59,14 @@ public class ChatDetails extends AppCompatActivity {
         super.onResume();
 
         LoginActivity.dbHelper.getMessages(LoginActivity.currentUser.getDisplayName(),str_Receiver,messages,this);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        timer.cancel();
 
     }
 }
