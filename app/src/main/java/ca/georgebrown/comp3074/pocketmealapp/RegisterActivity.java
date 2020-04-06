@@ -123,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(checkAgreement.isChecked()) {
-                    Toast.makeText(RegisterActivity.this, "You are accepting our Policy of Terms of Agreement", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this, "You have accepted our Terms of Agreement", Toast.LENGTH_LONG).show();
                     Intent i = new Intent(getApplicationContext(), AgreementTermsActivity.class);
                     startActivity(i);
                 }
