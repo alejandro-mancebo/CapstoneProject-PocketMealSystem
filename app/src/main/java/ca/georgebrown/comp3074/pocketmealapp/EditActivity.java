@@ -71,7 +71,7 @@ public class EditActivity extends AppCompatActivity {
         txtfName = findViewById(R.id.txtfNameEdit);
         txtlName = findViewById(R.id.txtLNameEdit);
         txtCityEdit = findViewById(R.id.txtcityEdit);
-        txtDigit = findViewById(R.id.txtDigitEdit);
+//        txtDigit = findViewById(R.id.txtDigitEdit);
         txtPass = findViewById(R.id.txtPassEdit);
         txtPass2 = findViewById(R.id.txtPassEdit2);
         txtBio = findViewById(R.id.editBioText);
@@ -86,7 +86,7 @@ public class EditActivity extends AppCompatActivity {
         //set edit text
         txtEmailEdit.setText(str_EmailPro);
         txtCityEdit.setText(str_City);
-        txtDigit.setText(str_Digit);
+//        txtDigit.setText(str_Digit);
         String arr_FullName[] = str_FullName.split("\\s+",2);
         final String fN = arr_FullName[0];
         final String lN = arr_FullName[1];
@@ -126,7 +126,7 @@ public class EditActivity extends AppCompatActivity {
                 mapCommand.put("first_name",txtfName.getText().toString());
                 mapCommand.put("last_name",txtlName.getText().toString());
                 mapCommand.put("bio",txtBio.getText().toString());
-                mapCommand.put("city_postalcode",txtCityEdit.getText().toString()+"_"+txtDigit.getText().toString());
+                mapCommand.put("city_postalcode",txtCityEdit.getText().toString()+""); //"_"+txtDigit.getText().toString()
                 mapCommand.put("password",txtPass.getText().toString());
 
                 for(Map.Entry mapElement : mapCommand.entrySet()){
@@ -138,7 +138,7 @@ public class EditActivity extends AppCompatActivity {
                             || mapElement.getValue().toString().equals(str_Bio)
                             || mapElement.getValue().equals(fN)
                             || mapElement.getValue().equals(lN)
-                            || mapElement.getValue().equals(str_City+"_"+str_Digit)
+                            || mapElement.getValue().equals(str_City+"") // "_"+str_Digit
                             || mapElement.getKey().toString().equals("password")
                              && !mapElement.getValue().toString().equals(txtPass2.getText().toString())
                             || mapElement.getValue().toString().equals("")){

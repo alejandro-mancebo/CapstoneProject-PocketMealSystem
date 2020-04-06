@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +45,7 @@ public class DBHelper {
 
     public static MessageArrayAdapter messAdapter;
     private  ArrayList<User> receiverList = new ArrayList<>();
+    ArrayList<Chat>messages= new ArrayList<>();
 
     public DBHelper() {
 
@@ -435,8 +437,7 @@ public class DBHelper {
         });
     }
 
-    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio,
-                               final TextView digit){
+    public void setProfileInfo(String username, final TextView City_postal, final TextView fullName, final TextView Email, final TextView Bio){ //, final TextView digit
 
         reff.getReference("UserManager/"+username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -455,10 +456,10 @@ public class DBHelper {
                     fullName.setText(firstName +"  "+lastName);
                     Email.setText(email);
                     Bio.setText(bio);
-                    String arr_city[] =  city.split("_",2);
-                    City_postal.setText(arr_city[0]);
+//                    String arr_city[] = city.split("_",2);
+                    City_postal.setText(city); //arr_city[0]
 
-                    digit.setText(arr_city[1]);
+                    //digit.setText(arr_city[1]);
                     //for now user cannot update username
                     // textview will be set here..
 
@@ -592,13 +593,15 @@ public class DBHelper {
 
     public void getMessages(final String username, final String receiver, final ListView li , final Context c){
 
-        final ArrayList<Chat>messages= new ArrayList<>();
+
 
         reff.getReference("ChatManager/"+username+"_"+receiver).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.exists()){ for(DataSnapshot chat : dataSnapshot.getChildren()) {
+                if(dataSnapshot.exists()){
+                    messages.clear();
+                    for(DataSnapshot chat : dataSnapshot.getChildren()) {
                     String receiver = chat.child("receiver").getValue().toString();
                     String sender = chat.child("sender").getValue().toString();
                     String message = chat.child("message").getValue().toString();
@@ -611,6 +614,7 @@ public class DBHelper {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
                             if (dataSnapshot1.exists()) {
+                                messages.clear();
                                 for(DataSnapshot chat : dataSnapshot1.getChildren()) {
                                     String receiver = chat.child("receiver").getValue().toString();
                                     String sender = chat.child("sender").getValue().toString();
@@ -622,6 +626,7 @@ public class DBHelper {
 
                             }
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -632,6 +637,8 @@ public class DBHelper {
                 messAdapter = new MessageArrayAdapter(c,R.layout.message_details_design,messages);
                 messAdapter.notifyDataSetChanged();
                 li.setAdapter(messAdapter);
+                messAdapter.notifyDataSetChanged();
+
             }
 
             @Override

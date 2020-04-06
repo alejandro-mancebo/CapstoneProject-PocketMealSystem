@@ -54,7 +54,7 @@ public class drawer_activity extends AppCompatActivity {
     private TextView navUserEmail;
     private TextView navUserName;
     private ImageView navUserImage;
-
+    public static Activity activity=null;
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -65,6 +65,7 @@ public class drawer_activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        activity = this;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(

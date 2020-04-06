@@ -1,6 +1,7 @@
 package ca.georgebrown.comp3074.pocketmealapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +29,17 @@ public class MessageArrayAdapter extends ArrayAdapter<Chat> {
             convertView=inflater.inflate(layoutId,null);}
 
         TextView txt = convertView.findViewById(R.id.txtVMessage);
-         if(LoginActivity.currentUser.getDisplayName().equals(getItem(position).getSender()) || LoginActivity.currentUser.getDisplayName().equals(getItem(position).getReceiver())){
 
-             txt.setText(padLeftSpaces("You : "+getItem(position).getMessage(),110));
+        if(LoginActivity.currentUser.getDisplayName().equals(getItem(position).getSender())){
+
+            txt.setText( "You : "+getItem(position).getMessage());
+
+        }
+        else{
+             txt.setText(getItem(position).getSender() +" : "+getItem(position).getMessage());}
 
 
-         }
-         else{
-        txt.setText(getItem(position).getSender() +" : "+getItem(position).getMessage());}
+        //Log.d("===", getItem(position).getSender() +"to"+getItem(position).getReceiver());
 
         return convertView;
     }
